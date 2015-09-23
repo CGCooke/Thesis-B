@@ -1,6 +1,7 @@
-\chapter*{Appendix 1}\label{app1}
+\addcontentsline{toc}{chapter}{Appendix 1}
+\chapter{Flight Dynamics}
 
-\section{Dynamics}
+\section{Overview}
 In order to design a receiver able to cope with high dynamics experienced during space flight, it is crucial to have an understanding of the types of dynamics the receiver is likely to occur. Based on a thorough analysis of a range of Launch Services User's Guide published by commercial space flight operators, the following phases of flight have been identified as exhibiting the most severe dynamics: 
 
 \begin{enumerate}
@@ -27,23 +28,31 @@ Launch is the most obvious case of dynamics that a \ac{GNSS} receiver would expe
 \end{figure}
 
 
+
 \begin{table}[!htb]
 \centering
 \begin{tabular}{|l|l|l|}
 \hline
-Space Vehicle       & Axial                   & Lateral              \\ \hline
-Ariane 5            & 4.6 g \cite{Ariane}     & 2.0 g \cite{Ariane}  \\ \hline
-Atlas V 400         & 5.0 g \cite{AtlasV}     & 2.0 g \cite{AtlasV}  \\ \hline
-Atlas V 500         & 4.6 g \cite{AtlasV}     & 2.0 g \cite{AtlasV}  \\ \hline
-Delta IV Medium     & 6.0 g \cite{DeltaIV}    & 2.0 g \cite{DeltaIV} \\ \hline
-Delta IV Heavy      & 5.5 g \cite{DeltaIV}    & 2.0 g \cite{DeltaIV} \\ \hline
-Falcon 9 Revision 0 & 6.0 g \cite{Falcon9}    & 2.0 g \cite{Falcon9} \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+Space Vehicle       & Axial                   & Lateral                \\ \hline
+Ariane 5            & 4.6 g \cite{Ariane}     & 2.0 g \cite{Ariane}    \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+Atlas V 400         & 5.0 g \cite{AtlasV}     & 2.0 g \cite{AtlasV}    \\ \hline
+Atlas V 500         & 4.6 g \cite{AtlasV}     & 2.0 g \cite{AtlasV}    \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+Delta IV Medium     & 6.0 g \cite{DeltaIV}    & 2.0 g \cite{DeltaIV}   \\ \hline
+Delta IV Heavy      & 5.5 g \cite{DeltaIV}    & 2.0 g \cite{DeltaIV}   \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+Falcon 9 Revision 0 & 6.0 g \cite{Falcon9}    & 2.0 g \cite{Falcon9}   \\ \hline
 Minotaur            & 13.0 g  \cite{Minotaur} & 12.0 g \cite{Minotaur} \\ \hline
-Soyuz               & 5.0 g \cite{Soyuz}      & 1.8 g \cite{Soyuz}   \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+Soyuz               & 5.0 g \cite{Soyuz}      & 1.8 g \cite{Soyuz}     \\ \hline
 \end{tabular}
 \caption{Maximum \ac{QSL} experienced during launch.}
 \label{QSLTable}
 \end{table}
+
+
 
 \subsection{Stage Separation}
 
@@ -67,15 +76,20 @@ During re-entry, the extreme temperatures ionises the gasses surrounding the veh
 \centering
 \begin{tabular}{|l|l|}
 \hline
-Space Vehicle & Peak acceleration                      \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+Space Vehicle & Peak acceleration                    \\ \hline
 Gemini        & 12 g \cite{FAA}                      \\ \hline
+\rowcolor[HTML]{EFEFEF} 
 Apollo        & 7.19 g \cite{johnston1975biomedical} \\ \hline
 Dragon        & 5.0 g \cite{trevino2008spacex}       \\ \hline
-Soyuz         & 10 g \cite{ReentryDynamics}                   \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+Soyuz         & 10 g \cite{ReentryDynamics}          \\ \hline
 \end{tabular}
 \caption{Peak acceleration experienced by different \ac{SV}'s during re-entry}
 \label{ReEntryTable}
 \end{table}
+
+
 
 Space Exploration Technologies Corporation (SpaceX) is attempting to reduce launch costs by recovering the first stage of their Falcon 9-R launch vehicle. After first stage separation, the first stage performs a burn-back procedure, to fly back to the launch pad. During the burn-back, there is an inferred maximum de-acceleration of $\approx 7.8 g$ during the hypersonic burn, based on published performance figures. An overview of the flight profile can be found in figure \ref{fig:Falcon9Profile}.
 

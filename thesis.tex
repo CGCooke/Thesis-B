@@ -7,6 +7,10 @@
 \graphicspath{{Images/}}        %Set the graphics path
 \usepackage{units}
 \usepackage{acronym}
+
+\usepackage{booktabs}
+\usepackage[table,xcdraw]{xcolor}
+
 \usepackage{listings} 
 \usepackage{verbatim}
 \usepackage{pdfpages}
@@ -16,8 +20,6 @@
 \usetikzlibrary{arrows,automata}
 \usetikzlibrary{decorations.pathreplacing}
 
-%\usepackage[table,xcdraw]{xcolor}
-%\usepackage{booktabs}
 
 \usepackage[latin1]{inputenc}
 \usepackage{verbatim}
@@ -33,20 +35,20 @@
 \setlength\oddsidemargin{-0.6mm}
 \setlength\evensidemargin{-0.6mm}
 \renewcommand{\baselinestretch}{1.5}
-\lstset{language=Matlab}    
+%\lstset{language=Matlab}    
 \setlength{\parskip}{1em}
 
 \begin{document}
 \thispagestyle{empty}
-\includepdf[pages={1}]{PDFs/ThesisFrontCover.pdf}
+%\includepdf[pages={1}]{PDFs/ThesisFrontCover.pdf}
 \include{Text/cover}
 \include{Text/abbreviations}
 \tableofcontents
 \listoffigures
-%\listoftables
-%\include{Text/introduction}
-%\include{Text/background}
-%\include{Text/LitReview}
+\listoftables
+\include{Text/introduction}
+\include{Text/background}
+\include{Text/LitReview}
 %\include{Text/mywork}
 %\include{Text/conclusion}
 
@@ -54,11 +56,8 @@
 \bibliographystyle{plain}
 \bibliography{pubs}
 \appendix
-\addcontentsline{toc}{chapter}{Appendix 1}
 \include{Text/Appendices/appendix1}
-%\addcontentsline{toc}{chapter}{Appendix 2}
-%\include{Text/Appendices/appendix2}
-\addcontentsline{toc}{chapter}{Appendix 3}
+\include{Text/Appendices/appendix2}
 \include{Text/Appendices/appendix3}
-
+\include{Text/Appendices/appendix4}
 \end{document}

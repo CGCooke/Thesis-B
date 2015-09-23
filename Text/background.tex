@@ -27,11 +27,11 @@ If both the carrier frequency tracking loop, and the code phase loop are working
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{RecieverDiagram.png} 
-    \caption{A high level diagram of the Namuru architecture. An RF font end digitizes the GPS signal, this is then de-spread to baseband by a bank of 12 correlators implemented on a FPGA. The correlators are controlled by a microcontroller, which is also typically implemented as a soft-core processor on the FPGA.}
+    \caption{A high level diagram of the Namuru architecture. An RF font end digitises the GPS signal, this is then de-spread to baseband by a bank of 12 correlators implemented on a FPGA. The correlators are controlled by a microcontroller, which is also typically implemented as a soft-core processor on the FPGA.}
     \label{fig:RecieverDiagram}
 \end{figure}
 
-In order to properly understand the architecture of the Namuru receiver, it is important to first understand the context in which shaped it's design. \ac{GNSS} receivers use an \ac{ASIC} RF front-end to convert the \ac{RF} signal from the satellite to a digitized \ac{IF} signal which can be de-spread to baseband by the correlators. 
+In order to properly understand the architecture of the Namuru receiver, it is important to first understand the context in which shaped it's design. \ac{GNSS} receivers use an \ac{ASIC} RF front-end to convert the \ac{RF} signal from the satellite to a digitised \ac{IF} signal which can be de-spread to baseband by the correlators. 
 
 An \ac{ASIC} front-end has the following components \cite{GlennonPresentation}: 
 
@@ -40,8 +40,8 @@ An \ac{ASIC} front-end has the following components \cite{GlennonPresentation}:
 \item{\ac{PLL} to generate Local oscillator}
 \item{Mixers to down-convert RF signals to IF}
 \item{\ac{LPF} for image rejection}
-\item{\ac{AGC} to maximize dynamic range}
-\item{\ac{ADC} to digitize signal}
+\item{\ac{AGC} to maximise dynamic range}
+\item{\ac{ADC} to digitise signal}
 \end{itemize}
 
 The architecture of a typical \ac{GNSS} \ac{RF} front-end can be found in figure \ref{fig:Zarlink2015}.  
@@ -58,7 +58,7 @@ Additionally, manufacturers generally do no publish datasheets that describe the
 
 A solution to this problem, which is popular with academic institutions is the use of \ac{SDR} for the development of receivers. \ac{IF} data is captured using an \ac{SDR}, and processed in software\cite{Glennon11aquariusfirmware}, One example of a MATLAB software receiver is described in \cite{KaiBorre}.
 
-The key drawback of this approach is processing speed, because the correlation occurs in software, rather than specialized hardware, optimized software coupled with powerful hardware is required to carry out process the \ac{IF} data in real time. The use of powerful hardware to carry out the correlation in software results in a solution that is neither cost effective and suffers from excessive power consumption.
+The key drawback of this approach is processing speed, because the correlation occurs in software, rather than specialised hardware, optimised software coupled with powerful hardware is required to carry out process the \ac{IF} data in real time. The use of powerful hardware to carry out the correlation in software results in a solution that is neither cost effective and suffers from excessive power consumption.
 
 The development of a \ac{FPGA} digital baseband processor represents an elegant compromise. 
 The architecture of the Namuru receiver can be found in figure \ref{fig:RecieverDiagram}. The receiver contains an ASIC front end, a FPGA baseband processor, and a microcontroller processor, which controls the tracking loops in the FPGA, and computes a navigation solution. In some iteration of the Namuru receiver, the Processor has been a soft core processor, implemented on the \ac{FPGA}.
@@ -76,41 +76,44 @@ In order to recover the data message, a \ac{GNSS} receiver needs to simultaneous
 \end{itemize}
 
 
-The code phase changes with the range to the satellite while the carrier frequency changes around the center frequency of 1575.42 MHz due to the doppler effect\cite{Tsui}.
+The code phase changes with the range to the satellite while the carrier frequency changes around the centre frequency of 1575.42 MHz due to the doppler effect\cite{Tsui}.
 
 The frequency offset due to the \ac{LOS} velocity between the receiver and the satellite can be found as : 
-$$\Delta f = f_0\frac{v}{c}$$
+
+\begin{equation}
+\Delta f = f_0\frac{v}{c}
+\end{equation}
 
 Where: 
-
-$f_0$ = 1575.42 MHz   
-
-v = \ac{LOS} velocity in m/s
-
-c = $2.99792458 \times 10^8$
+\begin{align*}
+f_0 &= 1575.42 MHz\\   
+c &= 2.99792458 \times 10^8
+\end{align*}
 
 For the GPS L1 C/A signal, this results in a shift of 5.25Hz per m/s. 
-
 While the receiver is stationary, there will still be a doppler shift, of up to 20Khz due to the motion of the satellite\cite{Kaplan}. As the receiver moves, there will be an doppler shift due to the change in the \ac{LOS} distance between the satellite and the receiver, resulting in a constant offset, for a constant velocity. If the receiver undergoes a constant acceleration, then the doppler frequency increases as a ramp. The relationship between different derivatives of position, and the doppler frequency produced is in table \ref{table:DopplerDynamics} for reference.
 
 Understanding how the Doppler frequency changes is crucial when designing tracking loops, which shall be discussed in more detail in the literature review. 
 
-
 A thorough overview of the dynamics experienced during space flight can be found in Appendix 1.
 
-\begin{table}[h]
+\begin{table}[!htb]
 \centering
 \begin{tabular}{|l|l|}
 \hline
+\rowcolor[HTML]{C0C0C0} 
 Change in LOS Distance & Doppler frequency \\ \hline
 Static                 & 0                 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
 Velocity               & Constant          \\ \hline
 Acceleration           & Ramp              \\ \hline
+\rowcolor[HTML]{EFEFEF} 
 Jerk                   & Parabolic         \\ \hline
 \end{tabular}
 \caption{The relationship between \ac{LOS} dynamics and Doppler frequency}
 \label{table:DopplerDynamics}
 \end{table}
+
 
 The dynamics experienced by the code tracking loop are 1540 times smaller than those experienced by the carrier loop \cite{Kaplan}. Hence the  code loop is significantly more robust than either the \ac{FLL} or \ac{PLL}.
 

@@ -1,0 +1,30 @@
+\begin{figure}[!htb]
+\centering
+
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=8cm,semithick]
+  \tikzstyle{every state}=[fill=red,draw=none,text=white]
+
+  \node[initial,state] (A)                    {$A$};
+  \node[state]         (B) [above right of=A] {$B$};
+  \node[state]         (C) [below right of=B] {$C$};
+  \node[state]         (D) [below right of=A] {$D$};
+
+  \path (A) edge    [bend left]          node {$\alpha \wedge \beta$} (B)
+        
+        (B) edge [bend left]  node {} (A)
+        
+        (B) edge  [bend left] node {$\alpha \wedge \beta \wedge \gamma \wedge \delta$} (C)
+        
+        (B) edge [bend left] node [near end] {$\alpha \wedge \beta \wedge \gamma \wedge \delta \wedge \epsilon$} (D)
+        
+        (C) edge              node {} (A)
+        (C) edge  [bend left] node [near start,above=10pt] {$\alpha \wedge \beta$} (B)
+        
+        
+        (C) edge [bend left] node {$\alpha \wedge \beta \wedge \gamma \wedge \delta \wedge \epsilon$} (D)
+        (D) edge [bend left]  node [near start] {$\alpha \wedge \beta$} (B)
+        (D) edge [bend left] node {} (A);
+        
+\end{tikzpicture}
+\caption{State Transition Diagram} \label{fig:StateTransitionDiagram}
+\end{figure}
