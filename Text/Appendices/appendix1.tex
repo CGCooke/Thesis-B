@@ -1,0 +1,97 @@
+\chapter*{Appendix 1}\label{app1}
+
+\section{Dynamics}
+In order to design a receiver able to cope with high dynamics experienced during space flight, it is crucial to have an understanding of the types of dynamics the receiver is likely to occur. Based on a thorough analysis of a range of Launch Services User's Guide published by commercial space flight operators, the following phases of flight have been identified as exhibiting the most severe dynamics: 
+
+\begin{enumerate}
+\item{Launch}
+\item{Stage Separation}
+\item{Re-entry}
+\end{enumerate}
+
+\subsection{Launch}
+Launch is the most obvious case of dynamics that a \ac{GNSS} receiver would experience. Axial accelerations of 6 g are experienced with most launch vehicles, up to 13 g in the case of the Minotaur rocket. During ascent, accelerations of 2 g due to crosswinds and course corrections may be experienced. An overview of the launch dynamics experience by a range of acceleration that a \ac{SV} will experience can be found in table \ref{QSLTable}.
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{SoyuzAcceleration.png} 
+    \caption{Typical longitudinal acceleration experienced by the Soyuz payload. Note the significant change in acceleration (Jerk) upon stage separation. Image from \cite{Soyuz}}
+    \label{fig:SoyuzAcceleration}
+\end{figure}
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{SoyuzRelativeVelocity.png} 
+    \caption{Typical Soyuz velocity. Image from \cite{Soyuz}}
+    \label{fig:SoyuzRelativeVelocity}
+\end{figure}
+
+
+\begin{table}[!htb]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+Space Vehicle       & Axial                   & Lateral              \\ \hline
+Ariane 5            & 4.6 g \cite{Ariane}     & 2.0 g \cite{Ariane}  \\ \hline
+Atlas V 400         & 5.0 g \cite{AtlasV}     & 2.0 g \cite{AtlasV}  \\ \hline
+Atlas V 500         & 4.6 g \cite{AtlasV}     & 2.0 g \cite{AtlasV}  \\ \hline
+Delta IV Medium     & 6.0 g \cite{DeltaIV}    & 2.0 g \cite{DeltaIV} \\ \hline
+Delta IV Heavy      & 5.5 g \cite{DeltaIV}    & 2.0 g \cite{DeltaIV} \\ \hline
+Falcon 9 Revision 0 & 6.0 g \cite{Falcon9}    & 2.0 g \cite{Falcon9} \\ \hline
+Minotaur            & 13.0 g  \cite{Minotaur} & 12.0 g \cite{Minotaur} \\ \hline
+Soyuz               & 5.0 g \cite{Soyuz}      & 1.8 g \cite{Soyuz}   \\ \hline
+\end{tabular}
+\caption{Maximum \ac{QSL} experienced during launch.}
+\label{QSLTable}
+\end{table}
+
+\subsection{Stage Separation}
+
+Significant shocks can be generated during stage separation, due to pyrotechnic events and fairing jettison\cite{AtlasV,Ariane,DeltaIV}. While these shocks have no impact on the line of sight dynamics experienced by the receiver, they do have an impact on the crystal. Mechanical vibrations can modulate the output frequency of the crystal, placing stress on the tracking loops. A mission profile for a Minotaur rocket can be seen in figure \ref{fig:MinotaurMissionProfile}.
+
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{MinotaurMissionProfile.png} 
+    \caption{A typically Minotaur mission profile, note there are 5 unique separation events. Image from \cite{Minotaur}}
+    \label{fig:MinotaurMissionProfile}
+\end{figure}
+
+\subsection{Re-entry}
+Getting to space is only half the challenge. Accurate guidance during re-entry is crucial to reducing costs in the space industry. Most \ac{SV}'s are currently employed to launch satellites, however manned missions regularly return capsules to earth. The maximum design acceleration experienced can be seen in table \ref{ReEntryTable}. 
+
+During re-entry, the extreme temperatures ionises the gasses surrounding the vehicle, forming  layer of plasma. This layer of plasma severely attenuates radio signals, resulting in what is termed 'reentry blackout'. GNSS receiver design presents an inherent trade off between sensitivity and high dynamics performance. It is likely that the receiver will loose track of the the signal, and be forced to re-acquire at a lower altitude, once the plasma has subsided. 
+
+
+\begin{table}[!htb]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+Space Vehicle & Peak acceleration                      \\ \hline
+Gemini        & 12 g \cite{FAA}                      \\ \hline
+Apollo        & 7.19 g \cite{johnston1975biomedical} \\ \hline
+Dragon        & 5.0 g \cite{trevino2008spacex}       \\ \hline
+Soyuz         & 10 g \cite{ReentryDynamics}                   \\ \hline
+\end{tabular}
+\caption{Peak acceleration experienced by different \ac{SV}'s during re-entry}
+\label{ReEntryTable}
+\end{table}
+
+Space Exploration Technologies Corporation (SpaceX) is attempting to reduce launch costs by recovering the first stage of their Falcon 9-R launch vehicle. After first stage separation, the first stage performs a burn-back procedure, to fly back to the launch pad. During the burn-back, there is an inferred maximum de-acceleration of $\approx 7.8 g$ during the hypersonic burn, based on published performance figures. An overview of the flight profile can be found in figure \ref{fig:Falcon9Profile}.
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{Falcon9Profile.png} 
+    \caption{An overview of the Falcon 9-R flight profile.}
+    \label{fig:Falcon9Profile}
+\end{figure}
+
+
+The maximum acceleration experienced during re-entry can be closely approximated parametrically using the following equation from \cite{eastre}. This is convenient, as it provides an intuitive understanding of how the maximum acceleration varies with velocity, as well as allowing performance to be estimated, when official figures are not published. : 
+$$(\frac{dv}{dt})_{max} = -\frac{\beta V_0 ^2}{2e} \sin \gamma_0$$
+
+$\beta$ = atmospheric scale height, a parameter used to describe the density profile of the atmosphere = $0.000139 m^-1$ for Earth
+
+$\gamma$ = vehicle's flight-path angle (deg or rad)
+
+e = base of the natural logarithm = 2.7182\ldots

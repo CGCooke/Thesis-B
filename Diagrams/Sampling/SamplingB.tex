@@ -1,0 +1,60 @@
+
+\tikzset{
+block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+tmp/.style  = {coordinate}, 
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}
+}
+}
+
+\begin{figure}[!htb]
+\centering
+\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+
+%\draw[dotted](-3,0.25) node {Coherent samples};
+%\draw[dotted](-3,-1.5) node {Incoherent integration};
+%\draw[dotted](-3,-3.5) node {Frequencies};
+
+\foreach \x in {0,...,31}{
+    \draw [fill=orange] (0.5*\x,0) rectangle (0.5*\x+0.5,0.5);
+}
+
+\foreach \x in {0,...,7}{
+    \draw [fill=blue] (2*\x,-1) rectangle (2*\x+2,-2);
+}
+
+
+\foreach \x in {0,...,7}{
+    \draw [fill=teal] (2*\x,-3) rectangle (2*\x+2,-4);
+}
+
+
+\foreach \x in {0,...,7}{
+    \draw [decorate,decoration={brace,amplitude=0.4cm,mirror},xshift=0,yshift=0pt]
+(2*\x,0) -- (2*\x+2,0) node [black,midway]{};
+    \draw[->] (2*\x+1,-0.4) -- (2*\x+1,-1);
+}
+
+
+\foreach \x in {0,...,3}{
+    \draw [decorate,decoration={brace,amplitude=0.5cm,mirror},xshift=0,yshift=0pt]
+(4*\x,-2) -- (4*\x+4,-2) node [black,midway]{};
+    \draw[->] (4*\x+2,-2.5) -- (4*\x+1,-3);
+}
+
+\foreach \x in {0,...,2}{
+    \draw [red,decorate,decoration={brace,amplitude=0.3cm,mirror},xshift=0,yshift=0pt]
+(4*\x+2,-2) -- (4*\x+6,-2) node [black,midway]{};
+    \draw[->,red] (4*\x+4,-2.3) -- (4*\x+3,-3);
+}
+
+\end{tikzpicture}
+\caption{As compared to the sampling process outlined in figure \ref{fig:SamplingSchemeA}, this scheme provides frequency and phase estimates every 4ms.}
+\label{fig:SamplingB}
+\end{figure}
+
+
+
+

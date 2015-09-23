@@ -1,0 +1,38 @@
+\tikzset{
+block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+tmp/.style  = {coordinate}, 
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}
+}
+}
+
+\begin{figure}[!htb]
+\centering
+
+\begin{tikzpicture}
+    
+    \draw (0,0) -- (3*4.76175+1.58,0);
+    
+    \draw[black] (0,-2) cos (4.76175,0) sin (2*4.76175,2) cos (3*4.76175,0) ;
+    
+    \draw[red] (-1.58,-2) cos (4.76175-1.58,0) sin (2*4.76175-1.58,2) cos (3*4.76175-1.58,0) ;
+    
+    \draw[red] (1.58,-2) cos (4.76175+1.58,0) sin (2*4.76175+1.58,2) cos (3*4.76175+1.58,0) ;
+    
+    \draw [decorate,decoration={brace,amplitude=0.4cm},xshift=0,yshift=0pt]
+(3*4.76175+1.58,0) -- (3*4.76175,0) node [black,midway]{};
+    \node at ((3*4.76175+0.5*1.58,-0.8) {$\epsilon$};
+    
+    \draw [decorate,decoration={brace,amplitude=0.4cm,mirror},xshift=0,yshift=0pt]
+(3*4.76175-1.58,0) -- (3*4.76175,0) node [black,midway]{};
+    \node at ((3*4.76175-0.5*1.58,-0.8) {$\epsilon$};
+
+    \draw [fill opacity=1, fill=white,white] (-1.58,0.1) rectangle(1.58,-2.1);
+
+    
+    
+    \end{tikzpicture}
+\caption{An analog model of tracking loop for state A.} \label{fig:SineWave}
+\end{figure}

@@ -1,0 +1,77 @@
+\tikzset{
+block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+tmp/.style  = {coordinate}, 
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}
+}
+}
+
+
+\begin{figure}[!htb]
+\centering
+\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+    
+    %Blocks
+    \node [input] (I) {};
+    \node [input, below of = I,node distance = 3cm] (Q) {};
+    
+    \node [input,right of = I] (I1) {};
+    \node [input,right of = Q] (Q1) {};
+    
+    \node [block, right of = I1](DelayI){$Z^{-1}$};
+    \node [block, right of = Q1](DelayQ){$Z^{-1}$};
+    
+    \node [input,right of = DelayI] (I2) {};
+    \node [input,right of = DelayQ] (Q2) {};
+    
+    \node [sum, above of = DelayI,node distance =1.5cm](mult1){\Large$\times$};
+    \node [sum, right of = I2](mult2){\Large$\times$};
+    \node [sum, right of = Q2](mult3){\Large$\times$};
+    \node [sum, below of = DelayQ,node distance =1.5cm](mult4){\Large$\times$};
+    
+    \node [sum, below  of = mult2,node distance =1.5cm](mult5){\Large$+$};
+    
+    \node [sum,below right  of = mult5,node distance =2cm](mult6){\Large$+$};
+    
+        
+    \node [input,above right of = mult1] (I3) {};
+    \node [input,below right of = mult4] (Q3) {};
+    
+    \node [input,right of = mult6] (Dot) {};
+    \node [input,right of = mult5, node distance =3.5cm] (Cross) {};
+    
+    
+    %Lines
+    \draw [->] (I) -- node[pos=0.1]{I} (DelayI);
+    \draw [->] (Q) -- node[pos=0.1]{Q} (DelayQ);
+    
+    
+    \draw [->] (I1) |- node{} (mult1);
+    \draw [->] (Q1) |- node{} (mult4);
+    \draw [->] (I2) |- node{} (mult1);
+    \draw [->] (Q2) |- node{} (mult4);
+    
+    \draw [->] (DelayI) -- node{} (mult2);
+    \draw [->] (DelayQ) -- node{} (mult3);
+    
+    \draw [->] (I1) -- node{} (mult3);
+    \draw [->] (Q1) -- node{} (mult2);
+    
+    \draw [->] (mult2) -- node[pos=0.99] {$-$}  (mult5);
+    \draw [->] (mult3) -- node{}  (mult5);
+    
+    \draw [-] (mult1) |- node{}  (I3);
+    \draw [-] (mult4) |- node{}  (Q3);
+    
+    
+    \draw [->] (I3) -| node{}  (mult6);
+    \draw [->] (Q3) -| node{}  (mult6);
+    
+    \draw [->] (mult5) -- node[pos=0.99]{Cross}  (Cross);
+    \draw [->] (mult6) -- node[pos=0.99]{Dot}  (Dot);
+    
+    \end{tikzpicture}
+\caption{An overview of the sample processing that produces the "Dot" and "Cross" inputs to the Atan2 function.} \label{fig:FLLDiscriminator}
+\end{figure}

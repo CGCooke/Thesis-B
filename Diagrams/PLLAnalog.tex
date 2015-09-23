@@ -1,0 +1,56 @@
+\tikzset{
+block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+tmp/.style  = {coordinate}, 
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}
+}
+}
+
+
+\begin{figure}[!htb]
+\centering
+\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+    \node [input, name=rinput] (rinput) {};
+    
+    \node [sum, right of=rinput](Rotator){\Large$\times$};
+    \node [block, right of=Rotator,node distance=4cm] (Discriminator) {Im\{\}};
+     \node [output, right of=Discriminator, node distance=2cm] (output) {};
+     
+    
+    
+    \node [block, below of = Discriminator](diff){$\frac{d}{dt}$};
+    \node [block, left of = diff](K1){$K_{1}$};
+    
+    
+    \node [block, below of = diff](K2){$K_{2}$};
+    
+    
+    \node [block, below of = K2](Integrator){$\displaystyle \int$};
+    \node [block, left of = Integrator](K3){$K_{3}$};
+    
+    \node [sum, left of=K2,node distance=2cm] (sum1) {\Large$+$};
+    \node [block, left of = sum1](NCO){VCO};
+    
+    \draw [->] (rinput) -- node{} (Rotator);
+    \draw [->] (Rotator) -- node{} (Discriminator);
+    
+    \draw [-] (Discriminator) -- node [name=y] {}(output);
+    \draw [->] (output) |- node{} (diff);
+    \draw [->] (output) |- node{} (K2);
+    \draw [->] (output) |- node{} (Integrator);
+    
+
+    \draw [->] (Integrator) -- node{} (K3);
+    \draw [->] (diff) -- node{} (K1);
+    
+    \draw [->] (K1) -- node{} (sum1);
+    \draw [->] (K2) -- node{} (sum1);
+    \draw [->] (K3) -- node{} (sum1);
+    \draw [->] (sum1) -- node{} (NCO);
+    \draw [->] (NCO) -- node{} (Rotator);
+    
+    \end{tikzpicture}
+\caption{A PID Control System} \label{fig:PLLAnalog}
+\end{figure}

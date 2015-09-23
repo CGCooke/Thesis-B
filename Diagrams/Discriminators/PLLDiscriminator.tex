@@ -1,0 +1,57 @@
+\tikzset{
+block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+tmp/.style  = {coordinate}, 
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}
+}
+}
+
+
+\begin{figure}[!htb]
+\centering
+\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+    
+    %Blocks
+    \node [input] (I) {};
+    \node [input, below of = I] (Q) {};
+    
+    \node [input,right of = I] (I1) {};
+    \node [input,right of = Q] (Q1) {};
+    
+    \node [block, right of = I1](DelayI){$Z^{-1}$};
+    \node [block, right of = Q1](DelayQ){$Z^{-1}$};
+    
+    
+    \node [sum,right of = DelayI,node distance = 2cm] (sum1) {\Large$+$};
+    \node [sum,right of = DelayQ,node distance = 2cm] (sum2) {\Large$+$};
+    
+    \node [input,above of = sum1] (I2) {};
+    \node [input,below of = sum2] (Q2) {};
+    
+    \node [input,right of = sum1] (IOut) {};
+    \node [input,right of = sum2] (QOut) {};
+    
+    
+    
+    \draw [->] (I) -- node[pos=0.1]{I} (DelayI);
+    \draw [->] (Q) -- node[pos=0.1]{Q} (DelayQ);
+    
+    \draw [-] (I1) |- node{} (I2);
+    \draw [-] (Q1) |- node{} (Q2);
+    
+    \draw [->] (I2) -- node{} (sum1);
+    \draw [->] (Q2) -- node{} (sum2);
+   
+    \draw [->] (DelayI) -- node{} (sum1);
+    \draw [->] (DelayQ) -- node{} (sum2);
+    
+    \draw [->] (sum1) -- node[pos=0.99]{I}  (IOut);
+    \draw [->] (sum2) -- node[pos=0.99]{Q}  (QOut);
+    
+   
+    
+    \end{tikzpicture}
+\caption{In the PLL discriminator, the I \& Q samples are summed to improve the SNR, and to ensure the point at which the phase estimate is taken, matches up with the point the frequency estimate is taken.} \label{fig:PLLDiscriminator}
+\end{figure}

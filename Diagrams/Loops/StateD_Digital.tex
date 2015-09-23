@@ -1,0 +1,182 @@
+\tikzset{
+block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+tmp/.style  = {coordinate}, 
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}
+}
+}
+
+\begin{figure}[!htb]
+\centering
+\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+    \node [input, name=rinput] (rinput) {};
+    \node [sum, right of=rinput,node distance = 2
+    cm](Rotator){\Large$\times$};
+    
+     \node [input, right of = Rotator] (RotatorPickoffPoint) {};
+     
+    %FLL Blocks
+    \node [block, right of=RotatorPickoffPoint,node distance=3cm] (DiscriminatorFLL) {$K_{DFLL}$};
+    
+    %Integrator
+    \node [input,right of=DiscriminatorFLL] (Point1FLL) {};
+    \node [block, below right of=Point1FLL,node distance=2cm] (Delay1FLL){$Z^{-1}$};
+    \node [sum, right of=Point1FLL,node distance=3cm] (sumIntegrator1FLL) {\Large$+$};
+    
+    \node [block, right of=sumIntegrator1FLL,node distance=2cm] (SamplingTime){$\frac{1}{T}$};  
+    
+    %Proportional FLL 
+    \node [block, below of = DiscriminatorFLL,node distance =7cm](K1FLL){$K_{1}$};
+    \node [input, below of = K1FLL,node distance = 2cm](Point2FLL){};
+    
+    %Integrator FLL
+    \node [sum,right of = Point2FLL,node distance =3cm] (sumIntegrator2FLL){\Large$+$};
+    \node [block, below left of=sumIntegrator2FLL,node distance=2cm] (Delay2FLL){$Z^{-1}$};
+    
+    \node [block, left of = Point2FLL](K2FLL){$K_{2}$};
+    \node [sum, left of=K1FLL,node distance=2cm] (sum1FLL) {\Large$+$};
+    \node [input,right of=K1FLL,node distance = 7cm] (PickoffPointFLL) {};
+    
+    
+    
+    %PLL Blocks
+    \node [block, above of=DiscriminatorFLL] (DiscriminatorPLL) {$K_{DPLL}$};
+    
+    %Differentiator PLL
+    \node [sum, below of = Point2FLL,node distance =3cm](sumDifferentiator1PLL) {\Large$+$};
+    \node [input, right of = sumDifferentiator1PLL,node distance = 3cm] (Point2PLL) {};
+    \node [block, below right of=sumDifferentiator1PLL,node distance=2cm] (Delay2PLL){$Z^{-1}$};
+    
+    \node [input, right of = Point2PLL,node distance = 5cm] (PLLPickoffPoint1) {};
+    
+    
+    
+    %Proportional PLL
+    \node [block, left of = sumDifferentiator1PLL](K1PLL){$K_{3}$};
+    \node [block, below of = sumDifferentiator1PLL,node distance = 3cm](K2PLL){$K_{4}$};
+    
+    
+    \node [input, right of = K2PLL,node distance = 8cm] (PLLPickoffPoint2) {};
+    
+    %Intergral PLL
+    \node [input, below of = K2PLL] (Point1PLL) {};
+    \node [sum, right of = Point1PLL,node distance =3cm](sumIntegrator1PLL){\Large$+$};
+    \node [block, below right of=Point1PLL,node distance=2cm] (Delay1PLL){$Z^{-1}$};
+    
+    
+    \node [block, left of =Point1PLL](K3PLL){$K_{5}$};
+    \node [sum, left of=K2PLL,node distance=2cm] (sum1PLL) {\Large$+$};
+
+    %Common
+    \node [output, right of=DiscriminatorPLL, node distance=8cm] (output) {};
+    
+
+
+    \node [sum, left of = sum1FLL,node distance =3cm](sumCommon){\Large$+$};
+    
+    
+    \node [input, above of = sumCommon,node distance=3cm](PointNCO){};
+    \node [block, above left of = sumCommon](delayNCO){\Large$Z^{-1}$};
+    
+    \node [block, above of = PointNCO](NCO){NCO};
+    
+    %\node [block, above left of = PointNCO](delayNCO2){\Large$Z^{-1}$};
+    
+    
+    
+    \draw [->] (rinput) -- node{$\phi_{Input}$}(Rotator);
+    \draw [->] (PointNCO) -- node{} (NCO);
+    \draw [->] (NCO) -- node{$\phi_{NCO}$} node[pos=0.90] {$-$} (Rotator);
+    
+    
+    
+    \draw [->] (PointNCO) -| node{} (delayNCO);
+    \draw [->] (delayNCO) |- node{} (sumCommon);
+    
+    %\draw [->] (PointNCO) -- node{} (Rotator);
+    
+    
+    %FLL Connections
+    \draw [-] (Rotator) -- node{$\phi_{Error}$} (RotatorPickoffPoint);
+    
+    \draw [->] (RotatorPickoffPoint) -- node{} (DiscriminatorFLL);
+    
+    
+    \draw [->] (DiscriminatorFLL) -- node{} (sumIntegrator1FLL);
+    
+    %FLL Discriminator Integrator
+    \draw [->] (Point1FLL) |- node{} (Delay1FLL);
+    \draw [->] (Delay1FLL) -| node[pos=0.95]{$-$} (sumIntegrator1FLL);
+    \draw [->] (sumIntegrator1FLL) -- node{} (SamplingTime);
+    
+    
+    %Loop Filter Integrator
+    \draw [->] (Delay2FLL) -| node{} (sumIntegrator2FLL);
+    \draw [->] (Point2FLL) |- node{} (Delay2FLL);
+    
+    \draw [-] (SamplingTime) -- node{} (PickoffPointFLL);
+    \draw [->] (PickoffPointFLL) -- node{} (K1FLL);
+    \draw [->] (PickoffPointFLL) |- node{} (sumIntegrator2FLL);
+    
+    %\draw [->] (SamplingTime) |- node{} (K1FLL);
+    %\draw [->] (SamplingTime) |- node{} (sumIntegrator2FLL);
+
+
+    \draw [->] (sumIntegrator2FLL) -- node{} (K2FLL);
+    
+    \draw [->] (K1FLL) -- node{} (sum1FLL);
+    \draw [->] (K2FLL) -- node{} (sum1FLL);
+    \draw [->] (sum1FLL) -- node{} (sumCommon);
+    
+    
+    %PLL Connections
+    \draw [->] (RotatorPickoffPoint) |- node[]{} (DiscriminatorPLL);
+    
+    \draw [-] (DiscriminatorPLL) -- node [name=y] {}(output);
+    
+    \draw [-] (output) -- node{} (PLLPickoffPoint1);
+    \draw [->] (PLLPickoffPoint1) -- node{} (sumDifferentiator1PLL);
+    \draw [-] (PLLPickoffPoint1) -- node{} (PLLPickoffPoint2);
+    
+    \draw [->] (PLLPickoffPoint2) -- node{} (K2PLL);
+    \draw [->] (PLLPickoffPoint2) |- node{} (sumIntegrator1PLL);
+    
+    %\draw [->] (output) |- node{} (sumDifferentiator1PLL);
+    %\draw [->] (output) |- node{} (K2PLL);
+    %\draw [->] (output) |- node{} (sumIntegrator1PLL);
+    
+    %Integrator
+    \draw [->] (sumIntegrator1PLL) -- node{} (K3PLL);
+    \draw [->] (Delay1PLL) -| node{} (sumIntegrator1PLL);
+    \draw [->] (Point1PLL) |- node{} (Delay1PLL);
+    
+    
+    \draw [->] (sumDifferentiator1PLL) -- node{} (K1PLL);
+    
+    \draw [->] (Point2PLL) |- node{} (Delay2PLL);
+    \draw [->] (Delay2PLL) -| node[pos=0.95]{$-$}  (sumDifferentiator1PLL);
+    
+    
+    
+    \draw [->] (K1PLL) -- node{} (sum1PLL);
+    \draw [->] (K2PLL) -- node{} (sum1PLL);
+    \draw [->] (K3PLL) -- node{} (sum1PLL);
+    
+    \draw [->] (sum1PLL) -| node{} (sumCommon);
+    \draw [-] (sumCommon) -| node{} (PointNCO);
+    
+    
+    %% Boxing and labelling noise shapers
+	%\draw [color=gray,thick](-0.5,-3) rectangle (9,1);
+	%\node at (-0.5,1) [above=5mm, right=0mm] {\textsc{first-order noise shaper}};
+	%\draw [color=gray,thick](-0.5,-9) rectangle (12.5,-5);
+	%\node at (0,0) {\textsc{second-order noise shaper}};
+    
+   
+    
+    \end{tikzpicture}
+\caption{A digital model of the FLL and PLL tracking loops.} \label{fig:StateD_Digital}
+\end{figure}
+

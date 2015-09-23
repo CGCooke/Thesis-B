@@ -1,0 +1,51 @@
+\tikzset{
+block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+tmp/.style  = {coordinate}, 
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}
+}
+}
+
+\begin{figure}[!htb]
+\centering
+
+\begin{tikzpicture}
+    %\filldraw[fill=green!20!white, draw=green!20!white]
+    %(-59.5:7.58) arc (-59.5:-120.5:7.58) arc (147:32:4.58) %--cycle;
+    
+    \filldraw[fill=green!20!white, draw=green!20!white]
+    (-46:5.58) arc (-46:-134:5.58) arc (134.5:46:5.58);
+    
+    
+    \newcommand\RadiusA{4} 
+    \draw[draw=black]
+    (0:\RadiusA+1.58) arc (0:360:\RadiusA+1.58) -- cycle;
+    
+    \draw[draw=black]
+    (0:\RadiusA-1.58) arc (0:360:\RadiusA-1.58) -- cycle;
+    
+    \draw[draw=black,dashed]
+    (0:\RadiusA) arc (0:360:\RadiusA) -- cycle;
+    
+    \node at (0,0) {Satellite A};
+    
+    \newcommand\RadiusB{4} 
+    \draw[draw=black]
+    (\RadiusB+1.58,-8) arc (0:360:\RadiusB+1.58) -- cycle;
+    
+    \draw[draw=black]
+    (\RadiusB-1.58,-8) arc (0:360:\RadiusB-1.58) -- cycle;
+    
+    \draw[dashed]
+    (\RadiusB,-8) arc (0:360:\RadiusB) -- cycle;
+    
+    \node at (0,-8) {Satellite B};
+    
+    \node at (0,-4.35) {$X$};
+    
+    \end{tikzpicture}
+\caption{In the case of multiple satellites, the only viable positions where phase lock can be maintained is the union between the spherical shells of the satellites, visualised here as annuli. As the number of different satellites increases, the bounding volume of the solution approaches a sphere with radius 2 $\epsilon$ centred at the true position X. $\epsilon$ is depicted at 1:1 scale.}
+\label{fig:Intersections}
+\end{figure}

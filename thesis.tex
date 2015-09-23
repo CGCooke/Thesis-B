@@ -1,0 +1,64 @@
+\documentclass[12pt]{report}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{epsfig}
+\usepackage{graphicx}           %for images
+\graphicspath{{Images/}}        %Set the graphics path
+\usepackage{units}
+\usepackage{acronym}
+\usepackage{listings} 
+\usepackage{verbatim}
+\usepackage{pdfpages}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+\usetikzlibrary{decorations.pathreplacing}
+
+%\usepackage[table,xcdraw]{xcolor}
+%\usepackage{booktabs}
+
+\usepackage[latin1]{inputenc}
+\usepackage{verbatim}
+\usepackage{gensymb}
+\usepackage{comment}
+
+
+
+% sets 25mm margins on A4
+\setlength\textwidth{16cm}
+\setlength\textheight{23cm}
+\setlength\topmargin{-0.7cm}
+\setlength\oddsidemargin{-0.6mm}
+\setlength\evensidemargin{-0.6mm}
+\renewcommand{\baselinestretch}{1.5}
+\lstset{language=Matlab}    
+\setlength{\parskip}{1em}
+
+\begin{document}
+\thispagestyle{empty}
+\includepdf[pages={1}]{PDFs/ThesisFrontCover.pdf}
+\include{Text/cover}
+\include{Text/abbreviations}
+\tableofcontents
+\listoffigures
+%\listoftables
+%\include{Text/introduction}
+%\include{Text/background}
+%\include{Text/LitReview}
+%\include{Text/mywork}
+%\include{Text/conclusion}
+
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{plain}
+\bibliography{pubs}
+\appendix
+\addcontentsline{toc}{chapter}{Appendix 1}
+\include{Text/Appendices/appendix1}
+%\addcontentsline{toc}{chapter}{Appendix 2}
+%\include{Text/Appendices/appendix2}
+\addcontentsline{toc}{chapter}{Appendix 3}
+\include{Text/Appendices/appendix3}
+
+\end{document}

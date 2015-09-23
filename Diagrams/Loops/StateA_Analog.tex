@@ -1,0 +1,42 @@
+\tikzset{
+block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+tmp/.style  = {coordinate}, 
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}
+}
+}
+
+\begin{figure}[!htb]
+\centering
+\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+    \node [input, name=rinput] (rinput) {};
+    \node [sum, right of=rinput,node distance = 2
+    cm](Rotator){\Large$+$};
+    
+    %FLL Stuff
+    \node [block, right of=Rotator,node distance=2cm] (DiscriminatorFLL) {$D_{FLL}$};
+    \node [block, right of=DiscriminatorFLL] (SamplingTime){$\frac{1}{T}$};
+    \node [block, below of = DiscriminatorFLL,node distance =6cm](K1FLL){$K_{1}$};
+    
+    \node [block, below of = Rotator](VCO){VCO};
+    \node [block, below of = VCO](VCOIntegrator){$\displaystyle \int$};
+    
+    
+    %Common
+    \draw [->] (rinput) -- node{$\phi_{Input}$} (Rotator);
+    
+    %FLL Stuff
+    \draw [->] (Rotator) -- node{} (DiscriminatorFLL);
+    \draw [->] (DiscriminatorFLL) -- node{} (SamplingTime);
+    
+    \draw [-] (SamplingTime) |- node{} (K1FLL);
+  
+    \draw [->] (K1FLL) -| node{} (VCOIntegrator);
+    \draw [->] (VCOIntegrator) -- node{} (VCO);
+    \draw [->] (VCO) -- node{$\phi_{VCO}$} node[pos=0.90] {$-$}  (Rotator);
+    
+    \end{tikzpicture}
+\caption{An analog model of tracking loop for state A.} \label{fig:StateA_Analog}
+\end{figure}

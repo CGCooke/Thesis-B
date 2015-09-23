@@ -1,0 +1,37 @@
+\tikzset{
+block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+tmp/.style  = {coordinate}, 
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}
+}
+}
+
+\begin{figure}[!htb]
+\centering
+
+\begin{tikzpicture}
+    \newcommand\Radius{6} 
+    \filldraw[fill=green!20!white, draw=green!50!black]
+    (0:\Radius+1.58) arc (0:360:\Radius+1.58) -- cycle;
+    
+    \filldraw[fill=white, draw=green!50!black]
+    (0:\Radius-1.58) arc (0:360:\Radius-1.58) -- cycle;
+    
+    \draw[draw=green!50!black,dashed]
+    (0:\Radius) arc (0:360:\Radius) -- cycle;
+    
+    \draw[->,color=black,-stealth, thick] (0,0)--(30:\Radius+1.58);
+    \draw[->,color=black,-stealth, thick] (0,0)--(90:\Radius);
+    \draw[->,color=black,-stealth, thick] (0,0)--(150:\Radius-1.58);
+    
+    
+    \node at (20:3) {$r+\Delta$};
+    \node at (95:3) {$r$};
+    \node at (160:3) {$r-\Delta$};
+    \node at (0,-0.25) {Satellite};
+    
+    \end{tikzpicture}
+\caption{In order to maintain phase lock with a single satellite, the predicted range to the satellite used to generate the phase, must lie inside an spherical shell, centred around the true range to the satellite. The shell is visualised as an annulus which is bounded by $r-\epsilon<r<r+\epsilon$. $\epsilon$ is depicted at 1:1 scale.} \label{fig:ValidPositions}
+\end{figure}
