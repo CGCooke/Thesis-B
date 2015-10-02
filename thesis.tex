@@ -25,7 +25,7 @@
 \usepackage{verbatim}
 \usepackage{gensymb}
 \usepackage{comment}
-
+\usepackage{framed}
 
 
 % sets 25mm margins on A4
@@ -46,18 +46,30 @@
 \tableofcontents
 \listoffigures
 \listoftables
-\include{Text/introduction}
-\include{Text/background}
+\include{Text/Introduction}
+\include{Text/Namuru}
 \include{Text/LitReview}
-%\include{Text/mywork}
-%\include{Text/conclusion}
+\include{Text/myworkThesisA}
+\include{Text/conclusion}
 
 \addcontentsline{toc}{chapter}{Bibliography}
 \bibliographystyle{plain}
 \bibliography{pubs}
 \appendix
+%Flight Dynamics
 \include{Text/Appendices/appendix1}
+%Laplace Analysis
 \include{Text/Appendices/appendix2}
+%State Transitions
 \include{Text/Appendices/appendix3}
+%Acquisition
 \include{Text/Appendices/appendix4}
+%Falcon 9
+\include{Text/Appendices/appendix5}
+%Code
+\include{Text/Appendices/appendix7}
+%Vibration
+\include{Text/Appendices/appendix8}
+
+
 \end{document}

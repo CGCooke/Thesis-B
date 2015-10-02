@@ -58,14 +58,14 @@ def TrackingLoop(Prompt,GpsSignal):
 	if (GpsSignal.Mod2==True):
 		Phase4Quadrant,Phase2Quadrant = FLLDiscriminator(GpsSignal)
 		
-		'''Frequency proportional term'''
+		#Frequency proportional term
 		if (GpsSignal.FLLCount>16):
 			GpsSignal.FrequencyEstimate = Phase2Quadrant/(GpsSignal.coherentIntegrationTime*0.001)
 		else:
 			GpsSignal.FrequencyEstimate = Phase4Quadrant/(GpsSignal.coherentIntegrationTime*0.001)
 		
 		if (GpsSignal.FLLCount>=16):          # Settling time
-			'''Frequency Integral term '''
+			#Frequency Integral term
 			GpsSignal.SumFreqHz +=  GpsSignal.FrequencyEstimate
 
 		# Update filtered absolute frequency error that is used to 
@@ -76,15 +76,15 @@ def TrackingLoop(Prompt,GpsSignal):
 
 		Phase2Quadrant = PLLDiscriminator(GpsSignal)
 		
-		'''Phase derivative term'''
+		#Phase derivative term
 		DeltaPhase2Quadrant = Phase2Quadrant - GpsSignal.Phase2Quadrant
 		DeltaPhase2Quadrant = limitPhaseAngle(DeltaPhase2Quadrant)
 		GpsSignal.DeltaPhase2Quadrant = DeltaPhase2Quadrant
 		
-		''' Phase proportional term '''
+		#Phase proportional term
 		GpsSignal.Phase2Quadrant = Phase2Quadrant
 		
-		''' Phase Integral term '''
+		#Phase Integral term
 		GpsSignal.SumPhase2Quadrant += Phase2Quadrant
 		
 		# Zero out various integration quantities if these quantities don't
@@ -138,7 +138,7 @@ def PLLDiscriminator(GpsSignal):
 		ReTerm = GpsSignal.PrevISample - GpsSignal.CurrentISample
 		ImTerm = GpsSignal.PrevQSample - GpsSignal.CurrentQSample
 	
-	''' PLL/Costas Discriminator, see Table 5.2, page 168 Kaplan'''
+	#PLL/Costas Discriminator, see Table 5.2, page 168 Kaplan
 	Phase4Quadrant,Phase2Quadrant = ATanCycles(ImTerm, ReTerm)	
 	return(Phase2Quadrant)
 

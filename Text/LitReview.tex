@@ -36,7 +36,7 @@ integrates both the FLL and the PLL characteristics, called an FLL-assisted-PLL 
 
 \begin{figure}[!htb] 
     \centering
-    \includegraphics[width=1\textwidth]{Architecture.png} 
+    \includegraphics[width=1\textwidth]{LitReview/Architecture.png} 
     \caption{The discrete implementation of the Ward architecture (FLL-assisted-PLL). Note that the integrators have been implemented using the bilinear transform \cite{Ward}.}
     \label{fig:Architecture}
 \end{figure}
@@ -46,16 +46,18 @@ From a careful analysis of control theory, we can gain an understanding of the i
 
 Ultimately, a trade-off exists between filter order and stability. First and second order filter are unconditionally stable in the Laplace domain, however they are not as effective as third order loops at coping with dynamics. For example, the residual error of a second order loop is acceleration. This makes it unsuitable for any application where sustained acceleration is likely to be encountered, as the error will increase over time, until phase lock is lost. In most real world scenarios, sustained acceleration is limited, due to limits on maximum achievable velocities. For space based applications however, velocities of thousands of meters per second are routinely achieved. Hence while a second order loop may be suitable for terrestrial applications, a third order loops is required for spaced based applications. 
 
-\begin{table}[h]
+\begin{table}[!htb]
 \centering
 \begin{tabular}{|l|l|l|l|}
 \hline
+\rowcolor[HTML]{C0C0C0} 
 Loop order & Filter order & Residual Error & Stability                               \\ \hline
 1          & 0            & Velocity       & Stable                                  \\ \hline
+\rowcolor[HTML]{EFEFEF} 
 2          & 1            & Acceleration   & Stable                                  \\ \hline
 3          & 2            & Jerk           & Remains stable at $B_n$ \textless 18 Hz \\ \hline
 \end{tabular}
-\caption{Loop order behavior}
+\caption{Loop order behaviour}
 \label{table:LoopOrders}
 \end{table}
 
@@ -72,26 +74,10 @@ One of the disadvantages of this procedure, is that the use of a transformation 
 
 A figure of merit that is useful in comparing the \ac{PLL} designed by a particular method is the product between loop noise bandwidth and integration time ($B_LT$). The concept of the $B_LT$ further re-enforces the ultimate trade-off between integration time (sensitivity) and loop noise bandwidth (dynamics). The maximum stable $B_LT$ achievable by designing in the Laplace domain is approximately 0.4 \cite{Kazemi2008,KazemiPHD}
 
-Finally, it is also important to consider that analogue analysis has made linearizing assumptions, and transferring analogue analysis to the digital domain is also non-linear and approximate\cite{Dempster}. 
+Finally, it is also important to consider that analogue analysis has made linearising assumptions, and transferring analogue analysis to the digital domain is also non-linear and approximate\cite{Dempster}. 
 
-\subsection{Design by minimizing the loop phase jitter}
+\subsection{Design by minimising the loop phase jitter}
 
 Kazemi\cite{KazemiPHD,Kazemi2008} provides the most sophisticated analysis of \ac{PLL}. In particular, Kazemi takes into account the effect of averaging and delay, introduced by the integration and dump, allowing stable tracking loops to be developed with large $B_LT$. While Kazemi focuses on the development of receivers for weak signal tracking, his work is still applicable to high dynamics, as increasing the integration time of a receiver for a given noise band with, is equivalent to increasing the noise bandwidth, for a given integration time. 
 
 While the methods described by Kazemi is highly complex, it theoretically offers an order of magnitude improvement in achievable $B_LT$. Kazemi also describes a detailed test plan, for evaluating the performance of the tracking loops, both on real-world and simulated signals, which is very instructive for critically evaluating the performance of new algorithms.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
