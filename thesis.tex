@@ -40,7 +40,7 @@
 
 \begin{document}
 \thispagestyle{empty}
-%\includepdf[pages={1}]{PDFs/ThesisFrontCover.pdf}
+\includepdf[pages={1}]{PDFs/ThesisFrontCover.pdf}
 \include{Text/cover}
 \include{Text/abbreviations}
 \tableofcontents
@@ -54,6 +54,8 @@
 
 \addcontentsline{toc}{chapter}{Bibliography}
 \bibliographystyle{plain}
+
+
 \bibliography{pubs}
 \appendix
 %Flight Dynamics
@@ -66,10 +68,15 @@
 \include{Text/Appendices/appendix4}
 %Falcon 9
 \include{Text/Appendices/appendix5}
+%Discriminators and Sampling
+\include{Text/Appendices/appendix6}
 %Code
 \include{Text/Appendices/appendix7}
 %Vibration
 \include{Text/Appendices/appendix8}
+
+%My work
+\include{Text/Appendices/appendix9}
 
 
 \end{document}

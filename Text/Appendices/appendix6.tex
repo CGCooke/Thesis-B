@@ -1,0 +1,86 @@
+\addcontentsline{toc}{chapter}{Appendix 6}\label{app6}
+\chapter{Discriminators \& Sampling}
+
+The role of the discriminator is to determine the error (frequency or phase), based on current an previous I \& Q samples. This is computed every second incoherent dump (8ms), because a pair of samples is required to compute frequency. 
+
+The Discriminator for both the FLL and PLL loops comes from Kaplan, and can be found on pages (Insert pages here).
+
+\input{Diagrams/Sampling/SamplingA}
+\input{Diagrams/Sampling/SamplingB}
+\input{Diagrams/Sampling/SamplingJitter}
+
+\begin{comment}
+"It is important to note that the timing of each of the correlator channels will be locked to its own incoming signal and not to each other or to the microprocessor interrupts, so new data is generated asynchronously. The sampling instant of measurement data of all channels however is common to give a consistent navigation solution."
+
+"Carrier DCO Programming
+The following registers: CHx_CARRIER_DCO_INCR_HIGH (or X_DCO _INCR_HIGH) and CHx_CARRIER_DCO_INCR_LOW
+are programmed in sequence with the relevant data according to the frequency bin being searched. It is always necessary to write to both the _HIGH and _LOW registers. Carrier DCO programming will become effective as soon as the channel is released (made active). If the channel is already active, writes to CHx_CARRIER_DCO_INCR_LOW are effective immediately. (A short delay of up to 175ns will occur, to allow synchronisation of the processor write operation to the chip operation.)"
+\cite{GP2021}
+\end{comment}
+
+\subsection{Arctangent}
+The arctangent function is used in the discriminators for both the FLL and the PLL. It is important to note that there are two different types of arctangent function, the 
+\lstinputlisting[language=Python,frame=single]{Code/ATan2.py}
+
+Some additional logic is included in the function to ensure that the function always returns a value, even when X is equal to zero.
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{Discriminators/ATanDiagram.png} 
+    \caption{}
+    \label{fig:ATanDiagram}
+\end{figure}
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{Discriminators/ATan2Diagram.png} 
+    \caption{}
+    \label{fig:ATan2Diagram}
+\end{figure}
+
+
+\subsection{FLL Discriminator}
+The role of the FLL discriminator is to convert pairs of phase measurements into frequency. A key statistic for the FLL discriminator is it's capture range. This can be computed as 
+$\frac{-1}{2T} < f < \frac{1}{2T}$
+, where $T = 0.004$
+
+Hence the FLL has a locking range of $\pm 125Hz$. 
+
+If the frequency of the incoming signal is outside this range, then a false lock will occur due to aliasing. This can be seen in figure(Insert picture of aliasing). 
+
+The FLL discriminator which is described in Kaplan uses the dot and cross product of the previous two samples.
+$$Dot = I_{k}\times I_{k-1} + Q_{k}\times Q_{k-1}$$
+$$Cross = Q_{k} \times I_{k-1} - I_{k} \times K_{k-1}$$
+$$DeltaPhase = ATan2(Cross,Dot)$$
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{Discriminators/FLLDiscriminator.png} 
+    \caption{The different FLL discriminators presented in Kaplan.\cite{Kaplan}}
+    \label{fig:FLLDiscriminatorTable}
+\end{figure}
+
+
+\lstinputlisting[language=Python,frame=single]{Code/FLLDiscriminator.py}
+
+\subsection{PLL Discriminator}
+The goal of the PLL Discriminator is to determine the current phase error. In the case of the current implementation, computed phase 
+
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{Discriminators/PLLDiscriminator.png} 
+    \caption{The different PLL discriminators presented in Kaplan.\cite{Kaplan}}
+    \label{fig:PLLDiscriminatorTable}
+\end{figure}
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{Discriminators/CostasDiscriminator.png} 
+    \caption{The different Costas loop discriminators presented in Kaplan.\cite{Kaplan}}
+    \label{fig:CostasDiscriminatorTable}
+\end{figure}
+
+$Z_{k} \times \overline{Z_{k-1}}$
+
+%\lstinputlisting[language=Python,frame=single]{Code/PLLDiscriminator.py}

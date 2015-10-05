@@ -2,5 +2,11 @@ Rework Lit Review
 Write PLL chapter
 Rework myworkThesisA
 Rework conclusion
+Move stuff from myworkThesisA to Namuru
+Put in an example for re-entry
+Work out the velocity sensitivity required by SpaceX
 
 
+
+
+ 

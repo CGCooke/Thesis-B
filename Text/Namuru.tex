@@ -6,9 +6,9 @@
 
 While the work in this thesis is generalisable to other \ac{GNSS}s, for example Galileo and GLONASS, this thesis will focus on tracking of the GPS L1 \ac{C/A} signal (1575.42 MHz).\ac{GPS} uses a type of \ac{CDMA} called \ac{DSSS} in order to transmit data, allowing all the satellites in the constellation to transmit on the same frequency without interference \cite{Ublox}. Additionally, the use of \ac{CDMA} allows the signal, which is typically 30dB below the thermal noise floor to be recovered\cite{Gleason,Tsui}.
 
-The sequence used in the \ac{DSSS} modulation is called a \ac{PRN} and unique to each satellite. In order to recover the signal from a satellite, the GPS receiver correlates the incoming signal with a local replica of the \ac{PRN}. The sequence has a period of 1ms, and a tracking loop is used to maintain the code phase of a local replica, with respect to the received signal. 
+The sequence used in the \ac{DSSS} modulation is called \ac{PRN} and unique to each satellite. In order to recover the signal from a satellite, the GPS receiver correlates the incoming signal with a local replica of the \ac{PRN}. The sequence has a period of 1ms, and a code tracking loop is used to maintain the code phase of a local replica, with respect to the received signal. 
 
-Another tracking loop is used to track the incoming carrier frequency of the signal. Due to the relative motion of the satellite and the receiver, there is a difference doppler shift between the nominal transmission frequency of 1575.42 MHz and the received frequency. 
+Another tracking loop is used to track the incoming carrier frequency of the signal. Due to the relative motion of the satellite and the receiver, there is a doppler shift between the nominal transmission frequency of 1575.42 MHz and the received frequency. 
 
 If both the carrier frequency tracking loop, and the code phase loop are working, then the signal can be de-spread, and the \ac{BPSK} data can be recovered from the signal using a \ac{PLL}.
 
@@ -23,6 +23,14 @@ If both the carrier frequency tracking loop, and the code phase loop are working
 \section{Namuru}
 
 \subsection{Hardware}
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{Introduction/Namuru2.jpg} 
+    \caption{}
+    \label{fig:Namuru2}
+\end{figure}
+
 
 \subsection{Software}
 
@@ -79,49 +87,3 @@ In order to recover the data message, a \ac{GNSS} receiver needs to simultaneous
 
 \subsection{Carrier loop}
 
-
-Before phase lock can be achieved, the frequency of the local signal must be relatively close to frequency of the incoming signal from the satellite. Hence a \ac{FLL} is often used to sufficiently reduce the frequency error between the local signal and the received signal.
-
-The code phase changes with the range to the satellite while the carrier frequency changes around the centre frequency of 1575.42 MHz due to the doppler effect\cite{Tsui}.
-
-The frequency offset due to the \ac{LOS} velocity between the receiver and the satellite can be found as : 
-
-\begin{equation}
-\Delta f = f_0\frac{v}{c}
-\end{equation}
-
-Where: 
-\begin{framed}
-\begin{align*}
-f_0 &= 1575.42 MHz\\   
-c &= 2.99792458 \times 10^8
-\end{align*}
-\end{framed}
-
-For the GPS L1 \ac{C/A} signal, this results in a shift of 5.25Hz per m/s. 
-While the receiver is stationary, there will still be a doppler shift, of up to 20KHz due to the motion of the satellite\cite{Kaplan}. As the receiver moves, there will be an doppler shift due to the change in the \ac{LOS} distance between the satellite and the receiver, resulting in a constant offset, for a constant velocity. If the receiver undergoes a constant acceleration, then the doppler frequency increases as a ramp. The relationship between different derivatives of position, and the doppler frequency produced is in table \ref{table:DopplerDynamics} for reference.
-
-Understanding how the Doppler frequency changes is crucial when designing tracking loops, which shall be discussed in more detail in the literature review. 
-
-A thorough overview of the dynamics experienced during space flight can be found in Appendix 1.
-\begin{table}[!htb]
-\centering
-\begin{tabular}{|l|l|}
-\hline
-\rowcolor[HTML]{C0C0C0} 
-Change in \ac{LOS} Distance & Doppler frequency \\ \hline
-Static                 & 0                 \\ \hline
-\rowcolor[HTML]{EFEFEF} 
-Velocity               & Constant          \\ \hline
-Acceleration           & Ramp              \\ \hline
-\rowcolor[HTML]{EFEFEF} 
-Jerk                   & Parabolic         \\ \hline
-\end{tabular}
-\caption{The relationship between \ac{LOS} dynamics and Doppler frequency}
-\label{table:DopplerDynamics}
-\end{table}
-
-
-The dynamics experienced by the code tracking loop are 1540 times smaller than those experienced by the carrier loop \cite{Kaplan}. Hence the  code loop is significantly more robust than either the \ac{FLL} or \ac{PLL}.
-
-The \ac{PLL} is the most vulnerable of the loops, and under extreme dynamics, the \ac{PLL} will break while the \ac{FLL} will keep tracking, before the \ac{PLL} resumes tracking once the dynamics have subsided to more reasonable levels. If the \ac{PLL} looses phase lock, then the receiver is unable to continue receiving the data signal from the satellite, and hence the receiver is unable to continue providing position solutions. Because of the venerability of the \ac{PLL} to dynamics,the analysis and design of \ac{PLL}'s for high dynamics it will be the focus of this thesis. 
