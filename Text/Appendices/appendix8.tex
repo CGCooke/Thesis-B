@@ -61,7 +61,6 @@ One simple method of determining the g-sensitivity of the crystal is the 2g tip 
 \item{Measure the frequency output of the crystal in one orientation}
 \item{Rotate the crystal 180 \degree about an axis}
 \item{Measure the frequency output again}
-
 \end{enumerate}
 
  The g-sensitivity can be found as:
@@ -101,7 +100,7 @@ radiation effects, magnetic fields, neutron radiation, and so
 on.
 \end{comment}
 
-\cite{2GTipover}
+%\cite{2GTipover}
 
 
 \subsection{Acceleration stresses}
@@ -109,13 +108,14 @@ on.
 \begin{equation}
 \Delta f_g = 360 S_g f_L G(t) (\degree/s)
 \end{equation}
-\cite{Kaplan}
+%\cite{Kaplan}
 
-\begin{framed}
-$S_g$ = g-sensitivity of the oscillator ($\Delta$ f/f per g)\\
-$f_L$ = 1,575.42 MHz for L1 \\
-$G(t)$ = acceleration stress in g as a function of time
-\end{framed}
+\begin{align*}
+S_g &= \text{g-sensitivity of the oscillator (}\Delta \text{f/f per g)}\\
+f_L &= \text{1,575.42 MHz for L1} \\
+G(t) &= \text{acceleration stress in g as a function of time}
+\end{align*}
+
 
 \begin{table}[!htb]
 \centering
@@ -146,20 +146,21 @@ Equation 5.8
 \begin{equation}
 \sigma_v = \frac{360f_L}{2\pi}\sqrt{\int_{f_{min}}^{f_{max}} S^2_v(f_m) \frac{P(f_m)}{f^2_m} df_m} (degrees)
 \end{equation}
-\cite{Kaplan}
+%\cite{Kaplan}
 
 \begin{equation}
 \sigma_v = \frac{\lambda_L}{2\pi}\sqrt{\int_{f_{min}}^{f_{max}} S^2_v(f_m) \frac{P(f_m)}{f^2_m} df_m} (meters)
 \end{equation}
-\cite{Kaplan}
+%\cite{Kaplan}
 
-\begin{framed}
-$f_L$ = L-band input frequency in Hz \\
-$S_v(f_m)$ = oscillator vibration sensitivity of $\Delta f/f_L$ per g as a function of $f_m$ \\
-$f_m$ = random vibration modulation frequency in Hz \\
-$P(f_m)$ = power curve of the random vibration in $g^2/Hz$ as a function of $f_m$ \\
-$g$ = acceleration due to gravity $\approx 9.8 m/s^2$
-\end{framed}
+\begin{align*}
+f_L &= \text{L-band input frequency in Hz} \\
+S_v(f_m) &= \text{oscillator vibration sensitivity of } \Delta f/f_L \text{ per g as a function of } f_m \\
+f_m &= \text{random vibration modulation frequency in Hz} \\
+P(f_m) &= \text{power curve of the random vibration in }g^2/Hz \text{ as a function of } f_m \\
+g &= \text{acceleration due to gravity} \approx 9.8 m/s^2
+\end{align*}
+
 
 
 \begin{itemize}
@@ -207,3 +208,40 @@ Space Exploration Technologies Corp  specifies four main shock events
 \end{itemize}
 
 \subsection{Acoustic stresses}
+
+
+\subsection{Antenna phase-centre displacement}
+One effect that is often overlooked, is that the antenna is physically displaced.
+
+
+Equation 5.8
+\begin{equation}
+\sigma_v = \frac{360f_L}{2\pi}\sqrt{\int_{f_{min}}^{f_{max}} S^2_v(f_m) \frac{P(f_m)}{f^2_m} df_m} (degrees)
+\end{equation}
+%\cite{Kaplan} \cite{Jwo}
+
+where
+\begin{align*}
+f_L &= \text{L-band input frequency in Hz} \\
+S_v(f_m) &= \text{oscillator vibration sensitivity of } \Delta f/f_L \text{ per g as a function of } f_m \\
+f_m &= \text{random vibration modulation frequency in Hz} \\
+P(f_m) &= \text{power curve of the random vibration in } g^2/Hz \text{ as a function of } f_m \\
+g &= \text{ acceleration due to gravity } \approx 9.8 m/s^2\\
+\end{align*}
+
+
+Equation 5.16
+Talk about the 2G tipover test
+\begin{equation}
+\Delta f_g = 360 S_g f_L G(t) (\degree/s)
+\end{equation}
+%\cite{Kaplan}
+
+\begin{align*}
+S_g &= \text{g-sensitivity of the oscillator } (\Delta \text{ f/f per g)}\\ 
+f_L &= \text{L-band input frequency (Hz)}\\
+&= \text{1,575.42 MHz for L1}\\
+G(t) &= \text{acceleration stress in g as a function of time}
+\end{align*}
+
+

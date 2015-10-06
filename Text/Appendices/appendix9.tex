@@ -126,114 +126,25 @@ t = nT
 
 
 
-\section{Kaplan Stuff}
-Kaplan suggests that "A conservative rule of thumb for tracking threshold is that the 3-sigma jitter must not exceed one-fourth of the phase pull-in range of the PLL discriminator." \cite{Kaplan}
-
-\begin{equation}
-3 \sigma_{PLL} = 3 \sigma_j +\theta_e \leq 45 \degree
-\end{equation}
-
-Where:
-\begin{framed}
-$\sigma_j$ = 1-sigma phase jitter from all sources except dynamic stress error \\
-$\theta_e$ = dynamic stress error in the PLL tracking loop
-\end{framed}
-\cite{Kaplan}
-
-Equation 5.5
-\begin{equation}
-\sigma_{PLL} = \sqrt{\sigma^2_{tPLL} + \sigma^2_v+ \theta^2_A} + \frac{\theta_e}{3} \leq 15 \degree 
-\end{equation}
-\cite{Jwo}
-
-where
-\begin{framed}
-$\sigma_{tPLL}$ = 1-sigma thermal noise in degrees \\
-$\sigma_v$ = 1-sigma vibration-induced oscillator jitter in degrees \\
-$\theta_A$ = Allan variance induced oscillator jitter in degrees
-\end{framed}
-\cite{Kaplan}\cite{Jwo}
-
-Equation 5.6
-\begin{equation}
-\sigma_{PLLt} = \frac{360}{2 \pi} \sqrt{\frac{B_n}{C/N_0}(1+\frac{1}{2TC/N_0})} (degrees)
-\end{equation}
-\cite{Kaplan}
 
 
 Equation 5.7
 \begin{equation}
 \sigma_{PLLt} = \frac{\lambda_L}{2 \pi} \sqrt{\frac{B_n}{C/N_0}(1+\frac{1}{2TC/N_0})} (m)
 \end{equation}
-\cite{Kaplan}
+%\cite{Kaplan}
 
 where:
-\begin{framed}
-$B_n$ = carrier loop noise bandwidth (Hz) \\
-$C/N_0$ = carrier to noise power ratio in (Hz) \\
-= $10^\frac{(C/N_0)_dB}{10}$ \\
-T = predetection (coherent) integration time (s) \\
-$\lambda_L$ = GPS L1 carrier wavelength (m)
-= 0.1903 m
-\end{framed}
-\cite{Kaplan} \cite{Jwo}
+\begin{align*}
+B_n &= \text{carrier loop noise bandwidth (Hz)} \\
+C/N_0 &= \text{carrier to noise power ratio in (Hz)} \\
+&=10^\frac{(C/N_0)_dB}{10} \\
+T &= \text{pre-detection (coherent) integration time (s)} \\
+\lambda_L &= \text{GPS L1 carrier wavelength (m)}\\
+&= 0.1903 m
+\end{align*}
 
-
-Equation 5.8
-\begin{equation}
-\sigma_v = \frac{360f_L}{2\pi}\sqrt{\int_{f_{min}}^{f_{max}} S^2_v(f_m) \frac{P(f_m)}{f^2_m} df_m} (degrees)
-\end{equation}
-\cite{Kaplan} \cite{Jwo}
-
-where
-\begin{framed}
-$f_L$ = L-band input frequency in Hz \\
-$S_v(f_m)$ = oscillator vibration sensitivity of $\Delta f/f_L$ per g as a function of $f_m$ \\
-$f_m$ = random vibration modulation frequency in Hz \\
-$P(f_m)$ = power curve of the random vibration in $g^2/Hz$ as a function of $f_m$ \\
-g = acceleration due to gravity $\approx 9.8 m/s^2$
-\end{framed}
-
-(Perhaps an appendix on vibrations?)
-
-Equation 5.16
-Talk about the 2G tipover test
-\begin{equation}
-\Delta f_g = 360 S_g f_L G(t) (\degree/s)
-\end{equation}
-\cite{Kaplan}
-
-$S_g$ = g-sensitivity of the oscillator ($\Delta$ f/f per g) 
-$f_L$ = L-band input frequency (Hz)
-= 1,575.42 MHz for L1
-G(t) = acceleration stress in g as a function of time
-
-
-Talk about this
-5.6.2 FLL Tracking Loop Measurement Errors
-
-Generate figure 5.24
-Generate figure 5.25
-
-Also talk about section 5.6.2
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+%\cite{Kaplan} \cite{Jwo}
 
 
 

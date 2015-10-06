@@ -1,3 +1,86 @@
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{mywork/18.eps} 
+    \caption{}
+\end{figure}
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{mywork/32.eps} 
+    \caption{}
+\end{figure}
+
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{mywork/Stresses.eps} 
+    \caption{}
+\end{figure}
+
+
+
+
+
+\section{Kaplan Stuff}
+Kaplan suggests that "A conservative rule of thumb for tracking threshold is that the 3-sigma jitter must not exceed one-fourth of the phase pull-in range of the PLL discriminator." %\cite{Kaplan}
+
+\begin{equation}
+3 \sigma_{PLL} = 3 \sigma_j +\theta_e \leq 45 \degree
+\end{equation}
+
+Where:
+\begin{align*}
+\sigma_j &= \text{1-sigma phase jitter from all sources except dynamic stress error} \\
+\theta_e &= \text{dynamic stress error in the PLL tracking loop}
+\end{align*}
+
+
+%\cite{Kaplan}
+
+Equation 5.5
+\begin{equation}
+\sigma_{PLL} = \sqrt{\sigma^2_{tPLL} + \sigma^2_v+ \theta^2_A} + \frac{\theta_e}{3} \leq 15 \degree 
+\end{equation}
+%\cite{Jwo}
+
+Where:
+\begin{align*}
+\sigma_{tPLL} &= \text{1-sigma thermal noise in degrees}\\
+\sigma_v &= \text{1-sigma vibration-induced oscillator jitter in degrees}\\
+\theta_A &= \text{Allan variance induced oscillator jitter in degrees}
+\end{align*}
+
+
+
+%\cite{Kaplan}\cite{Jwo}
+
+Equation 5.6
+\begin{equation}
+\sigma_{PLLt} = \frac{360}{2 \pi} \sqrt{\frac{B_n}{C/N_0}(1+\frac{1}{2TC/N_0})} (degrees)
+\end{equation}
+%\cite{Kaplan}
+
+
+
+
+
+Talk about this
+5.6.2 FLL Tracking Loop Measurement Errors
+
+Generate figure 5.24
+Generate figure 5.25
+
+Also talk about section 5.6.2
+
+
+
+
+
+
+
+
+\begin{comment}
+
 \chapter{Preliminary Work}\label{ch:PreliminaryWork}
 Significant preliminary work has been carried out, because of the challenging scope of thesis. 
 
@@ -41,7 +124,7 @@ K_2 & = 128.159487362\\
 
 \begin{figure}[!htb] 
     \centering
-    \includegraphics[width=1\textwidth]{myworkThesisA/SecondOrderLoop.png} 
+    \includegraphics[width=1\textwidth]{mywork/SecondOrderLoop.png} 
     \caption{The architecture of the \ac{FLL} filter implemented in Namuru, the integrator on the right represents the \ac{VCO}. Image from \cite{Kaplan}}
     \label{fig:SecondOrderLoop}
 \end{figure}
@@ -112,7 +195,7 @@ Multiplying by $\frac{s^2}{s^2}$ we get :
 
 \begin{figure}[!htb] 
     \centering
-    \includegraphics[width=1\textwidth]{myworkThesisA/ThirdOrderLoop.png} 
+    \includegraphics[width=1\textwidth]{mywork/ThirdOrderLoop.png} 
     \caption{The architecture of the PLL filter,the integrator on the right represents the VCO. Image from \cite{Kaplan}}
     \label{fig:ThirdOrderLoop}
 \end{figure}
@@ -140,7 +223,7 @@ The results of this analysis can be seen in figure \ref{fig:RootLocus}, from thi
 
 \begin{figure}[!htb] 
     \centering
-    \includegraphics[width=1\textwidth]{myworkThesisA/RootLocus.png} 
+    \includegraphics[width=1\textwidth]{mywork/RootLocus.png} 
     \caption{Root Locus of the Analog model of the Namuru Phase Locked Loop. The root locus intersects the imaginary axis when the gain is 0.38.}
     \label{fig:RootLocus}
 \end{figure}
@@ -150,14 +233,14 @@ In order to verify the implementation of the analog model was correct, a second 
 
 \begin{figure}[!htb] 
     \centering
-    \includegraphics[width=1\textwidth]{myworkThesisA/Stable.png} 
+    \includegraphics[width=1\textwidth]{mywork/Stable.png} 
     \caption{Step response to the \ac{PLL} model for a VCO gain of 1.}
     \label{fig:Stable}
 \end{figure}
 
 \begin{figure}[!htb] 
     \centering
-    \includegraphics[width=1\textwidth]{myworkThesisA/Unstable.png} 
+    \includegraphics[width=1\textwidth]{mywork/Unstable.png} 
     \caption{Step response to the \ac{PLL} model for a VCO gain of 0.1, the system is clearly unstable.}
     \label{fig:Unstable}
 \end{figure}
@@ -166,7 +249,7 @@ Additionally, this model confirmed that the currentNamuru architecture is able t
 
 \begin{figure}[!htb] 
     \centering
-    \includegraphics[width=1\textwidth]{myworkThesisA/gpsLoopModel.png} 
+    \includegraphics[width=1\textwidth]{mywork/gpsLoopModel.png} 
     \caption{A graphical Laplace domain model of the currently implemented \ac{PLL} in the Namuru receiver.}
     \label{fig:gpsLoopModel}
 \end{figure}
@@ -183,14 +266,14 @@ A range of simulations were created in order to better understand the performanc
 
 \begin{figure}[!htb] 
     \centering
-    \includegraphics[width=1\textwidth]{myworkThesisA/Spirent-GSS8000.jpg} 
+    \includegraphics[width=1\textwidth]{mywork/Spirent-GSS8000.jpg} 
     \caption{An example of a Spirent \ac{GPS} simulator. The actual model used differs from the one pictured.}
     \label{fig:Spirent}
 \end{figure}
 
 \begin{figure}[!htb] 
     \centering
-    \includegraphics[width=1\textwidth]{myworkThesisA/HighGScreenshot.png} 
+    \includegraphics[width=1\textwidth]{mywork/HighGScreenshot.png} 
     \caption{The SimGen software, used to define scenarios and control the \ac{GNSS} simulator.}
     \label{fig:HighGScreenshot}
 \end{figure}
@@ -200,7 +283,7 @@ The correct performance of a \ac{PLL} can be examined by attempting to decode th
 
 \begin{figure}[!htb] 
     \centering
-    \includegraphics[width=1\textwidth]{myworkThesisA/3Raw.png} 
+    \includegraphics[width=1\textwidth]{mywork/3Raw.png} 
     \caption{The raw signal captured by the software receiver, the integration period is 1ms.}
     \label{fig:RawSignal}
 \end{figure}
@@ -208,7 +291,7 @@ The correct performance of a \ac{PLL} can be examined by attempting to decode th
 
 \begin{figure}[!htb] 
     \centering
-    \includegraphics[width=1\textwidth]{myworkThesisA/3Digital.png} 
+    \includegraphics[width=1\textwidth]{mywork/3Digital.png} 
     \caption{This figure shows the same data as figure \ref{fig:RawSignal}, however the signal is discretized to either 1 or -1, allowing the digital signal to be more clearly seen.}
     \label{fig:DigitalSignal}
 \end{figure}
@@ -216,7 +299,7 @@ The correct performance of a \ac{PLL} can be examined by attempting to decode th
 
 \begin{figure}[!htb] 
     \centering
-    \includegraphics[width=1\textwidth]{myworkThesisA/22Doppler.png} 
+    \includegraphics[width=1\textwidth]{mywork/22Doppler.png} 
     \caption{The \ac{NCO} doppler offset from the software receiver.}
     \label{fig:Doppler}
 \end{figure}
@@ -228,9 +311,9 @@ The actual carrier doppler shift, as measured by taking the finite difference of
 
 \begin{figure}[!htb] 
     \centering
-    \includegraphics[width=1\textwidth]{myworkThesisA/SimulatedDynamics.png} 
+    \includegraphics[width=1\textwidth]{mywork/SimulatedDynamics.png} 
     \caption{The python software receiver being tested on a real world data set. The constant offset is due to the drift in the receiver crystal.}
     \label{fig:SimulatedDynamics}
 \end{figure}
 
-
+\end{comment}
