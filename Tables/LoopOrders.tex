@@ -1,0 +1,14 @@
+\begin{table}[!htb]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+Loop order & Filter order & Characteristics & Stability                               \\ \hline
+1          & 0            & Sensitive to velocity stress       & Unconditionally stable                                  \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+2          & 1            & Sensitive to acceleration stress   & Unconditionally stable                                   \\ \hline
+3          & 2            & Sensitive to jerk stress          & Stable for $B_n$ \textless 18 Hz \\ \hline
+\end{tabular}
+\caption{Loop order behaviour.}
+\label{tab:LoopOrders}
+\end{table}

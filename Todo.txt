@@ -1,12 +1,35 @@
 Rework Lit Review
 Write PLL chapter
 Rework myworkThesisA
+
+
 Rework conclusion
 Move stuff from myworkThesisA to Namuru
 Put in an example for re-entry
-Work out the velocity sensitivity required by SpaceX
+
+Put in FLL stuff
+Put in PLL/FLL stuff for other loop orders.
 
 
 
+\chapter{Literature Review}\label{ch:LitReview}
 
- 
+\section{The need for tracking}
+
+\section{Introduction to PLL's}
+
+\section{Analog PLL's}
+	\subsection{Loop order}
+	\subsection{Stresses}
+		\subsubsection{Thermal}
+		\subsubsection{Dynamics}
+		\subsubsection{Vibration}
+	\subsection{Coeficients}
+	\subsection{Transient response}
+	\subsection{Stability}
+
+\section{Digtial PLL's}
+	\subsection{Bilinear vs Boxcar}
+	\subsection{Stability}
+	\subsection{Transient response}
+

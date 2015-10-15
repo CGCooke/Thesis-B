@@ -1,0 +1,32 @@
+\tikzset{
+block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+tmp/.style  = {coordinate}, 
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}
+}
+}
+
+\begin{figure}[!htb]
+\centering
+\begin{tikzpicture}[auto, node distance=4cm,>=latex']
+    \node [input, name=rinput] (rinput) {};
+    
+    
+    \node [block, right of=rinput](PhaseDetector){Phase Detector};
+    
+    \node [block, right of=PhaseDetector] (LoopFilter) {Loop Filter};
+    
+    \node [block, below of = PhaseDetector,node distance = 2
+    cm](VCO){VCO};
+    
+    \draw [->] (rinput) -- node{$\theta_{i}$} (PhaseDetector);
+    \draw [->] (PhaseDetector) -- node{$\phi$} (LoopFilter);
+    \draw [->] (LoopFilter) |- node{$V_{c}$} (VCO);
+    \draw [->] (VCO) -- node{$\theta_{o}$} (PhaseDetector);
+    
+    \end{tikzpicture}
+\caption{An abstracted diagram of a typical PLL.} 
+\label{fig:PLLAnalog}
+\end{figure}

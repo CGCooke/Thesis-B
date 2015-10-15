@@ -1,4 +1,6 @@
-\section{Vibrations}
+\addcontentsline{toc}{chapter}{Appendix 8}\label{ch:Vibrations}
+\chapter{Vibrations}
+
 
 \begin{comment}
 "Vibration is not just a rocket issue, though. All electronic hardware is tested for its ability to handle shock and vibration. An MP3 player, for example, has to be tested for its ability to handle the vibrations from someone walking or jogging while holding it, placing it on a counter top, or accidentally dropping it on the floor. However, compared to the workout that Ares I-X’s avionics receive, your MP3 player has got it easy. Imagine shaking that MP3 player inside an automatic paint can shaker for two minutes while continuing to play your favourite tunes. That’s kind of what the electronics of the I-X are up against."
@@ -66,7 +68,7 @@ One simple method of determining the g-sensitivity of the crystal is the 2g tip 
  The g-sensitivity can be found as:
 
 \begin{equation}
-\frac{f_1-f_2}{2 f_1} ppb/g
+\frac{f_1-f_2}{2 f_1}\text{ ppb/g}
 \end{equation}
 
 A final method is to place the crystal on a vibrating table. 
@@ -144,12 +146,12 @@ Missile (Boost phase)      & 15          &  24             \\ \hline
 \subsection{Vibration stresses}
 Equation 5.8
 \begin{equation}
-\sigma_v = \frac{360f_L}{2\pi}\sqrt{\int_{f_{min}}^{f_{max}} S^2_v(f_m) \frac{P(f_m)}{f^2_m} df_m} (degrees)
+\sigma_v = \frac{360f_L}{2\pi}\sqrt{\int_{f_{min}}^{f_{max}} S^2_v(f_m) \frac{P(f_m)}{f^2_m} df_m}\text{ (degrees)}
 \end{equation}
 %\cite{Kaplan}
 
 \begin{equation}
-\sigma_v = \frac{\lambda_L}{2\pi}\sqrt{\int_{f_{min}}^{f_{max}} S^2_v(f_m) \frac{P(f_m)}{f^2_m} df_m} (meters)
+\sigma_v = \frac{\lambda_L}{2\pi}\sqrt{\int_{f_{min}}^{f_{max}} S^2_v(f_m) \frac{P(f_m)}{f^2_m} df_m}\text{ (meters)}
 \end{equation}
 %\cite{Kaplan}
 
@@ -216,11 +218,11 @@ One effect that is often overlooked, is that the antenna is physically displaced
 
 Equation 5.8
 \begin{equation}
-\sigma_v = \frac{360f_L}{2\pi}\sqrt{\int_{f_{min}}^{f_{max}} S^2_v(f_m) \frac{P(f_m)}{f^2_m} df_m} (degrees)
+\sigma_v = \frac{360f_L}{2\pi}\sqrt{\int_{f_{min}}^{f_{max}} S^2_v(f_m) \frac{P(f_m)}{f^2_m} df_m}\text{ (degrees)}
 \end{equation}
 %\cite{Kaplan} \cite{Jwo}
 
-where
+Where:
 \begin{align*}
 f_L &= \text{L-band input frequency in Hz} \\
 S_v(f_m) &= \text{oscillator vibration sensitivity of } \Delta f/f_L \text{ per g as a function of } f_m \\
@@ -237,6 +239,7 @@ Talk about the 2G tipover test
 \end{equation}
 %\cite{Kaplan}
 
+Where:
 \begin{align*}
 S_g &= \text{g-sensitivity of the oscillator } (\Delta \text{ f/f per g)}\\ 
 f_L &= \text{L-band input frequency (Hz)}\\

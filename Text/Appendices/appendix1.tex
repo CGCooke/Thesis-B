@@ -1,4 +1,4 @@
-\addcontentsline{toc}{chapter}{Appendix 1}\label{app1}
+\addcontentsline{toc}{chapter}{Appendix 1}\label{ch:FlightDynamics}
 \chapter{Flight Dynamics}
 
 \section{Overview}
@@ -89,9 +89,7 @@ Soyuz         & 10 g \cite{ReentryDynamics}          \\ \hline
 \label{ReEntryTable}
 \end{table}
 
-
-
-Space Exploration Technologies Corporation (SpaceX) is attempting to reduce launch costs by recovering the first stage of their Falcon 9-R launch vehicle. After first stage separation, the first stage performs a burn-back procedure, to fly back to the launch pad. During the burn-back, there is an inferred maximum de-acceleration of $\approx 7.8 g$ during the hypersonic burn, based on published performance figures. An overview of the flight profile can be found in figure \ref{fig:Falcon9Profile}.
+Space Exploration Technologies Corporation (SpaceX) is attempting to reduce launch costs by recovering the first stage of their Falcon 9-R launch vehicle. After first stage separation, the first stage performs a burn-back procedure, to fly back to the launch pad. During the burn-back, there is an inferred maximum de-acceleration of $\approx 7.8 g$ during the hypersonic burn, based on published performance figures. An overview of the flight profile can be found in figure \ref{fig:Falcon9Profile}. Additional information regarding the Falcon 9 V1.1 can be found in appendix \ref{ch:Falcon9}.
 
 \begin{figure}[!htb] 
     \centering
@@ -101,11 +99,17 @@ Space Exploration Technologies Corporation (SpaceX) is attempting to reduce laun
 \end{figure}
 
 
-The maximum acceleration experienced during re-entry can be closely approximated parametrically using the following equation from \cite{eastre}. This is convenient, as it provides an intuitive understanding of how the maximum acceleration varies with velocity, as well as allowing performance to be estimated, when official figures are not published. : 
-$$(\frac{dv}{dt})_{max} = -\frac{\beta V_0 ^2}{2e} \sin \gamma_0$$
+The maximum acceleration experienced during re-entry can be closely approximated parametrically using the following equation from \cite{eastre}: 
 
-$\beta$ = atmospheric scale height, a parameter used to describe the density profile of the atmosphere = $0.000139 m^-1$ for Earth
+\begin{equation}
+(\frac{dv}{dt})_{max} = -\frac{\beta V_0 ^2}{2e} \sin \gamma_0
+\end{equation}
 
-$\gamma$ = vehicle's flight-path angle (deg or rad)
+Where:
+\begin{align*}
+\beta &= \text{atmospheric scale height, a parameter used to describe the density profile of the atmosphere = }0.000139 m^-1\text{ for Earth}\\
+\gamma &= \text{Vehicle's flight-path angle (deg or rad)}\\
+e &= \text{Base of the natural logarithm = } 2.7182\ldots
+\end{align*}
 
-e = base of the natural logarithm = 2.7182\ldots
+This is convenient, as it provides an intuitive understanding of how the maximum acceleration varies with velocity, as well as allowing performance to be estimated, when official figures are not published. 

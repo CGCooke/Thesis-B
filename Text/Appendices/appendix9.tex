@@ -1,4 +1,4 @@
-\addcontentsline{toc}{chapter}{Appendix 7}\label{app9}
+\addcontentsline{toc}{chapter}{Appendix 7}\label{ch:TrackingLoops}
 \chapter{An Introduction to Tracking Loops}
 In summary, the goal of the carrier tracking loop is to predict the future carrier phase $\phi$,$T$ seconds in the future, based on past and current measurements of the carrier phase. For successful phase lock to be maintained, the predicted phase must be within a small fraction of a cycle of the actual phase. 
 
@@ -130,11 +130,11 @@ t = nT
 
 Equation 5.7
 \begin{equation}
-\sigma_{PLLt} = \frac{\lambda_L}{2 \pi} \sqrt{\frac{B_n}{C/N_0}(1+\frac{1}{2TC/N_0})} (m)
+\sigma_{PLLt} = \frac{\lambda_L}{2 \pi} \sqrt{\frac{B_n}{C/N_0}(1+\frac{1}{2 \cdot T \cdot C/N_0})} \text{ (m)}
 \end{equation}
 %\cite{Kaplan}
 
-where:
+Where:
 \begin{align*}
 B_n &= \text{carrier loop noise bandwidth (Hz)} \\
 C/N_0 &= \text{carrier to noise power ratio in (Hz)} \\

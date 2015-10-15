@@ -1,27 +1,15 @@
-\begin{figure}[!htb] 
-    \centering
-    \includegraphics[width=1\textwidth]{mywork/18.eps} 
-    \caption{}
-\end{figure}
+\chapter{My Work}\label{ch:MyWork}
+\section{Ward Analysis}
 
-\begin{figure}[!htb] 
-    \centering
-    \includegraphics[width=1\textwidth]{mywork/32.eps} 
-    \caption{}
-\end{figure}
+From Kazemi, \cite{Kazemi2008}, the Loop Noise Bandwidth time product ($B_L T$) must be less than 0.55. 
+For an 8ms integration time, we have 
 
+\begin{align*}
+B_n &\leq \frac{0.55}{0.008} \text{ (Hz)}\\
+    &\leq 68.75 \text{ (Hz)}
+\end{align*}
 
-\begin{figure}[!htb] 
-    \centering
-    \includegraphics[width=1\textwidth]{mywork/Stresses.eps} 
-    \caption{}
-\end{figure}
-
-
-
-
-
-\section{Kaplan Stuff}
+\subsection{PLL}
 Kaplan suggests that "A conservative rule of thumb for tracking threshold is that the 3-sigma jitter must not exceed one-fourth of the phase pull-in range of the PLL discriminator." %\cite{Kaplan}
 
 \begin{equation}
@@ -37,7 +25,6 @@ Where:
 
 %\cite{Kaplan}
 
-Equation 5.5
 \begin{equation}
 \sigma_{PLL} = \sqrt{\sigma^2_{tPLL} + \sigma^2_v+ \theta^2_A} + \frac{\theta_e}{3} \leq 15 \degree 
 \end{equation}
@@ -45,23 +32,87 @@ Equation 5.5
 
 Where:
 \begin{align*}
-\sigma_{tPLL} &= \text{1-sigma thermal noise in degrees}\\
-\sigma_v &= \text{1-sigma vibration-induced oscillator jitter in degrees}\\
-\theta_A &= \text{Allan variance induced oscillator jitter in degrees}
+\sigma_{tPLL} &= \text{1-sigma thermal noise (degrees)}\\
+\sigma_v &= \text{1-sigma vibration-induced oscillator jitter (degrees)}\\
+\theta_A &= \text{Allan variance induced oscillator jitter (degrees)}
+\end{align*}
+%\cite{Kaplan}\cite{Jwo}
+
+
+\begin{equation}
+\sigma_{PLLt} = \frac{360}{2 \pi} \sqrt{\frac{B_n}{C/N_0}(1+\frac{1}{2 \cdot T \cdot C/N_0})} \text{ (degrees)}
+\end{equation}
+%\cite{Kaplan}
+
+Where:
+\begin{align*}
+B_n &= \text{carrier loop noise bandwidth (Hz)} \\
+C/N_0 &= \text{carrier to noise power ratio in (Hz)} \\
+&=10^\frac{(C/N_0)_dB}{10} \text{ Hz}\\
+T &= \text{pre-detection (coherent) integration time (s)} \\
+\lambda_L &= \text{GPS L1 carrier wavelength (m)}\\
+&= 0.1903 \text{ m}
+\end{align*}
+
+
+\begin{equation}
+\theta_e = \frac{360 \cdot d^3R/dt^3  \cdot f_L}{c  \cdot \omega^3_0} \text{ (degrees)}
+\end{equation}
+
+
+Where:
+\begin{align*}
+\omega &= \frac{B_n}{0.7845} \\
+f_L &= \text{L-band input frequency in Hz (1575.42MHz)}\\ 
+c & = 2.99792458 \times 10^8 ms^{-1}
 \end{align*}
 
 
 
-%\cite{Kaplan}\cite{Jwo}
 
-Equation 5.6
 \begin{equation}
-\sigma_{PLLt} = \frac{360}{2 \pi} \sqrt{\frac{B_n}{C/N_0}(1+\frac{1}{2TC/N_0})} (degrees)
+\theta_{A3} = 160 \frac{\sigma_A(\tau)f_L}{B_n} \text{ (degrees)}
 \end{equation}
-%\cite{Kaplan}
+
+Where:
+\begin{align*}
+\sigma_A(\tau) &= 10 \times 10^{-10} \text{ (dimensionless units of }\Delta f/f\text{)}
+\end{align*}
+
+From \cite{VT803Datasheet}
+
+
+\begin{equation}
+\theta_{A3} =\frac{25.2}{B_n} \text{ (degrees)}
+\end{equation}
+
+For $B_n$ =18, we have $\theta_{A3}=1.4\degree$.
+
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{mywork/18ContourPLL.eps} 
+    \caption{A contour plot for a 3rd order loop with a $B_n$ of 18Hz. A value of $1.4\degree$ for the Allan variance oscillator jitter and $1.8\degree$ for vibration oscillator jitter is used. The conservative threshold of 15\degree can be seen in red. From this, we can conclude that the loop is likely to loose phase lock at a $C/N_0$ of 30,  at a jerk of $150ms^{-3}$.}
+\end{figure}
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{mywork/32ContourPLL.eps} 
+    \caption{A value of $1.4\degree$ for the Allan variance oscillator jitter and $1.8\degree$ for vibration oscillator jitter is used.}
+\end{figure}
+
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{mywork/PLLStresses.eps} 
+    \caption{This plot breaks down the sources of error. Note that the phase jitter is at a minimum for a value of $B_n$ equal to approximately 27.}
+\end{figure}
 
 
 
+
+
+\subsection{FLL}
 
 
 Talk about this
@@ -72,16 +123,60 @@ Generate figure 5.25
 
 Also talk about section 5.6.2
 
+\begin{equation}
+\sigma_{FLL} =  \sigma_{tFLL} + \frac{f_e}{3} \leq \frac{T}{12} \text{ (Hz)}
+\end{equation}
+
+For T = 4ms, we have $\sigma_{FLL} \leq 20.83$ Hz.
+
+
+Where:
+\begin{align*}
+\sigma_{tFLL} &= \text{1-sigma thermal noise frequency jitter}\\
+f_e &= \text{dynamic stress error in the FLL tracking loop}
+\end{align*}
+
+
+\begin{equation}
+\sigma_{tFLL} = \frac{1}{2 \pi T} \sqrt{ \frac{4FB_n}{C/N_0}(1 + \frac{1}{TC/N_0})} \text{ (Hz)}
+\end{equation}
+
+\begin{align*}
+F &= \text{1 at high } C/N_0\\
+  &= \text{2 near threshold}
+\end{align*}
+
+
+\begin{equation}
+f_e = \frac{d}{dt}(\frac{1}{360 \omega^n_0}\frac{d^nR}{dt^n}) = \frac{1}{360\omega^n_0} \frac{d^{n+1}R}{dt^{n+1}} \text{ (Hz)}
+\end{equation}
+
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{mywork/1ContourFLL.eps} 
+    \caption{The cutoff for the FLL is 20.83 Hz.}
+\end{figure}
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{mywork/10ContourFLL.eps} 
+    \caption{}
+\end{figure}
+
+
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{mywork/FLLStresses.eps} 
+    \caption{This plot breaks down the sources of error. Note that the phase jitter is at a minimum for a value of $B_n$ equal to approximately 27.}
+\end{figure}
 
 
 
 
 
 
-
-\begin{comment}
-
-\chapter{Preliminary Work}\label{ch:PreliminaryWork}
 Significant preliminary work has been carried out, because of the challenging scope of thesis. 
 
 In order to have a rigorous understanding of the dynamic performance of the Namuru receiver, we must first examine the theoretical basis for the operation of its tracking loops. 
@@ -93,7 +188,7 @@ A model of the operation of the tracking loops can be established by building up
 \section{Current Namuru architecture}
 A significant amount of time has been spent gaining an understanding of the Namuru receiver, its architecture and the operation of it's sub-systems. The receiver is a mixed signal device, which has been the focus of a decade of research and development. 
 
-A thorough understanding of the receiver's operation is critical, because one of the ways the receiver diverts from an idealised model is because of the jitter and delays introduced by its \ac{RTOS}. Hence, a detailed understanding of the receiver is crucial, if it is to be accurately modeled. 
+A thorough understanding of the receiver's operation is critical, because one of the ways the receiver diverts from an idealised model is because of the jitter and delays introduced by its \ac{RTOS}. Hence, a detailed understanding of the receiver is crucial, if it is to be accurately modelled. 
 
 The Aquarius firmware developed by Glennon \cite{Glennon11aquariusfirmware} ultimately implements the tracking loop algorithm. The implementation of purely the tracking loop is 4,100 lines of optimised C, illustrating the complexity of the implementation.
 
@@ -121,13 +216,6 @@ K_2 & = \omega_{0}^2\\
 K_2 & = 128.159487362\\
 \end{split}
 \end{equation}
-
-\begin{figure}[!htb] 
-    \centering
-    \includegraphics[width=1\textwidth]{mywork/SecondOrderLoop.png} 
-    \caption{The architecture of the \ac{FLL} filter implemented in Namuru, the integrator on the right represents the \ac{VCO}. Image from \cite{Kaplan}}
-    \label{fig:SecondOrderLoop}
-\end{figure}
 
 
 \section{\ac{PLL} Filter}
@@ -172,7 +260,7 @@ The next stage of Laplace domain analysis after determining the transfer functio
 Multiplying equation \ref{eq6} by $\frac{s^2}{s^2}$ we get :
 
 \begin{equation}
-F(s) = \frac{K_1s^2 + K_2^s + K_3}{s^2}
+F(s) = \frac{K_1s^2 + K_2 s + K_3}{s^2}
 \end{equation}
 
 The \ac{VCO} has the following transfer function : $G(s) = \frac{K_{vco}}{s}$
@@ -193,18 +281,14 @@ Multiplying by $\frac{s^2}{s^2}$ we get :
  H(s) = \frac{K_{VCO}(K_1s^2 + K_2s + K_3)}{s^3+K_{VCO}(K_1s^2 + K_2s + K_3)}
  \end{equation}
 
-\begin{figure}[!htb] 
-    \centering
-    \includegraphics[width=1\textwidth]{mywork/ThirdOrderLoop.png} 
-    \caption{The architecture of the PLL filter,the integrator on the right represents the VCO. Image from \cite{Kaplan}}
-    \label{fig:ThirdOrderLoop}
-\end{figure}
+
 
 \section{Zeros and Poles}
 The behaviour of a closed loop system is determined by the locations of the zeros and the poles. In particular, their location determines if the system is stable for all possible inputs. Even if the system is found not to be stable for all possible inputs, it may be stable for all \emph{reasonable} inputs. An important caveat is that the location of the zeros and poles is for an analog model of the system, the locations will be different for a digital model, with the difference in location depending on the $B_LT$ product.  Hence it is possible to design a system which is stable in the Laplace domain but unstable in the Z Domain. 
 
 Root locus provides an efficient graphical method for analysing the stability of a system in the Laplace domain\cite{Nise}. Matlab was used to generate a Root Locus plot of the current Laplace domain model of the \ac{PLL} implementation using the following code:
 
+\begin{comment}
 \begin{lstlisting}[frame=single]
 Kvco =1;
 Bn = 18;
@@ -218,41 +302,17 @@ k3 = omega^3;
 H = tf([Kvco*k1 Kvco*k2 Kvco*k3],[1 0 0 0]);
 rlocus(H);
 \end{lstlisting}
+\end{comment}
+
 
 The results of this analysis can be seen in figure \ref{fig:RootLocus}, from this analysis of the root locus, we can determine  that the system is stable, for values of the $V_CO$ gain which are larger than 0.38. This is an important result, as intuitively, increasing the gain will typically make a system unstable. However, this result demonstrates the value of Root Locus analysis for evaluating the stability of a higher order system.
 
-\begin{figure}[!htb] 
-    \centering
-    \includegraphics[width=1\textwidth]{mywork/RootLocus.png} 
-    \caption{Root Locus of the Analog model of the Namuru Phase Locked Loop. The root locus intersects the imaginary axis when the gain is 0.38.}
-    \label{fig:RootLocus}
-\end{figure}
 
 
 In order to verify the implementation of the analog model was correct, a second graphical model was constructed in CircuitLab. This model can be seen in figure \ref{fig:gpsLoopModel}. By adjusting the VCO gain, the threshold between stable and unstable behaviour for a step input was confirmed to be 0.38. The results from this experiment can be seen in figures \ref{fig:Stable} and \ref{fig:Unstable}
 
-\begin{figure}[!htb] 
-    \centering
-    \includegraphics[width=1\textwidth]{mywork/Stable.png} 
-    \caption{Step response to the \ac{PLL} model for a VCO gain of 1.}
-    \label{fig:Stable}
-\end{figure}
-
-\begin{figure}[!htb] 
-    \centering
-    \includegraphics[width=1\textwidth]{mywork/Unstable.png} 
-    \caption{Step response to the \ac{PLL} model for a VCO gain of 0.1, the system is clearly unstable.}
-    \label{fig:Unstable}
-\end{figure}
 
 Additionally, this model confirmed that the currentNamuru architecture is able to integrate up velocity and acceleration however it is vulnerable to Jerk. This was assessed by applying ramp and parabolic inputs to the input, and comparing to the output.
-
-\begin{figure}[!htb] 
-    \centering
-    \includegraphics[width=1\textwidth]{mywork/gpsLoopModel.png} 
-    \caption{A graphical Laplace domain model of the currently implemented \ac{PLL} in the Namuru receiver.}
-    \label{fig:gpsLoopModel}
-\end{figure}
 
 \section{Simulation}
 
@@ -281,39 +341,10 @@ A range of simulations were created in order to better understand the performanc
 
 The correct performance of a \ac{PLL} can be examined by attempting to decode the navigation message transmitted by the satellite. Other, more sophisticated methods for determining if the receiver is in phase lock, will be examined in Thesis B. In figures \ref{fig:RawSignal} and \ref{fig:DigitalSignal}, the decoded message can be clearly seen, indicating that the receiver is maintaining phase lock with the signal.
 
-\begin{figure}[!htb] 
-    \centering
-    \includegraphics[width=1\textwidth]{mywork/3Raw.png} 
-    \caption{The raw signal captured by the software receiver, the integration period is 1ms.}
-    \label{fig:RawSignal}
-\end{figure}
 
-
-\begin{figure}[!htb] 
-    \centering
-    \includegraphics[width=1\textwidth]{mywork/3Digital.png} 
-    \caption{This figure shows the same data as figure \ref{fig:RawSignal}, however the signal is discretized to either 1 or -1, allowing the digital signal to be more clearly seen.}
-    \label{fig:DigitalSignal}
-\end{figure}
-
-
-\begin{figure}[!htb] 
-    \centering
-    \includegraphics[width=1\textwidth]{mywork/22Doppler.png} 
-    \caption{The \ac{NCO} doppler offset from the software receiver.}
-    \label{fig:Doppler}
-\end{figure}
 
 
 A real-world data-set was processed, consisting of data taken aboard a flight aboard a UNSW Aviation Piper PA-44 Seminole. Data from the flight was captured by a NordNav IF Recorder, and processed using the python software receiver. 
 
 The actual carrier doppler shift, as measured by taking the finite difference of the satellite pseudoranges, and converted to Hz, was compared against the measured Doppler shift in the software receiver. There is a small offset because of drift in the receiver crystal. The results of this experiment can be see in figure \ref{fig:SimulatedDynamics}. While the dynamics experienced by the receiver were on the order of $\pm 0.5g$, this experiment is important, as it verifies the real world performance of the system. 
 
-\begin{figure}[!htb] 
-    \centering
-    \includegraphics[width=1\textwidth]{mywork/SimulatedDynamics.png} 
-    \caption{The python software receiver being tested on a real world data set. The constant offset is due to the drift in the receiver crystal.}
-    \label{fig:SimulatedDynamics}
-\end{figure}
-
-\end{comment}
