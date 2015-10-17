@@ -1,0 +1,181 @@
+\addcontentsline{toc}{chapter}{Appendix 7}\label{ch:TrackingLoops}
+\chapter{An Introduction to Tracking Loops}
+In summary, the goal of the carrier tracking loop is to predict the future carrier phase $\phi$,$T$ seconds in the future, based on past and current measurements of the carrier phase. For successful phase lock to be maintained, the predicted phase must be within a small fraction of a cycle of the actual phase. 
+
+\section{Ambiguities}
+
+We can describe the elapsed phase (in radians) between the satellite and the receiver using the following equation :  
+\begin{equation}
+Phase = 2 \pi N  + \phi 
+\label{eq:Phase}
+\end{equation}
+
+If we examine equation \ref{eq:Phase} in the spatial domain, we find that: 
+\begin{equation}
+Range = \lambda N + \Phi
+\label{eq:Distance}
+\end{equation}
+
+From Equations \ref{eq:Phase} and \ref{eq:Distance} it is obvious that prediction of the angular phase $\phi$ is equivalent to prediction of the spatial phase $\Phi$.
+
+It is important to note, that predicting $\Phi$ is equivalent to predicting the change in the LOS range ($\Delta$), hence the receiver does not need to be aware of the number of full cycles $N$, between it and the satellite. This ambiguity is the one that is resolved during the process of carrier phase positioning. 
+
+\section{Error bounds}
+In the case of the GPS signal, where the $L_1$ 1.575Ghz signal is being tracked, the carrier wavelength, $\lambda \approx 19.03 cm$ long. As a heuristic, the difference between the actual carrier phase $\phi$ , and the predicted carrier phase $\hat{\phi}$ must be no more than $\pm30 \degree$. 
+
+This concept is clearly illustrated in figure \ref{fig:PhaseDelay}. 
+
+Denoting our prediction of $\Delta$ as $\hat{\Delta}$, we have :
+
+\begin{align}
+|\Delta-\hat{\Delta}|& < \frac{30\degree}{360\degree} \lambda\\
+|\Delta-\hat{\Delta}|&<\epsilon\\
+|\Delta-\hat{\Delta}|&<1.58cm\\
+\label{eq:RangeErrorBound}
+\end{align}
+
+Hence, our estimate of $\Delta$ must be accurate to $< 1.58cm$, if the receiver is to remain in phase lock.
+
+By examining figure \ref{fig:ValidPositions} we can begin to understand that the locus of all possible positions which meet this criteria is a spherical shell surrounding the satellite. 
+
+When we consider that GPS utilises multiple satellites for positioning, we can conclude with the aid of figure \ref{fig:Intersections} that a bound on the magnitude of the error is formed by the sphere of radius $\epsilon$ surrounding the point X, which is the true position of the receiver. 
+
+Hence, we have :
+
+\begin{comment}
+\begin{align}
+| X(t)-\hat{X}(t) | & < \frac{30\degree}{360\degree} \lambda \\
+| X(t)-\hat{X}(t) | &<\Delta\\
+| X(t)-\hat{X}(t) | & < 1.58cm
+\label{eq:PositionErrorBound}
+\end{align}
+\end{comment}
+
+\section{Mechanics}
+
+By conceptualising we can immediately gain insight into some of the fundamental challenges that will be faced in the development of tracking algorithms for coping with high dynamics.
+
+\input{Diagrams/Introduction/PhaseDelay}
+
+\input{Diagrams/Introduction/ValidPositions}
+
+\input{Diagrams/Introduction/Intersections}
+
+
+Returning to first principles of mechanics, we have \cite{salas1999etgen} : 
+
+\begin{comment}
+Need to fix this up
+\end{comment}
+
+\begin{align}
+v & = \frac{\Delta}{T} m s^{-1} \\
+a & = \frac{dv}{dt} m s^{-2} \\
+Jerk & = \frac{da}{dt} m s^{-3}
+\end{align}
+
+
+Note that over time, the acceleration of the receiver is integrated to form it's velocity, and the velocity is integrated in order to form it's position. 
+
+Note that our estimate of the position $\hat{X}(t+T)$ is dependent on our current velocity $\dot{X}(t)$. When use this velocity, we are implicit assuming that the average velocity for the next time period is the same. 
+
+However,as illustrated in figure \ref{fig:PhaseDelay}, and in equation \ref{eq:RangeErrorBound}, our estimate of the new range to the satellite must fall within 
+position must fall within a close 
+
+our estimate of the velocity must fall within the following bounds:
+
+
+
+\begin{equation}
+V_{min} < \hat{\dot{X}}(t) < V_{max}
+\end{equation}
+
+
+
+
+
+\section{Motion Models}
+
+Given we are attempting to predict the carrier $T$ seconds into the future, we can start to investigate the maximum dynamics our receiver will be able to track for a given sampling period $T$. \cite{salas1999etgen}
+
+
+\begin{equation}
+X = \int_{t_1}^{t_2} \dot{X} dt + X(t_1)
+\label{eq:PositionIntergral}
+\end{equation}
+
+\begin{equation}
+\dot{X} = \int_{t_1}^{t_2} \ddot{X} dt + \dot{X}(t_1)
+\end{equation}
+
+
+Equation \ref{eq:PositionIntergral} suggests that we can form an prediction of the range to the satellite using the current range and the current line of sight velocity. 
+
+\begin{equation}
+\hat{X}(t+T) = X(t) +  \dot{X}(t) T
+\end{equation}
+
+\begin{equation}
+t = nT
+\end{equation}
+
+\begin{equation}
+\hat{X}[n+1] = X[n] +  \dot{X}[n] T
+\end{equation}
+
+
+
+
+
+
+Equation 5.7
+\begin{equation}
+\sigma_{PLLt} = \frac{\lambda_L}{2 \pi} \sqrt{\frac{B_n}{C/N_0}(1+\frac{1}{2 \cdot T \cdot C/N_0})} \text{ (m)}
+\end{equation}
+%\cite{Kaplan}
+
+Where:
+\begin{align*}
+B_n &= \text{carrier loop noise bandwidth (Hz)} \\
+C/N_0 &= \text{carrier to noise power ratio in (Hz)} \\
+&=10^\frac{(C/N_0)_dB}{10} \\
+T &= \text{pre-detection (coherent) integration time (s)} \\
+\lambda_L &= \text{GPS L1 carrier wavelength (m)}\\
+&= 0.1903 m
+\end{align*}
+
+%\cite{Kaplan} \cite{Jwo}
+
+
+
+
+\begin{comment}
+This document provides and overview of the Namuru carrier tracking loop architecture. The software architecture has evolved over time, and uses elements of different approaches from the literature, as well as a number of novel components implemented by Dr Eamonn Glennon. 
+
+\section{Current Namuru architecture}
+
+The Namuru receiver currently uses a third-order PLL loop filter with a second-order FLL assist. This architecture can be seen in figure .  A third order PLL uses a second order filter, with the third integrator being the VCO.
+
+Namuru additionally has a code tracking loop, however will not be discussed in this document. The dynamics experienced by the code tracking loop are 1540 times smaller than those experienced by the carrier loop \cite{Kaplan}. Hence the  code loop is significantly more robust than either the FLL or PLL.
+
+The PLL is the most vulnerable of the loops, and under extreme dynamics, the PLL will break and the FLL will keep tracking, before the PLL resumes tracking once the dynamics have subsided to more reasonable levels. Hence, while the FLL is described, more effort will be expended on analysis of the PLL.
+
+\section{Tracking Loops}
+
+The receiver implements a digital (sampled) phase lock loop (PLL), the theoretical background of which is covered thoroughly in Gardner \cite{Gardner}. 
+ 
+Additionally, the receiver also implements a FLL, which is used to assist the PLL in locking.
+
+Both of the loops include a number of components that will be discussed in more detail later, 
+
+\begin{itemize}
+\item{Discriminator}
+\item{Integrate \& Dump}
+\item{Loop Controller/Loop Filter}
+\item{Hold}
+\item{Delay}
+\item{NCO}
+\end{itemize}
+
+In the they key difference between the two filters is the discriminator. 
+\end{comment}

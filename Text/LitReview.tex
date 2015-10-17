@@ -1,7 +1,7 @@
 \chapter{Literature Review}\label{ch:LitReview}
 
 \section{Context}
-In order to understand my thesis, we must first understand it's context, in particular, why tracking is both critical to the operation of the receiver, as well as why it is so challenging. This chapter aims to provide a broad overview of the relationship between the material covered in this thesis, as well as it's connection to other work covered in the literature. 
+In order to understand this thesis, it is import to first understand it's context, in particular why tracking is both critical to the operation of the receiver, as well as why it is so challenging. This chapter aims to provide a broad overview of the relationship between the material covered in this thesis, as well as it's connection to other work covered in the literature. 
 
 \subsection{Motivation}
 In order for a \ac{GPS} receiver to decode data, the carrier frequency must be tracked. This is because the data is encoded on onto the phase of the carrier signal. 
@@ -11,6 +11,8 @@ Using a GPS receiver for \ac{LV} exposes the receiver to some of the most extrem
 While \ac{GPS} receivers are normally used to provide provide absolute positions, the ability to provide highly accurate velocity data is incredibly valuable for spacecraft guidance. In order to insert a satellite into the proper orbit, the \ac{LV} engine-cutoff must be precisely timed, as orbital height is a function of orbital velocity. Based on analysis carried out in appendix \ref{ch:Falcon9}, we can conclude that the receiver needs to be able to provide velocity solutions which are accurate to better than 1m/s, while travelling at 6,000m/s. 
 
 \input{Tables/Requirements}
+
+TALK ABOUT EXPORT CONTROLS
 Unfortunately, the requirements of operation exceed the \ac{COCOM} limits, which prevent the export from the USA of GNSS receivers capable of operating:
 
 \begin{itemize}
@@ -162,9 +164,6 @@ Analog PLLs provide a useful abstraction for the development and analysis of Dig
 	
 	The design method which was used to originally design \ac{NAMURU} is described by Ward and Kaplan, \cite{Ward},\cite{Kaplan}, and relies on designing the PLL in the Laplace (analog) domain, and then transforming into the digital domain for implementation. The method developed by Ward enjoys significant popularity, in part because it develops relatively robust designs, based on proven rules of thumb. The design process used will be described in more comprehensive detail in chapter \ref{ch:MyWork}, however it is important to recognise other design methods that exist. 
 	
-    
-    
-    
 	\subsection{Transient response}
 	
 	\subsection{Stability}
@@ -175,31 +174,3 @@ Analog PLLs provide a useful abstraction for the development and analysis of Dig
 	\subsection{Bilinear vs Boxcar}
 	\subsection{Stability}
 	\subsection{Transient response}
-
-
-
-
-%Flight Dynamics
-%\include{Text/Appendices/appendix1}
-%Laplace Analysis
-%\include{Text/Appendices/appendix2}
-%State Transitions
-%\include{Text/Appendices/appendix3}
-%Acquisition
-%\include{Text/Appendices/appendix4}
-%Falcon 9
-%\include{Text/Appendices/appendix5}
-%Discriminators and Sampling
-%\include{Text/Appendices/appendix6}
-%Code
-%\include{Text/Appendices/appendix7}
-%Vibration
-%\include{Text/Appendices/appendix8}
-%My work
-%\include{Text/Appendices/appendix9}
-%Simulator Jitter
-
-
-
-
- 

@@ -1,4 +1,104 @@
 \chapter{My Work}\label{ch:MyWork}
+
+\section{Current \ac{NAMURU} architecture}
+A significant amount of time has been invested gaining an understanding of the \ac{NAMURU} receiver, its architecture and the operation of it's sub-systems. The receiver is a mixed signal device, which has been the focus of a decade of research and development. 
+
+A detailed understanding of the receiver is crucial, if it is to be accurately modelled, in particular the ways that non idealities cause the performance of the receiver to deviate from analog models. For example, delays and jitter introduced  by the receiver's \ac{RTOS}. The Aquarius firmware developed by Glennon \cite{Glennon11aquariusfirmware} implements the tracking loop algorithm using 4,100 lines of optimised C, illustrating the complexity of the implementation.
+
+The \ac{NAMURU}
+
+The \ac{NAMURU} receiver currently uses a third-order \ac{PLL} loop filter with a second-order \ac{FLL} assist. This architecture can be seen in figure \ref{fig:Architecture}.  A third order \ac{PLL} uses a second order filter, with the third integrator being the \ac{VCO}.
+
+After conducting a literature review, the first task was to replicate the Laplace domain models of the control loops, used in the \ac{NAMURU} receiver, so that the receiver can be modelled in the Laplace domain. The choice of the coefficients from the tracking loop comes from a method devised by Ward \cite{Ward}. While this method is conceptually simple, requiring only a loop order and noise bandwidth as parameters, it generates robust tracking loops for most applications. 
+
+\subsection{\ac{FLL} Filter}
+In the Laplace domain, we can represent the second order \ac{FLL} filter as as :  $F(s) = K_1 + \frac{K_2}{s}$. The design method from Ward \cite{Ward} is used in order to determine the coefficients $K_1$ and $K_2$.  
+
+\begin{align*}
+B_n &= 6\\
+a_2 &= \sqrt(2)\\
+\omega_{0}&=\frac{B_n}{0.53}\\
+\end{align*}
+
+\begin{equation} \label{eq1}
+\begin{split}
+K_1 & = a_2 \times \omega_{0}\\
+K_1 & = 16.00\\
+\end{split}
+\end{equation}
+
+\begin{equation} \label{eq2}
+\begin{split}
+K_2 & = \omega_{0}^2\\
+K_2 & = 128.16\\
+\end{split}
+\end{equation}
+
+\subsection{\ac{PLL} Filter}
+Ward's method is also used to design the co-efficients for the \ac{PLL}. In the Laplace domain, we can represent the second order filter  of the third order \ac{PLL} as : 
+
+\begin{equation} \label{eq6}
+F(s) = K_1 + \frac{K_2}{s} + \frac{K_3}{s^2}
+\end{equation}
+
+A loop bandwidth of 18 was chosen for the \ac{PLL}, as Kaplan\cite{Kaplan} demonstrated, using a Monte Carlo simulation, that higher loops bandwidths typically result in unstable behaviour. 
+Using Ward's method\cite{Ward} for finding $K_1,K_2\&K_3$:
+
+\begin{align*}
+B_n &= 18\\
+a_3&=1.1\\
+b_3&=2.4\\
+\omega_{0}&=\frac{B_n}{0.7845}
+\end{align*}
+
+\begin{equation} \label{eq3}
+\begin{split}
+K_1 & = b_3 \times \omega_{0}\\
+    & = 55.1\\
+\end{split}
+\end{equation}
+
+\begin{equation} \label{eq4}
+\begin{split}
+K_2 & = a_3 \times \omega_{0}^2\\ 
+    & = 579.13\\
+\end{split}
+\end{equation}
+
+\begin{equation} \label{eq5}
+\begin{split}
+K_3 & = \omega_{0}^3\\
+    & = 12,079\\
+\end{split}
+\end{equation}
+
+
+The next stage of Laplace domain analysis after determining the transfer function of the filter is to determine the transfer function of the closed loop system.
+
+Multiplying equation \ref{eq6} by $\frac{s^2}{s^2}$ we get :
+
+\begin{equation}
+F(s) = \frac{K_1s^2 + K_2 s + K_3}{s^2}
+\end{equation}
+
+The \ac{VCO} has the following transfer function : $G(s) = \frac{K_{vco}}{s}$
+
+From Kazemi, if  $F(s)$ is the transfer function of the loop filter\cite{KazemiPHD} then the closed loop transfer function  of the system is: 
+
+\begin{equation}
+ H(s) = \frac{K_{VCO}F(s)}{s+K_{VCO}F(s)}
+\end{equation}
+
+\begin{equation}
+ H(s) = \frac{K_{VCO}(K_1 + \frac{K_2}{s} + \frac{K_3}{s^2})}{s+K_{VCO}(K_1 + \frac{K_2}{s} + \frac{K_3}{s^2})}
+\end{equation}
+
+Multiplying by $\frac{s^2}{s^2}$ we get :
+
+\begin{equation}
+ H(s) = \frac{K_{VCO}(K_1s^2 + K_2s + K_3)}{s^3+K_{VCO}(K_1s^2 + K_2s + K_3)}
+ \end{equation}
+
 \section{Ward Analysis}
 
 From Kazemi, \cite{Kazemi2008}, the Loop Noise Bandwidth time product ($B_L T$) must be less than 0.55. 
@@ -21,7 +121,6 @@ Where:
 \sigma_j &= \text{1-sigma phase jitter from all sources except dynamic stress error} \\
 \theta_e &= \text{dynamic stress error in the PLL tracking loop}
 \end{align*}
-
 
 %\cite{Kaplan}
 
@@ -175,113 +274,13 @@ f_e = \frac{d}{dt}(\frac{1}{360 \omega^n_0}\frac{d^nR}{dt^n}) = \frac{1}{360\ome
 
 
 
-
-
 Significant preliminary work has been carried out, because of the challenging scope of thesis. 
 
-In order to have a rigorous understanding of the dynamic performance of the Namuru receiver, we must first examine the theoretical basis for the operation of its tracking loops. 
+In order to have a rigorous understanding of the dynamic performance of the \ac{NAMURU} receiver, we must first examine the theoretical basis for the operation of its tracking loops. 
 
 A model of the operation of the tracking loops can be established by building upon intellectual foundations laid in continuous time control theory. While this Laplace domain model provides an idealised understanding of the \ac{PLL}, it does not take into the effects of delay and jitter in the loop. 
 
 \ac{PLL}, \ac{FLL} and \ac{DLL} are all examples of control systems. By convention, what is referred to in the parlance of control theory as a "controller" is referred to as the "loop filter" in \ac{GNSS} related literature. One key point to keep in mind with a \ac{PLL} is that a phase input results in a frequency output. This effective integration occurs in the \ac{VCO}.
-
-\section{Current Namuru architecture}
-A significant amount of time has been spent gaining an understanding of the Namuru receiver, its architecture and the operation of it's sub-systems. The receiver is a mixed signal device, which has been the focus of a decade of research and development. 
-
-A thorough understanding of the receiver's operation is critical, because one of the ways the receiver diverts from an idealised model is because of the jitter and delays introduced by its \ac{RTOS}. Hence, a detailed understanding of the receiver is crucial, if it is to be accurately modelled. 
-
-The Aquarius firmware developed by Glennon \cite{Glennon11aquariusfirmware} ultimately implements the tracking loop algorithm. The implementation of purely the tracking loop is 4,100 lines of optimised C, illustrating the complexity of the implementation.
-
-The Namuru receiver currently uses a third-order \ac{PLL} loop filter with a second-order \ac{FLL} assist. This architecture can be seen in figure \ref{fig:Architecture}.  A third order \ac{PLL} uses a second order filter, with the third integrator being the \ac{VCO}.
-
-After conducting a literature review, the first task was to replicate the Laplace domain models of the control loops, used in the Namuru receiver, so that the receiver can be modelled in the Laplace domain. The choice of the coefficients from the tracking loop comes from a method devised by Ward \cite{Ward}. While this method is conceptually simple, requiring only a loop order and noise bandwidth as parameters, it generates robust tracking loops for most applications. 
-
-\section{\ac{FLL} Filter}
-In the Laplace domain, we can represent the second order \ac{FLL} filter as as :  $F(s) = K_1 + \frac{K_2}{s}$. The design method from Ward \cite{Ward} is used in order to determine the coefficients $K_1$ and $K_2$.  
-
-$$B_n = 6$$
-$$a_2 = \sqrt(2)$$
-$$\omega_{0}=\frac{B_n}{0.53}$$
-
-\begin{equation} \label{eq1}
-\begin{split}
-K_1 & = a_2 \times \omega_{0}\\
-K_1 & = 16.0099648571\\
-\end{split}
-\end{equation}
-
-\begin{equation} \label{eq2}
-\begin{split}
-K_2 & = \omega_{0}^2\\
-K_2 & = 128.159487362\\
-\end{split}
-\end{equation}
-
-
-\section{\ac{PLL} Filter}
-Ward's method is also used to design the co-efficients for the \ac{PLL}. In the Laplace domain, we can represent the second order filter  of the third order \ac{PLL} as : 
-
-\begin{equation} \label{eq6}
-F(s) = K_1 + \frac{K_2}{s} + \frac{K_3}{s^2}
-\end{equation}
-
-A loop bandwidth of 18 was chosen for the \ac{PLL}, as Kaplan\cite{Kaplan} demonstrated, using a Monte Carlo simulation, that higher loops bandwidths typically result in unstable behaviour. 
-Using Ward's method\cite{Ward} for finding $K_1,K_2\&K_3$:
-
-$$B_n = 18$$
-$$a_3=1.1$$
-$$b_3=2.4$$
-$$\omega_{0}=\frac{B_n}{0.7845}$$
-
-\begin{equation} \label{eq3}
-\begin{split}
-K_1 & = b_3 \times \omega_{0}\\
-    & = 55.0669216061\\
-\end{split}
-\end{equation}
-
-\begin{equation} \label{eq4}
-\begin{split}
-K_2 & = a_3 \times \omega_{0}^2\\ 
-    & = 579.097645953\\
-\end{split}
-\end{equation}
-
-\begin{equation} \label{eq5}
-\begin{split}
-K_3 & = \omega_{0}^3\\
-    & = 12079.2138909\\
-\end{split}
-\end{equation}
-
-
-The next stage of Laplace domain analysis after determining the transfer function of the filter is to determine the transfer function of the closed loop system.
-
-Multiplying equation \ref{eq6} by $\frac{s^2}{s^2}$ we get :
-
-\begin{equation}
-F(s) = \frac{K_1s^2 + K_2 s + K_3}{s^2}
-\end{equation}
-
-The \ac{VCO} has the following transfer function : $G(s) = \frac{K_{vco}}{s}$
-
-From Kazemi, if  $F(s)$ is the transfer function of the loop filter\cite{KazemiPHD} then the closed loop transfer function  of the system is: 
-
-\begin{equation}
- H(s) = \frac{K_{VCO}F(s)}{s+K_{VCO}F(s)}
-\end{equation}
-
-\begin{equation}
- H(s) = \frac{K_{VCO}(K_1 + \frac{K_2}{s} + \frac{K_3}{s^2})}{s+K_{VCO}(K_1 + \frac{K_2}{s} + \frac{K_3}{s^2})}
-\end{equation}
-
-Multiplying by $\frac{s^2}{s^2}$ we get :
-
-\begin{equation}
- H(s) = \frac{K_{VCO}(K_1s^2 + K_2s + K_3)}{s^3+K_{VCO}(K_1s^2 + K_2s + K_3)}
- \end{equation}
-
-
 
 \section{Zeros and Poles}
 The behaviour of a closed loop system is determined by the locations of the zeros and the poles. In particular, their location determines if the system is stable for all possible inputs. Even if the system is found not to be stable for all possible inputs, it may be stable for all \emph{reasonable} inputs. An important caveat is that the location of the zeros and poles is for an analog model of the system, the locations will be different for a digital model, with the difference in location depending on the $B_LT$ product.  Hence it is possible to design a system which is stable in the Laplace domain but unstable in the Z Domain. 
@@ -304,15 +303,13 @@ rlocus(H);
 \end{lstlisting}
 \end{comment}
 
-
-The results of this analysis can be seen in figure \ref{fig:RootLocus}, from this analysis of the root locus, we can determine  that the system is stable, for values of the $V_CO$ gain which are larger than 0.38. This is an important result, as intuitively, increasing the gain will typically make a system unstable. However, this result demonstrates the value of Root Locus analysis for evaluating the stability of a higher order system.
-
-
+\begin{comment}
+The results of this analysis can be seen in figure \ref{fig:RootLocus}, from this analysis of the root locus, we can determine  that the system is stable, for values of the \ac{VCO} gain which are larger than 0.38. This is an important result, as intuitively, increasing the gain will typically make a system unstable. However, this result demonstrates the value of Root Locus analysis for evaluating the stability of a higher order system.
 
 In order to verify the implementation of the analog model was correct, a second graphical model was constructed in CircuitLab. This model can be seen in figure \ref{fig:gpsLoopModel}. By adjusting the VCO gain, the threshold between stable and unstable behaviour for a step input was confirmed to be 0.38. The results from this experiment can be seen in figures \ref{fig:Stable} and \ref{fig:Unstable}
 
-
-Additionally, this model confirmed that the currentNamuru architecture is able to integrate up velocity and acceleration however it is vulnerable to Jerk. This was assessed by applying ramp and parabolic inputs to the input, and comparing to the output.
+Additionally, this model confirmed that the current\ac{NAMURU} architecture is able to integrate up velocity and acceleration however it is vulnerable to Jerk. This was assessed by applying ramp and parabolic inputs to the input, and comparing to the output.
+\end{comment}
 
 \section{Simulation}
 

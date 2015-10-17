@@ -3,72 +3,61 @@
 
 \emph{"All models are wrong, but some are useful" -George E. P. Box}
 
-
-\begin{table}[!htb]
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}llll@{}}
-\toprule
-Name     & Physical interpretation & Time function    & Laplace transform \\ \midrule
-Step     & Constant position       & $1$              & $\frac{1}{S}$     \\\addlinespace[5pt]
-Ramp     & Constant velocity       & $t$              & $\frac{1}{S^2}$   \\\addlinespace[5pt]
-Parabola & Constant acceleration   & $\frac{1}{2}t^2$ & $\frac{1}{S^3}$  \\\addlinespace[5pt]
-\end{tabular}
-}
-\caption{Test inputs for evaluating errors \cite{Nise}}
-\label{tab:LaplaceTestInputs}
-\end{table}
-
-
-\input{Diagrams/Loops/StateA_Analog}
-\input{Diagrams/Loops/StateA_Laplace}
-\input{Diagrams/Loops/StateA_Digital}
-
 In order to have an understanding of the behaviour of the tracking loops, we must first model them. By modelling the tracking loops in the Laplace domain, we are able to get a rough idea of the behaviour of the loops. 
 
+\input{Tables/LaplaceTestInputs}
+
 \section{State A}
+\input{Diagrams/Loops/StateA_Analog}
+\input{Diagrams/Loops/StateA_Laplace}
+
 \subsection{Open loop transfer function}
-In figures \ref{fig:StateA_Analog} and \ref{fig:StateA_Laplace}, you can see analog models of the FLL used in state A. $K_1$ has a value of 0.125. T = 4ms, $K_{VCO} = 1$
+In figures \ref{fig:StateA_Analog} and \ref{fig:StateA_Laplace}, you can see analog models of the FLL used in state A. 
+
+\begin{align*}
+K_1 &= 0.125\\
+K_{VCO} &= 1\\
+T &= 4ms 
+\end{align*}
 
 Then we have the open loop transfer function of 
 
 \begin{equation}
-S \times \frac{1}{T} \times K_1 \times \frac{1}{S} \times  
-K_{VCO} \times \frac{1}{S}
+s \times \frac{1}{T} \times K_1 \times \frac{1}{s} \times  
+K_{VCO} \times \frac{1}{s}
 \end{equation}
 
 or 
+
 \begin{equation}
-\frac{K_1 K_{VCO}}{T S}
+\frac{K_1 K_{VCO}}{T s}
 \end{equation}
 
 \subsection{Closed loop transfer function}
 Converting to a closed loop transfer function :
 
 \begin{equation}
-\frac{1}{1+\frac{K_1 K_{VCO}}{T S}}
+\frac{1}{1+\frac{K_1 K_{VCO}}{T s}}
 \end{equation}
 
-
 \begin{equation}
-\frac{S}{S+\frac{K_1 K_{VCO}}{T}}
+\frac{s}{s+\frac{K_1 K_{VCO}}{T}}
 \end{equation}
 
-equals 
 \begin{equation}
-\frac{S}{S+31.25}
+\frac{s}{s+31.25}
 \end{equation}
 
 \subsection{Step response}
-A step input in terms of phase is in the Laplace domain is characterised as  $\frac{1}{S}$
+A step input in terms of phase is in the Laplace domain is characterised as  $\frac{1}{s}$
 
 Hence the system response to a step in phase is
 \begin{equation}
-\frac{1}{S+31.25}
+\frac{1}{s+31.25}
 \end{equation}
 
 
 In the time domain,
-
 \begin{equation}
  error(t) =  e^{-31.25t}
 \end{equation}
@@ -76,17 +65,17 @@ Hence the system rapidly adjusts to the step input.
 
 \subsection{Ramp response}
 
-For a ramp in phase, IE, a constant frequency, then we have $\frac{1}{S^2}$
+For a ramp in phase, IE, a constant frequency, then we have $\frac{1}{s^2}$
 
 This gives 
 
 \begin{equation}
-\frac{1}{S^2+31.25S}
+\frac{1}{s^2+31.25s}
 \end{equation}
 
 
 \begin{equation}
-\frac{0.032}{S} - \frac{0.032}{S+32.25} 
+\frac{0.032}{s} - \frac{0.032}{s+32.25} 
 \end{equation}
 
 
@@ -104,17 +93,17 @@ Hence for constant frequency there will be a small phase error.
 For ramp input in frequency, or a parabolic input in phase, we will have 
 
 \begin{equation}
-\frac{1}{S^3}
+\frac{1}{s^3}
 \end{equation}
 
 Which gives 
 
 \begin{equation}
-\frac{1}{S^3+31.25S^2}
+\frac{1}{s^3+31.25s^2}
 \end{equation}
 
 \begin{equation}
-\frac{0.032}{S^2} - \frac{0.001024}{S} + \frac{0.001024}{S+31.25}
+\frac{0.032}{s^2} - \frac{0.001024}{s} + \frac{0.001024}{s+31.25}
 \end{equation}
 
 Which is 
@@ -127,9 +116,10 @@ Hence there will be an increasing phase error with time, or an constant frequenc
 
 If we know the frequency/phase rate, then we can work out the constant frequency error at this point.
 
+\clearpage
+
 \section{State B \& C}
 \input{Diagrams/Loops/StateB_Analog}
-\input{Diagrams/Loops/StateB_Digital}
 \input{Diagrams/Loops/StateB_Laplace}
 \subsection{Open loop transfer function}
 
@@ -138,12 +128,12 @@ Assuming $K_{VCO} = 1$,
 Then we have the open loop transfer function of 
 
 \begin{equation}
-(S \times \frac{1}{T} \times K_1 + S \times K_2 +K_3 ) \times \frac{1}{S} \times K_{VCO} \times \frac{1}{S}
+(s \times \frac{1}{T} \times K_1 + s \times K_2 +K_3 ) \times \frac{1}{s} \times K_{VCO} \times \frac{1}{s}
 \end{equation}
 
 
 \begin{equation}
-\frac{1}{S} (\frac{K_1}{T} + K_2 +  \frac{K_3}{S})
+\frac{1}{s} (\frac{K_1}{T} + K_2 +  \frac{K_3}{s})
 \end{equation}
 
  
@@ -151,13 +141,13 @@ Then we have the open loop transfer function of
 This results in a close loop transfer function of 
 
 \begin{equation}
-\frac{1}{1+\frac{1}{S} (\frac{K_1}{T} + K_2 +  \frac{K_3}{S})}
+\frac{1}{1+\frac{1}{s} (\frac{K_1}{T} + K_2 +  \frac{K_3}{s})}
 \end{equation}
 
 
 
 \begin{equation}
-\frac{S^2}{S^2 + (\frac{K_1}{T} + K_2)S + K_3}
+\frac{s^2}{s^2 + (\frac{K_1}{T} + K_2)s + K_3}
 \end{equation}
 
 Where:
@@ -171,24 +161,24 @@ K_3 &=  2.848
 
 
 \begin{equation}
-\frac{S^2}{S^2 + (\frac{0.04}{0.04} +  26.68)S + 2.848}
+\frac{s^2}{s^2 + (\frac{0.04}{0.04} +  26.68)s + 2.848}
 \end{equation}
 
 \begin{equation}
-\frac{S^2}{S^2 + 27.68 S + 2.848}
+\frac{s^2}{s^2 + 27.68 s + 2.848}
 \end{equation}
 
 \subsection{Step response}
 
-For an input of $\frac{1}{S}$, we have 
+For an input of $\frac{1}{s}$, we have 
 \begin{equation}
-\frac{S}{S^2 + 27.68 S + 2.848}
+\frac{s}{s^2 + 27.68 s + 2.848}
 \end{equation}
 
 Or 
 
 \begin{equation}
-\frac{-0.003758}{S+0.1033} + \frac{1.00376}{S+27.58}
+\frac{-0.003758}{s+0.1033} + \frac{1.00376}{s+27.58}
 \end{equation}
 
 Which is
@@ -200,16 +190,16 @@ error(t) =  -0.003758 e^{-0.103} + 1.00376 e^{-27.58}
 
 \subsection{Ramp response}
 
-For an input of $\frac{1}{S^2}$, we have 
+For an input of $\frac{1}{s^2}$, we have 
 
 \begin{equation}
-\frac{1}{S^2 + 27.683 S + 2.848}
+\frac{1}{s^2 + 27.683 s + 2.848}
 \end{equation}
 
 or 
 
 \begin{equation}
-\frac{0.0364}{S+0.1033} -\frac{0.0364}{S+27.58}
+\frac{0.0364}{s+0.1033} -\frac{0.0364}{s+27.58}
 \end{equation}
 
 which is 
@@ -221,17 +211,17 @@ error(t) =  0.0364e^{-0.1033} - 0.0364e^{-27.58}
 
 \subsection{Parabolic response}
 
-For an input of $\frac{1}{S^3}$, we have 
+For an input of $\frac{1}{s^3}$, we have 
 \begin{equation}
-\frac{1}{S^3 +27.683 S^2 + 2.848 S}
+\frac{1}{s^3 +27.683 s^2 + 2.848 s}
 \end{equation}
 
 
 or 
 
 \begin{equation}
-\frac{0.3511}{S}-\frac{0.3524}{0.1033+S}
-+\frac{0.001320}{27.58+S}
+\frac{0.3511}{s}-\frac{0.3524}{0.1033+s}
++\frac{0.001320}{27.58+s}
 \end{equation}
 
 which is
@@ -240,9 +230,9 @@ which is
 error(t) = 0.3511 + 0.352 e^{-0.1032} + 0.00132 e^{-27.6}
 \end{equation}
 
+\clearpage
 \section{State D}
 \input{Diagrams/Loops/StateD_Analog}
-\input{Diagrams/Loops/StateD_Digital}
 \input{Diagrams/Loops/StateD_Laplace}
 
 \subsection{Open loop transfer function}
@@ -254,27 +244,27 @@ error(t) = 0.3511 + 0.352 e^{-0.1032} + 0.00132 e^{-27.6}
 \end{comment}
 
 \begin{equation}
-(S \times \frac{1}{T} \times (K_1 + \frac{1}{S} \times K_2) + K_3 \times S + K_4 + \frac{1}{S} \times K_5) \times \frac{1}{S} \times K_{VCO} \times \frac{1}{S}
+(s \times \frac{1}{T} \times (K_1 + \frac{1}{s} \times K_2) + K_3 \times s + K_4 + \frac{1}{s} \times K_5) \times \frac{1}{s} \times K_{VCO} \times \frac{1}{s}
 \end{equation}
 
 \begin{equation}
-(\frac{K_1 S + K_2}{T} + K_3  S + K_4 + \frac{K_5}{S} ) \times \frac{K_{VCO}}{S^2}
+(\frac{K_1 s + K_2}{T} + K_3  s + K_4 + \frac{K_5}{s} ) \times \frac{K_{VCO}}{s^2}
 \end{equation}
 
 \subsection{Closed loop transfer function}
 
 \begin{comment}
-PLL/FLL S^2 Ratio = 19.4
-PLL/FLL S Ratio = 81.3339
+PLL/FLL s^2 Ratio = 19.4
+PLL/FLL s Ratio = 81.3339
 \end{comment}
 
 \begin{equation}
-\frac{1}{1+(\frac{K_1 S + K_2}{T} + K_3  S +K_4  + \frac{K_5}{S}  \times \frac{K_{VCO}}{S^2}}
+\frac{1}{1+(\frac{K_1 s + K_2}{T} + K_3  s +K_4  + \frac{K_5}{s}  \times \frac{K_{VCO}}{s^2}}
 \end{equation}
 
 
 \begin{equation}
-\frac{S^3}{S^3 + K_{VCO}(\frac{K_1 S^2 + K_2 S}{T} + K_3 S^2 + K_4 S + K_5)}
+\frac{s^3}{s^3 + K_{VCO}(\frac{K_1 s^2 + K_2 s}{T} + K_3 s^2 + K_4 s + K_5)}
 \end{equation}
 
 Where:
@@ -289,43 +279,43 @@ K_5 &= 0.7731
 \end{align*}
 
 \begin{equation}
-\frac{S^3}{S^3 +2.828 S^2 + 0.05696 S + 55.07 S^2 + 4.633 S + 0.7731}
+\frac{s^3}{s^3 +2.828 s^2 + 0.05696 s + 55.07 s^2 + 4.633 s + 0.7731}
 \end{equation}
 
 \begin{equation}
-\frac{S^3}{S^3 +57.90 S^2 + 4.690 S +0.7731}
+\frac{s^3}{s^3 +57.90 s^2 + 4.690 s +0.7731}
 \end{equation}
 
 \subsection{Step response}
 
-A step input is $\frac{1}{S}$
+A step input is $\frac{1}{s}$
 
 \begin{equation}
-\frac{S^2}{S^3 +57.90 S^2 + 4.690 S +0.7731}
+\frac{s^2}{s^3 +57.90 s^2 + 4.690 s +0.7731}
 \end{equation}
 
 \begin{equation}
-\frac{-0.001397 S - 0.0002316}{S^2 + 0.08087 S + 0.01337} + \frac{1.001}{S + 57.81}
+\frac{-0.001397 s - 0.0002316}{s^2 + 0.08087 s + 0.01337} + \frac{1.001}{s + 57.81}
 \end{equation}
 
 \subsection{Ramp response}
 
 \begin{equation}
-\frac{S}{S^3 +57.90 S^2 + 4.690 S +0.7731}
+\frac{s}{s^3 +57.90 s^2 + 4.690 s +0.7731}
 \end{equation}
 
 \begin{equation}
-\frac{0.01732 S + 0.000004006}{S^2 +0.08089 S +0.01337} - \frac{0.01732}{S + 57.81}
+\frac{0.01732 s + 0.000004006}{s^2 +0.08089 s +0.01337} - \frac{0.01732}{s + 57.81}
 \end{equation}
 
 \subsection{Parabolic response}
 
 \begin{equation}
-\frac{1}{S^3 +57.90 S^2 + 4.690 S +0.7731}
+\frac{1}{s^3 +57.90 s^2 + 4.690 s +0.7731}
 \end{equation}
 
 \begin{equation}
-\frac{-0.0002996 S + 0.01730}{S^2 + 0.08089 S + 0.01337}+\frac{0.0002996}{S+ 57.81}
+\frac{-0.0002996 s + 0.01730}{s^2 + 0.08089 s + 0.01337}+\frac{0.0002996}{s+ 57.81}
 \end{equation}
 
 

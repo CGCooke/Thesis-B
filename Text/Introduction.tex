@@ -5,7 +5,7 @@
 
 However, significant dynamics and vibrations experienced during launch and re-entry prevent \ac{GNSS} receivers from reliably tracking the signal from \ac{GNSS} satellites. This in turn prevents the receiver from providing accurate position, velocity and timing information to the spacecraft, forcing engineers to turn to inferior solution for guiding the spacecraft.
 
-Using a modified version of the Namuru \ac{GNSS} receiver optimised for high dynamics, accurate and reliable performance can be potentially achieved during periods of significant dynamics during launch and re-entry. 
+Using a modified version of the \ac{NAMURU} \ac{GNSS} receiver optimised for high dynamics, accurate and reliable performance can be achieved during periods of significant dynamics during launch and re-entry. 
 
 In this report, novel modifications to the receiver are analysed for their feasibility and steps for effective implementation are suggested.
 
@@ -21,13 +21,14 @@ The University of New South Wales has been developing the Namuru family of \ac{G
 \end{figure}
 
 While the operation of the receiver has been validated both on land, and under simulated ballistic spaceflight conditions \cite{NamuruSpaceflight1,NamuruSpaceflight2}, the receiver is currently unable to reliably operate in high dynamics situations. 
+
 In particular, the \ac{PLL} is unable to cope with high dynamics, and looses phase lock. This is because : 
 \begin{itemize}
 \item{The doppler shift due to the \ac{LOS} dynamics between the satellite and the \ac{SV}}
 \item{The frequency shift in the local oscillator due to the effect of dynamics of the quartz crystal}
 \end{itemize}
 
-The aim of this thesis is to improve the high dynamics performance of the Namuru receiver, by investigating the following issues:  
+The aim of this thesis is to improve the high dynamics performance of the \ac{NAMURU} receiver, by investigating the following issues:  
 
 \begin{itemize}
 \item{A concrete theoretical understanding of the current implementation}
