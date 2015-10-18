@@ -5,14 +5,30 @@ A significant amount of time has been invested gaining an understanding of the \
 
 A detailed understanding of the receiver is crucial, if it is to be accurately modelled, in particular the ways that non idealities cause the performance of the receiver to deviate from analog models. For example, delays and jitter introduced  by the receiver's \ac{RTOS}. The Aquarius firmware developed by Glennon \cite{Glennon11aquariusfirmware} implements the tracking loop algorithm using 4,100 lines of optimised C, illustrating the complexity of the implementation.
 
-The \ac{NAMURU}
 
-The \ac{NAMURU} receiver currently uses a third-order \ac{PLL} loop filter with a second-order \ac{FLL} assist. This architecture can be seen in figure \ref{fig:Architecture}.  A third order \ac{PLL} uses a second order filter, with the third integrator being the \ac{VCO}.
+The \ac{NAMURU} receiver uses a number of different tracking loops to track the incoming signal. During operation, the receiver transitions between a number of different states, choosing the most appropriate tracking loop at each point in time. A thorough overview of the different tracking loops employed by the receiver can be found in appendix \ref{StateTransitions}. Particular attention has been paid in this thesis to the type 3 PLL/ type 2 FLL which represents the final state for the tracking system. The type 3 PLL uses a 2nd order filter, while the type 2 FLL uses a 1st order filter. This filter architecture can be observed in figure \ref{fig:TrackingLoopeOverview}. 
 
-After conducting a literature review, the first task was to replicate the Laplace domain models of the control loops, used in the \ac{NAMURU} receiver, so that the receiver can be modelled in the Laplace domain. The choice of the coefficients from the tracking loop comes from a method devised by Ward \cite{Ward}. While this method is conceptually simple, requiring only a loop order and noise bandwidth as parameters, it generates robust tracking loops for most applications. 
+\input{Diagrams/MyWork/ReceiverOverviewAnalog}
+
+Paying particular attention to figure \ref{fig:TrackingLoopeOverview}, we can observe the PLL and FLL arms of the loop controller. The blocks $D_{PLL}$ and $D_{FLL}$ represent the PLL and FLL discriminators respectively. More information about the implementation of these discriminators can be found in appendix \ref{app:Discriminators}. 
+
+
+\input{Diagrams/MyWork/ReceiverOverviewLaplace}
+
+\input{Diagrams/MyWork/ModifiedStructure}
+
+\input{Diagrams/MyWork/ModifiedStructure2}
+
+After conducting a literature review, it was decided to model the control loops used by the \ac{NAMURU} receiver in the Laplace domain. The choice of the coefficients from the tracking loop comes from a method devised by Ward \cite{Ward}. While this method is conceptually simple, requiring only a loop order and noise bandwidth as parameters, it generates robust tracking loops for most applications. Because of this, the Ward method has experienced significant popularity, amongst receiver designers.  
+
+The structure described by Ward is a combination of FLL/PLL, which operate in conjunction. This structure, which is described by Ward in his seminal paper  may initially give the impression that the FLL and PLL act independently, however a critical analysis in the Laplace domain shows that they are intricately linked\cite{Ward}.
+
+The philosophy behind Ward's design is that the FLL will bring the frequency estimate of the tracking loop to within locking range, at which point the PLL will bring the tracking loop into phase lock. Upon further scrutiny, it becomes apparent that the PLL \& FLL form a hybrid loop, which can be analysed in the Laplace domain.
+
+The method used by Ward for design will be described below for context: 
 
 \subsection{\ac{FLL} Filter}
-In the Laplace domain, we can represent the second order \ac{FLL} filter as as :  $F(s) = K_1 + \frac{K_2}{s}$. The design method from Ward \cite{Ward} is used in order to determine the coefficients $K_1$ and $K_2$.  
+In the Laplace domain, we can represent the second order \ac{FLL} filter as:  $F(s) = K_1 + \frac{K_2}{s}$. The design method from Ward \cite{Ward} is used in order to determine the coefficients $K_1$ and $K_2$.  
 
 \begin{align*}
 B_n &= 6\\
@@ -41,7 +57,8 @@ Ward's method is also used to design the co-efficients for the \ac{PLL}. In the 
 F(s) = K_1 + \frac{K_2}{s} + \frac{K_3}{s^2}
 \end{equation}
 
-A loop bandwidth of 18 was chosen for the \ac{PLL}, as Kaplan\cite{Kaplan} demonstrated, using a Monte Carlo simulation, that higher loops bandwidths typically result in unstable behaviour. 
+A loop bandwidth of 18Hz was chosen for the \ac{PLL}, as Kaplan\cite{Kaplan} demonstrated, using a Monte Carlo simulation, that higher loops bandwidths typically result in unstable behaviour. 
+
 Using Ward's method\cite{Ward} for finding $K_1,K_2\&K_3$:
 
 \begin{align*}
@@ -53,22 +70,22 @@ b_3&=2.4\\
 
 \begin{equation} \label{eq3}
 \begin{split}
-K_1 & = b_3 \times \omega_{0}\\
+K_3 & = b_3 \times \omega_{0}\\
     & = 55.1\\
 \end{split}
 \end{equation}
 
 \begin{equation} \label{eq4}
 \begin{split}
-K_2 & = a_3 \times \omega_{0}^2\\ 
+K_4 & = a_3 \times \omega_{0}^2\\ 
     & = 579.13\\
 \end{split}
 \end{equation}
 
 \begin{equation} \label{eq5}
 \begin{split}
-K_3 & = \omega_{0}^3\\
-    & = 12,079\\
+K_5 & = \omega_{0}^3\\
+    & = 12079\\
 \end{split}
 \end{equation}
 
@@ -78,7 +95,7 @@ The next stage of Laplace domain analysis after determining the transfer functio
 Multiplying equation \ref{eq6} by $\frac{s^2}{s^2}$ we get :
 
 \begin{equation}
-F(s) = \frac{K_1s^2 + K_2 s + K_3}{s^2}
+F(s) = \frac{K_3s^2 + K_4 s + K_5}{s^2}
 \end{equation}
 
 The \ac{VCO} has the following transfer function : $G(s) = \frac{K_{vco}}{s}$
@@ -123,7 +140,6 @@ Where:
 \end{align*}
 
 %\cite{Kaplan}
-
 \begin{equation}
 \sigma_{PLL} = \sqrt{\sigma^2_{tPLL} + \sigma^2_v+ \theta^2_A} + \frac{\theta_e}{3} \leq 15 \degree 
 \end{equation}
@@ -206,9 +222,6 @@ For $B_n$ =18, we have $\theta_{A3}=1.4\degree$.
     \includegraphics[width=1\textwidth]{mywork/PLLStresses.eps} 
     \caption{This plot breaks down the sources of error. Note that the phase jitter is at a minimum for a value of $B_n$ equal to approximately 27.}
 \end{figure}
-
-
-
 
 
 \subsection{FLL}
@@ -313,13 +326,23 @@ Additionally, this model confirmed that the current\ac{NAMURU} architecture is a
 
 \section{Simulation}
 
-The sophisticated method of modelling the performance of the tracking loops is using a computer simulation. A software based receiver has been developed as part of the thesis, in order to gain a greater understanding of the performance of tracking loops on real world data. 
+\subsection{Hardware simulation}
+A software based receiver has been developed as part of the thesis, in order to gain a greater understanding of the performance of tracking loops on real world data. 
 
-The software receiver was developed in python, based on the authors previous experience processing GNSS data using the language. For the receiver, the software architecture described by Kai Borre et al in \cite{KaiBorre} was used as a reference, however with significant modifications in order to improve the clarity of the operation of the tracking loop. The approach of using an \ac{GNSS}, and testing in software was effectively used by Kazemi \cite{KazemiPHD} in order to critically evaluate the performance of the new tracking loops developed as part of his PHD. The code included in Appendix 3 includes an implementation of the tracking loops as developed by Spliker \cite{Spilker}.
+The software receiver was developed in python, based on the authors previous experience with the language, as well the need to interface with domain specific libraries. 
+The approach of using an \ac{GNSS}, and testing in software was effectively used by Kazemi \cite{KazemiPHD} in order to critically evaluate the performance of the new tracking loops developed as part of his PHD.
 
-Synthetic data was created using software, and a signal was generated by a Spirent \ac{GPS} simulator. This signal was then digitised using a NordNav \ac{SDR}, with a sampling rate of $16.3676 \times 10^6$ samples per second. An example of a Spirent \ac{GPS} simulator can be seen in figure \ref{fig:Spirent}.
+A signal was generated by a Spirent \ac{GPS} simulator, which can be seen in figure \ref{fig:Spirent}. This signal was then digitised using a NordNav \ac{SDR}, with a sampling rate of $16.3676 \times 10^6$ samples per second. 
 
 A range of simulations were created in order to better understand the performance of the software receiver. In particular, scenarios for 0g, 1g, 2g, 5g, 7.5g and 10g were created. In figure \ref{fig:Doppler}, the output from the \ac{NCO} of the software receiver can be seen. In the simulation, the receiver remains stationary until 8s, at which point it starts acceleration directly upwards at 10g, creating a ramp in the \ac{NCO} frequency. It is important to note that while the receiver is accelerating at 10g, the \ac{LOS} dynamics may only be 5g. 
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{PolarisCharts/3Polaris.eps} 
+    \caption{An example of a simulation. The receiver undergoes a sequence of increasing accelerations, which }
+    \label{fig:Polaris3}
+\end{figure}
+
 
 \begin{figure}[!htb] 
     \centering
@@ -336,12 +359,40 @@ A range of simulations were created in order to better understand the performanc
 \end{figure}
 
 
-The correct performance of a \ac{PLL} can be examined by attempting to decode the navigation message transmitted by the satellite. Other, more sophisticated methods for determining if the receiver is in phase lock, will be examined in Thesis B. In figures \ref{fig:RawSignal} and \ref{fig:DigitalSignal}, the decoded message can be clearly seen, indicating that the receiver is maintaining phase lock with the signal.
+The correct performance of a \ac{PLL} can be examined by attempting to decode the navigation message transmitted by the satellite. Other, more sophisticated methods for determining if the  receiver is in phase lock, will be examined in Thesis B. In figures \ref{fig:RawSignal} and \ref{fig:DigitalSignal}, the decoded message can be clearly seen, indicating that the receiver is maintaining phase lock with the signal.
+
+\subsection{Software simulation}
+\ref{app:Code}
+
+\section{Airborne Experiment}
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{mywork/SeminoleBankingPRjpg.jpg} 
+    \caption{A Piper PA-44 Seminole.}
+    \label{fig:PiperSeminole}
+\end{figure}
+
+A real-world data-set was processed, consisting of data taken captured a flight aboard a UNSW Aviation Piper PA-44 Seminole VH-FRI. Data from the flight was captured by a NordNav IF Recorder, and processed using the the software receiver. 
+
+The actual carrier doppler shift, as measured by taking the finite difference of the satellite pseudoranges, and converted to Hz, was compared against the measured Doppler shift in the software receiver. There is a small offset because of drift in the receiver crystal. The results of this experiment can be see in figure \ref{fig:SimulatedDynamics}. While the dynamics experienced by the receiver were on the order of $\pm 5m/s^2$, somewhat less than the dynamics that are experienced by a \ac{LV}, This experiment is important, as it verifies the real world performance of the soft receiver. 
 
 
 
+\section{My Stuff}
 
-A real-world data-set was processed, consisting of data taken aboard a flight aboard a UNSW Aviation Piper PA-44 Seminole. Data from the flight was captured by a NordNav IF Recorder, and processed using the python software receiver. 
+CNO = 45
 
-The actual carrier doppler shift, as measured by taking the finite difference of the satellite pseudoranges, and converted to Hz, was compared against the measured Doppler shift in the software receiver. There is a small offset because of drift in the receiver crystal. The results of this experiment can be see in figure \ref{fig:SimulatedDynamics}. While the dynamics experienced by the receiver were on the order of $\pm 0.5g$, this experiment is important, as it verifies the real world performance of the system. 
+PLLBW =32
+FLLBW = 10
+76.135, std = 2.3549
+
+PLLBW = 18
+FLLBW = 1
+128.26,std =  2.59 
+
+PLLBW = 32
+FLLBW = 0
+131.6 std = 1.64
+
 

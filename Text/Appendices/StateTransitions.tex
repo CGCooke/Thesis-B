@@ -28,11 +28,14 @@ State B uses a second order PLL with a first order FLL (Check this is correct). 
 
 \begin{comment}
 The gain for the FLL can be computed from :  
-$$T = (2\times0.001)$$
-$$FLL1Bn = 5$$
-$$FLL1C1 = \frac{T}{0.25}$$
-$$K = FLL1B \times FLL1C1$$
-$$K = 0.04$$
+\begin{align*}
+T = (2\times0.001)
+FLL1Bn = 5
+FLL1C1 = \frac{T}{0.25}
+K = FLL1B \times FLL1C1
+K = 0.04
+\end{align*}
+
 \end{comment}
 
 The second order loop structure of the PLL can be seen in figure \ref{fig:SecondOrderLoopKaplan}. This 
@@ -51,7 +54,6 @@ Once the receiver has been in state B for at least 256ms, and if at least 20 of 
 State C has exactly the same loop structure as state B, however the receiver is now considered to be in "phase lock", and data extraction can begin.
 
 \section{State D}
-
 Once the receiver has been in state C for at least 1280ms, the receiver transitions to state D. State D has a 3rd order PLL and a 2nd order FLL.
 
 

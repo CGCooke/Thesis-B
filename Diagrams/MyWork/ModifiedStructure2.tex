@@ -1,0 +1,61 @@
+\tikzset{
+block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+tmp/.style  = {coordinate}, 
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}
+}
+}
+
+\begin{figure}[!htb]
+\centering
+\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+    \node [input, name=rinput] (rinput) {};
+    \node [sum, right of=rinput,node distance = 2cm](Rotator){\Large$+$};
+    \node [block, below of =Rotator](VCO){$\frac{1}{S}$};
+    
+    %PLL Stuff
+  
+    
+    \node at (4,-6) [sum] (sum1PLL) {\Large$+$};
+  
+    \node [block, above of = sum1PLL](K1PLL){$\frac{K_{1}}{T} + K_{3}$};
+    \node [block, right of = sum1PLL](K2PLL){$\frac{K_{2}}{T} + K_{4}$};
+    \node [block, right of = K2PLL](ExtraIntegrator){$\frac{1}{S}$};
+    
+    \node [block, below of = K2PLL](IntegratorPLL){$\frac{1}{S^2}$};
+    \node [block, left of = IntegratorPLL](K3PLL){$K_{5}$};
+    
+     
+    
+    \node [input, right of = K1PLL,node distance =6cm] (PLLPickoffPoint1) {};
+    \node [input, right of = K2PLL,node distance =4cm] (PLLPickoffPoint2) {};
+    
+    
+    %Common
+    \draw [->] (rinput) -- node{$\phi_{Input}$}(Rotator);
+    \draw [-] (Rotator) -| node{} (PLLPickoffPoint1);
+    
+    
+    \draw [-] (PLLPickoffPoint1) -- node{} (PLLPickoffPoint2);
+    \draw [->] (PLLPickoffPoint1) -- node{} (K1PLL);
+    \draw [->] (PLLPickoffPoint2) -- node{} (ExtraIntegrator);
+    \draw [->] (ExtraIntegrator) -- node{} (K2PLL);
+    
+    \draw [->] (PLLPickoffPoint2) |- node{} (IntegratorPLL);
+
+    \draw [->] (IntegratorPLL) -- node{} (K3PLL);
+   
+    
+    \draw [->] (K1PLL) -- node{} (sum1PLL);
+    \draw [->] (K2PLL) -- node{} (sum1PLL);
+    \draw [->] (K3PLL) -- node{} (sum1PLL);
+
+    \draw [->] (sum1PLL) -| node{} (VCO);
+    \draw [->] (VCO) -- node{$\phi_{VCO}$} node[pos=0.90] {$-$} (Rotator);
+    
+    \end{tikzpicture}
+\caption{The reduced block diagram, to simplify the diagram, we assume that $K_{VCO}=1$.} 
+\label{fig:ModifiedStructure2}
+\end{figure}

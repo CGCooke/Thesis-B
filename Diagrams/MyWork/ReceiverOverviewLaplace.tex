@@ -1,0 +1,104 @@
+\tikzset{
+block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+tmp/.style  = {coordinate}, 
+sum/.style= {draw, fill=white, circle, node distance=1cm},
+input/.style = {coordinate},
+output/.style= {coordinate},
+pinstyle/.style = {pin edge={to-,thin,black}
+}
+}
+
+\begin{figure}[!htb]
+\centering
+\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+    \node [input, name=rinput] (rinput) {};
+    \node [sum, right of=rinput,node distance = 2
+    cm](Rotator){\Large$+$};
+    \node [input, right of = Rotator] (RotatorPickoffPoint) {};
+     
+    
+    
+    %FLL Stuff
+    \node [block, right of=Rotator,node distance=4cm] (DiscriminatorFLL){$S$};
+    \node [block, right of=DiscriminatorFLL] (SamplingTime){$\frac{1}{T}$};
+    \node [block, below of = DiscriminatorFLL,node distance =8cm](K1FLL){$K_{1}$};
+    \node [block, below of = K1FLL](IntegratorFLL){$\frac{1}{S}$};
+    \node [block, left of = IntegratorFLL](K2FLL){$K_{2}$};
+    \node [sum, left of=K1FLL,node distance=2cm] (sum1FLL) {\Large$+$};
+    \node [sum, left of = sum1FLL,node distance =2cm](sumCommon){\Large$+$};
+    
+    \node [block, above of = sumCommon](VCOIntegrator){$\frac{1}{S}$};
+    \node [block, above of = VCOIntegrator](VCOGain){$K_{VCO}$};
+    \node [block, above of = VCOGain](VCO){$\frac{1}{S}$};
+    
+    
+    \node [input, right of = K1FLL] (FLLPickoffPoint) {};
+    
+    
+    
+    %PLL Stuff
+    \node [block, above of=DiscriminatorFLL] (DiscriminatorPLL) {$1$};
+    \node [block, below of = IntegratorFLL](diffPLL){$S$};
+    \node [block, left of = diffPLL](K1PLL){$K_{3}$};
+    \node [block, below of = diffPLL](K2PLL){$K_{4}$};
+    \node [block, below of = K2PLL](IntegratorPLL){$\frac{1}{S}$};
+    \node [block, left of = IntegratorPLL](K3PLL){$K_{5}$};
+    \node [sum, left of=K2PLL,node distance=2cm] (sum1PLL) {\Large$+$};
+    \node [output, right of=DiscriminatorPLL, node distance=4cm] (output) {};
+     
+    
+    \node [input, right of = diffPLL,node distance =4cm] (PLLPickoffPoint1) {};
+    \node [input, right of = K2PLL,node distance =4cm] (PLLPickoffPoint2) {};
+    
+    
+    %Common
+    \draw [->] (rinput) -- node{$\phi_{Input}$}(Rotator);
+    
+    %FLL Stuff
+    \draw [-] (Rotator) -- node{$\phi_{Error}$} (RotatorPickoffPoint);
+    \draw [->] (RotatorPickoffPoint) -- node{} (DiscriminatorFLL);
+    
+    
+    \draw [->] (DiscriminatorFLL) -- node{} (SamplingTime);
+    
+    \draw [-] (SamplingTime) |- node{} (FLLPickoffPoint);
+    \draw [->] (FLLPickoffPoint) -- node{} (K1FLL);
+    \draw [->] (FLLPickoffPoint) |- node{} (IntegratorFLL);
+    \draw [->] (IntegratorFLL) -- node{} (K2FLL);
+    
+    \draw [->] (K1FLL) -- node{} (sum1FLL);
+    \draw [->] (K2FLL) -- node{} (sum1FLL);
+    \draw [->] (sum1FLL) -- node{} (sumCommon);
+    
+    
+    %PLL Stuff
+    \draw [->] (RotatorPickoffPoint) |- node{} (DiscriminatorPLL);
+    
+    \draw [-] (DiscriminatorPLL) -- node [name=y] {}(output);
+    
+    \draw [-] (output) -- node{} (PLLPickoffPoint1);
+    \draw [-] (PLLPickoffPoint1) -- node{} (PLLPickoffPoint2);
+    \draw [->] (PLLPickoffPoint1) -- node{} (diffPLL);
+    \draw [->] (PLLPickoffPoint2) -- node{} (K2PLL);
+    \draw [->] (PLLPickoffPoint2) |- node{} (IntegratorPLL);
+   
+
+    \draw [->] (IntegratorPLL) -- node{} (K3PLL);
+    \draw [->] (diffPLL) -- node{} (K1PLL);
+    
+    \draw [->] (K1PLL) -- node{} (sum1PLL);
+    \draw [->] (K2PLL) -- node{} (sum1PLL);
+    \draw [->] (K3PLL) -- node{} (sum1PLL);
+    
+    \draw [->] (sum1PLL) -| node{} (sumCommon);
+    \draw [->] (sumCommon) -- node{} (VCOIntegrator);
+    \draw [->] (VCOIntegrator) -- node{} (VCOGain);
+    \draw [->] (VCOGain) -- node{} (VCO);
+    \draw [->] (VCO) -- node{$\phi_{VCO}$} node[pos=0.90] {$-$} (Rotator);
+    
+    
+
+    \end{tikzpicture}
+\caption{A Laplace domain model of figure \ref{fig:TrackingLoopeOverview}. Note that the FLL discriminator is equivalent to a differentiation, or S in the Laplace domain, conversely, the VCO is replaced by an integrator.} 
+\label{fig:TrackingLoopeOverviewLaplace}
+\end{figure}

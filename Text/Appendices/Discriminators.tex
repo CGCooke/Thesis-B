@@ -42,16 +42,20 @@ Some additional logic is included in the function to ensure that the function al
 \subsection{FLL Discriminator}
 The role of the FLL discriminator is to convert pairs of phase measurements into frequency. A key statistic for the FLL discriminator is it's capture range. This can be computed as 
 $\frac{-1}{2T} < f < \frac{1}{2T}$
-, where $T = 0.004$
+, where $T = 0.004S$
 
 Hence the FLL has a locking range of $\pm 125Hz$. 
 
 If the frequency of the incoming signal is outside this range, then a false lock will occur due to aliasing. This can be seen in figure(Insert picture of aliasing). 
 
 The FLL discriminator which is described in Kaplan uses the dot and cross product of the previous two samples.
-$$Dot = I_{k}\times I_{k-1} + Q_{k}\times Q_{k-1}$$
-$$Cross = Q_{k} \times I_{k-1} - I_{k} \times K_{k-1}$$
-$$DeltaPhase = ATan2(Cross,Dot)$$
+
+\begin{align*}
+\text{Dot} &= I_{k}\times I_{k-1} + Q_{k}\times Q_{k-1}\\
+\text{Cross} &= Q_{k} \times I_{k-1} - I_{k} \times K_{k-1}\\
+\text{DeltaPhase} &= ATan2(Cross,Dot)
+\end{align*}
+
 
 \begin{figure}[!htb] 
     \centering
