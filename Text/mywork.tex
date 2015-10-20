@@ -10,20 +10,16 @@ The \ac{NAMURU} receiver uses a number of different tracking loops to track the 
 
 \input{Diagrams/MyWork/ReceiverOverviewAnalog}
 
-Paying particular attention to figure \ref{fig:TrackingLoopeOverview}, we can observe the PLL and FLL arms of the loop controller. The blocks $D_{PLL}$ and $D_{FLL}$ represent the PLL and FLL discriminators respectively. More information about the implementation of these discriminators can be found in appendix \ref{app:Discriminators}. 
 
 
-\input{Diagrams/MyWork/ReceiverOverviewLaplace}
+\subsection{Some other section}
 
-\input{Diagrams/MyWork/ModifiedStructure}
 
-\input{Diagrams/MyWork/ModifiedStructure2}
+
+
 
 After conducting a literature review, it was decided to model the control loops used by the \ac{NAMURU} receiver in the Laplace domain. The choice of the coefficients from the tracking loop comes from a method devised by Ward \cite{Ward}. While this method is conceptually simple, requiring only a loop order and noise bandwidth as parameters, it generates robust tracking loops for most applications. Because of this, the Ward method has experienced significant popularity, amongst receiver designers.  
 
-The structure described by Ward is a combination of FLL/PLL, which operate in conjunction. This structure, which is described by Ward in his seminal paper  may initially give the impression that the FLL and PLL act independently, however a critical analysis in the Laplace domain shows that they are intricately linked\cite{Ward}.
-
-The philosophy behind Ward's design is that the FLL will bring the frequency estimate of the tracking loop to within locking range, at which point the PLL will bring the tracking loop into phase lock. Upon further scrutiny, it becomes apparent that the PLL \& FLL form a hybrid loop, which can be analysed in the Laplace domain.
 
 The method used by Ward for design will be described below for context: 
 
@@ -38,7 +34,7 @@ a_2 &= \sqrt(2)\\
 
 \begin{equation} \label{eq1}
 \begin{split}
-K_1 & = a_2 \times \omega_{0}\\
+K_1 & = a_2 \omega_{0}\\
 K_1 & = 16.00\\
 \end{split}
 \end{equation}
@@ -57,9 +53,9 @@ Ward's method is also used to design the co-efficients for the \ac{PLL}. In the 
 F(s) = K_1 + \frac{K_2}{s} + \frac{K_3}{s^2}
 \end{equation}
 
-A loop bandwidth of 18Hz was chosen for the \ac{PLL}, as Kaplan\cite{Kaplan} demonstrated, using a Monte Carlo simulation, that higher loops bandwidths typically result in unstable behaviour. 
+A loop bandwidth of 18Hz was originally chosen for the \ac{PLL}, as Kaplan\cite{Kaplan} demonstrated, using a Monte Carlo simulation, that higher loops bandwidths typically result in unstable behaviour. However the limiting factor for stability is the loop noise bandwidth time product. Kaplan uses an integration time of 20ms, resulting in a $BLT$ of 0.36. Conversely \ac{NAMURU} uses an integration time of 8ms, which means that any loop noise bandwidth $\leq 45$ can be used. 
 
-Using Ward's method\cite{Ward} for finding $K_1,K_2\&K_3$:
+Using Ward's method\cite{Ward} for finding $K_1,K_2 \& K_3$:
 
 \begin{align*}
 B_n &= 18\\
@@ -70,14 +66,14 @@ b_3&=2.4\\
 
 \begin{equation} \label{eq3}
 \begin{split}
-K_3 & = b_3 \times \omega_{0}\\
+K_3 & = b_3  \omega_{0}\\
     & = 55.1\\
 \end{split}
 \end{equation}
 
 \begin{equation} \label{eq4}
 \begin{split}
-K_4 & = a_3 \times \omega_{0}^2\\ 
+K_4 & = a_3  \omega_{0}^2\\ 
     & = 579.13\\
 \end{split}
 \end{equation}
@@ -100,11 +96,6 @@ F(s) = \frac{K_3s^2 + K_4 s + K_5}{s^2}
 
 The \ac{VCO} has the following transfer function : $G(s) = \frac{K_{vco}}{s}$
 
-From Kazemi, if  $F(s)$ is the transfer function of the loop filter\cite{KazemiPHD} then the closed loop transfer function  of the system is: 
-
-\begin{equation}
- H(s) = \frac{K_{VCO}F(s)}{s+K_{VCO}F(s)}
-\end{equation}
 
 \begin{equation}
  H(s) = \frac{K_{VCO}(K_1 + \frac{K_2}{s} + \frac{K_3}{s^2})}{s+K_{VCO}(K_1 + \frac{K_2}{s} + \frac{K_3}{s^2})}
@@ -115,6 +106,150 @@ Multiplying by $\frac{s^2}{s^2}$ we get :
 \begin{equation}
  H(s) = \frac{K_{VCO}(K_1s^2 + K_2s + K_3)}{s^3+K_{VCO}(K_1s^2 + K_2s + K_3)}
  \end{equation}
+
+
+
+\clearpage
+\subsection{Combining FLL \& PLL}
+
+The structure described by Ward is a combination of FLL/PLL, which operate in conjunction. This structure, which is described by Ward in his seminal paper  may initially give the impression that the FLL and PLL act independently, however a critical analysis in the Laplace domain shows that they are intricately linked\cite{Ward}.
+
+The philosophy behind Ward's design is that the FLL will bring the frequency estimate of the tracking loop to within locking range, at which point the PLL will bring the tracking loop into phase lock. Upon further scrutiny, it becomes apparent that the PLL \& FLL form a hybrid loop, which can be analysed in the Laplace domain.
+
+
+Paying particular attention to figure \ref{fig:TrackingLoopeOverview}, we can observe the PLL and FLL arms of the loop controller. The blocks $D_{PLL}$ and $D_{FLL}$ represent the PLL and FLL discriminators respectively. More information about the implementation of these discriminators can be found in appendix \ref{app:Discriminators}. 
+
+
+\input{Diagrams/MyWork/ReceiverOverviewLaplace}
+
+\input{Diagrams/MyWork/ModifiedStructure}
+
+\input{Diagrams/MyWork/ModifiedStructure2}
+
+From figure \ref{fig:ModifiedStructure2} we can find the open loop transfer function as:
+
+\begin{equation}
+\frac{1}{s} (\frac{K_1}{T}+K_3 + \frac{1}{s}(\frac{K_2}{T}+K_4) + \frac{1}{s^2} K_5)
+\label{eq:CombinedOpenLoopTF}
+\end{equation}
+
+We can convert the open loop transfer function $F(s)$ to the closed loop transfer function $H(s)$ as follows\cite{KazemiPHD}\cite{Gardner}:
+
+\begin{equation}
+ H(s) = \frac{K_{VCO}F(s)}{1+K_{VCO}F(s)}
+\end{equation}
+
+Assuming $K_{VCO}=1$:
+
+\begin{equation}
+ H(s) = \frac{F(s)}{1+F(s)}
+\label{eq:OpenLoopToClosedLoop}
+\end{equation}
+
+Substituting equation \ref{eq:CombinedOpenLoopTF} into equation \ref{eq:OpenLoopToClosedLoop}:
+
+\begin{equation}
+ H(s) = \frac{\frac{1}{s} (\frac{K_1}{T}+K_3 + \frac{1}{s}(\frac{K_2}{T}+K_4) + \frac{1}{s^2} K_5)}{1+\frac{1}{s} (\frac{K_1}{T}+K_3 + \frac{1}{s}(\frac{K_2}{T}+K_4) + \frac{1}{s^2} K_5)}
+\end{equation}
+
+\begin{equation}
+ H(s) = \frac{s^2(\frac{K_1}{T}+K_3) + s(\frac{K_2}{T}+K_4) + K_5}
+ {s^3+ s^2(\frac{K_1}{T}+K_3)+ s(\frac{K_2}{T}+K_4) + K_5}
+\end{equation}
+\clearpage
+
+
+From Wards method \cite{Ward}, we have the following coefficients:
+
+\begin{align*}
+K_1 &=\frac{\sqrt{2}B_{nFLL}}{0.53}\\
+    &= 2.668 B_{nFLL}
+\end{align*}
+
+\begin{align*}
+K_2 &=\frac{B_{nFLL}^2}{0.53^2}\\
+    &= 0.2809 B_{nFLL}^2
+\end{align*}
+
+\begin{align*}
+K_3 &=\frac{2.4B_{nPLL}}{0.7845}\\ 
+    &=3.059 B_{nPLL}\\
+\end{align*}
+
+\begin{align*}
+K_4 &=\frac{1.1B_{nPLL}^2}{0.7845^2}\\
+    &=1.787 B_{nPLL}^2
+\end{align*}
+
+\begin{align*}
+K_5 &=\frac{B_{nPLL}^3}{0.7845^3}\\
+    &=0.4828B_{nPLL}^3
+\end{align*}
+
+It is clear at this point 
+
+
+\subsection{Euler integration Approximation}
+
+\begin{equation}
+s \approx \Big(\frac{z-1}{Tz}\Big)
+\end{equation}
+
+
+
+\begin{equation}
+ H(s) = \frac{s^2(K1) + s(K2) + K3}
+ {s^3+ s^2(K1)+ s(K2) + K3}
+\end{equation}
+
+
+\begin{equation}
+ H(s) = \frac{\Big(\frac{z-1}{Tz}\Big)^2(K1) + \Big(\frac{z-1}{Tz}\Big)(K2) + K3}{\Big(\frac{z-1}{Tz}\Big)^3+ \Big(\frac{z-1}{Tz}\Big)^2(K1)+ \Big(\frac{z-1}{Tz}\Big)(K2) + K3}
+\end{equation}
+
+My Equation
+\begin{equation}
+\frac{\frac{K_{1}}{t} + K_{3} + \frac{K_{5}}{s^{2}} + \frac{1}{s} \left(\frac{K_{2}}{t} + K_{4}\right)}{s \left(1 + \frac{1}{s} \left(\frac{K_{1}}{t} + K_{3} + \frac{K_{5}}{s^{2}} + \frac{1}{s} \left(\frac{K_{2}}{t} + K_{4}\right)\right)\right)}
+\end{equation}
+
+\begin{equation}
+\frac{K_{1} s^{2} + K_{3} s^{2} t + K_{5} t + s \left(K_{2} + K_{4} t\right)}{K_{1} s^{2} + K_{3} s^{2} t + K_{5} t + s^{3} t + s \left(K_{2} + K_{4} t\right)}
+\end{equation}
+
+\begin{equation}
+\frac{T z \left(K_{1} \left(z - 1\right)^{2} + K_{3} t \left(z - 1\right)^{2} + K_{5} T^{2} t z^{2} + T z \left(K_{2} + K_{4} t\right) \left(z - 1\right)\right)}{T z \left(K_{1} \left(z - 1\right)^{2} + K_{3} t \left(z - 1\right)^{2} + K_{5} T^{2} t z^{2} + T z \left(K_{2} + K_{4} t\right) \left(z - 1\right)\right) + t \left(z - 1\right)^{3}}
+\end{equation}
+
+\clearpage
+
+Book Example
+
+\begin{equation}
+\frac{1.0 z \left(14.48 z^{2} - 28.21 z + 13.73\right)}{15.48 z^{3} - 31.21 z^{2} + 16.73 z - 1.0}
+\end{equation}
+
+
+
+\clearpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \section{Ward Analysis}
 

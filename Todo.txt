@@ -11,25 +11,20 @@ Put in FLL stuff
 Put in PLL/FLL stuff for other loop orders.
 
 
+Improvement producer 
+For Jerk CNO = 45
+Initially 32/10 = 78.9344213116
+Change to 32/0 = 127.377452451
+Change Coherent integration time to 2ms =  199.82800172
+Sample skipping disabled = 199.73200536
 
-\chapter{Literature Review}\label{ch:LitReview}
 
-\section{The need for tracking}
+For Acceleration
+Initially 32/10 = 5.51588968221
+Change to 32/0 = 87.1622567549
+Change Coherent integration time to 2ms = 0.605993940061
+Sample skipping disabled = 12.0637587248
 
-\section{Introduction to PLL's}
 
-\section{Analog PLL's}
-	\subsection{Loop order}
-	\subsection{Stresses}
-		\subsubsection{Thermal}
-		\subsubsection{Dynamics}
-		\subsubsection{Vibration}
-	\subsection{Coeficients}
-	\subsection{Transient response}
-	\subsection{Stability}
 
-\section{Digtial PLL's}
-	\subsection{Bilinear vs Boxcar}
-	\subsection{Stability}
-	\subsection{Transient response}
 
