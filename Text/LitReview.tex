@@ -3,12 +3,9 @@
 \section{Context}
 In order to understand this thesis, it is import to first understand it's context, in particular why tracking is both critical to the operation of the receiver, as well as why it is so challenging. This chapter aims to provide a broad overview of the relationship between the material covered in this thesis, as well as it's connection to other work covered in the literature. 
 
-\subsection{Motivation}
-In order for a \ac{GPS} receiver to decode data, the carrier frequency must be tracked. This is because the data is encoded on onto the phase of the carrier signal. 
-
 \subsection{Challenges}
 Using a GPS receiver for \ac{LV} exposes the receiver to some of the most extreme circumstances imaginable. As elicited in table \ref{tab:Requirements}, we can observe that the receiver experiences velocities and accelerations far beyond what would be experienced in terrestrial applications.  The rationale behind these requirements can be found in appendix \ref{ch:FlightDynamics} and \ref{ch:Falcon9}. 
-While \ac{GPS} receivers are normally used to provide provide absolute positions, the ability to provide highly accurate velocity data is incredibly valuable for spacecraft guidance. In order to insert a satellite into the proper orbit, the \ac{LV} engine-cutoff must be precisely timed, as orbital height is a function of orbital velocity. Based on analysis carried out in appendix \ref{ch:Falcon9}, we can conclude that the receiver needs to be able to provide velocity solutions which are accurate to better than 1m/s, while travelling at 6,000m/s. 
+While \ac{GPS} receivers are normally used to provide provide absolute positions, the ability to provide highly accurate velocity data is incredibly valuable for spacecraft guidance. In order to insert a satellite into the proper orbit, the \ac{LV} engine-cutoff must be precisely timed, as orbital height is a function of orbital velocity. Based on analysis carried out in appendix \ref{ch:Falcon9}, we can conclude that the receiver needs to be able to provide velocity solutions which are accurate $\leq 1m/s$, while travelling at 6,000m/s. 
 
 \input{Tables/Requirements}
 
@@ -22,7 +19,7 @@ Unfortunately, the requirements of operation exceed the \ac{COCOM} limits, which
 
 This helps to explain the motivation to develop a receiver, which is free from \ac{COCOM} requirements.
 
-Due to the relative motion of the satellite and the receiver, received signal differs from the transmitted carrier frequency of 1575.42 MHz due to the doppler effect\cite{Tsui}. The frequency offset due to the \ac{LOS} velocity between the receiver and the satellite can be found using \ref{eq:DopplerShift} to be 5.25Hz per m/s. Hence for the velocities experienced by \ac{LV} and \ac{SV}, we can expect doppler shifts in of 10's of Khz.
+Due to the relative motion of the satellite and the receiver, the received signal differs from the transmitted carrier frequency of 1575.42 MHz due to the Doppler effect\cite{Tsui}. The frequency offset due to the \ac{LOS} velocity between the receiver and the satellite can be found using \ref{eq:DopplerShift} to be 5.25Hz per m/s. Hence for the velocities experienced by \ac{LV} and \ac{SV}, we can expect Doppler shifts of up to 10's of KHz.
 
 \begin{align}
 \Delta f &= f_0\frac{v}{c} \text{ Hz/m/s}
@@ -36,12 +33,12 @@ c &= 2.99792458 \times 10^8 \text{ m/s}
 \end{align*}
 
 
-Making reference to table \ref{tab:DopplerDynamics}, we can observe that different orders of motion have differing impacts on the doppler frequency. In figure \ref{fig:DopplerShift}, we can directly observe the effect of the receiver dynamics on the doppler shift observed by the receiver.
+Making reference to table \ref{tab:DopplerDynamics}, we can observe that different orders of motion have differing impacts on the Doppler frequency. In figure \ref{fig:DopplerShift}, we can directly observe the effect of the receiver dynamics on the Doppler shift observed by the receiver.
 
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{LitReview/DopplerShift5.eps} 
-    \caption{In this figure, we can observe a ramp in the doppler frequency of approximately 6,000Hz over 22.5 seconds. From this, we can conclude that the receiver is accelerating at $\approx50/s^2$.}
+    \caption{In this figure, we can observe a ramp in the Doppler frequency of approximately 6,000Hz over 22.5 seconds. From this, we can conclude that the receiver is accelerating at $\approx50 m/s^2$.}
     \label{fig:DopplerShift}
 \end{figure}
 
@@ -52,7 +49,7 @@ Turning our attention to the motion of the GPS satellite, Tsui states that the m
 \section{Introduction to PLLs}
 PLLs are a versatile tool for solving many problems in electrical engineering, hence there is a significant body of literature which relates to the design, implementation and applications of PLLs. 
 
-One of the most beautiful properties of a PLL, is that once it has locked onto an incoming signal, then the average frequency of the local replica is exactly equal to the average frequency of the incoming signal. We can understand why this is true, as if the average frequency of the local replica of was different to the average frequency of the incoming signal, than the phase error would increase over time, and eventually the loop would loose lock. This property can be exploited in order to provide an highly accurate estimate of the velocity of the receiver based on the doppler shift in frequency. As alluded to before, the receiver needs to be able to provide velocity solutions which are accurate to better than 1m/s, or 5.25Hz of doppler shift. It is important to remember that phase lock does not imply zero phase error, or zero instantaneous velocity error\cite{Gardner}. 
+One of the most beautiful properties of a PLL, is that once it has locked onto an incoming signal, then the average frequency of the local replica is \emph{exactly} equal to the average frequency of the incoming signal. We can understand why this is true, as if the average frequency of the local replica of was different to the average frequency of the incoming signal, than the phase error would increase over time, and eventually the loop would loose lock. This property can be exploited in order to provide an highly accurate estimate of the velocity of the receiver based on the Doppler shift in frequency. As alluded to before, the receiver needs to be able to provide velocity solutions which are accurate to better than 1m/s, or 5.25Hz of Doppler shift. It is important to remember that phase lock does not imply zero phase error, or zero instantaneous velocity error\cite{Gardner}. 
 
 \input{Diagrams/LitReview/PLL}
 
@@ -80,15 +77,14 @@ Where:
 
 \input{Diagrams/Taxonomy}
 
-At this stage, it is important to elaborate on the taxonomy of PLLs, which can be visualised in figure \ref{fig:Taxonomy} and table \ref{tab:PLLTaxonomy}. The Namuru utilises a Software PLL, which is implemented in the C programing language on one of processor cores. However, in order to understand the operation and performance of the PLL, we analyse it as an Analog PLL. While every PLL is inherently non-linear, Gardner states that "Tools for analysis of nonlinear systems are exceedingly cumbersome and provide merger benefits compared to the powerful analytical tools available for linear systems". Gardner consistently states that linear methods are sufficient for the bulk of analysis and design of most PLLs, and therefore linear approximations should be employed wherever feasible\cite{Gardner}. 
+At this stage, it is important to elaborate on the taxonomy of PLLs, which can be visualised in figure \ref{fig:Taxonomy} and table \ref{tab:PLLTaxonomy}. The \ac{NAMURU} utilises a Software PLL, which is implemented in the C programing language on one of processor cores. However, in order to understand the operation and performance of the PLL, we analyse it as an Analog PLL. While every PLL is inherently non-linear, Gardner states that "Tools for analysis of nonlinear systems are exceedingly cumbersome and provide merger benefits compared to the powerful analytical tools available for linear systems". Gardner consistently states that linear methods are sufficient for the bulk of analysis and design of most PLLs, and therefore linear approximations should be employed wherever feasible\cite{Gardner}. 
 
 \input{Tables/PLLTaxonomy}
 
 \clearpage
 
 \section{Analog PLLs}
-
-Analog PLLs provide a useful abstraction for the development and analysis of Digital PLLs. A common method of developing PLLs for \ac{GPS} receivers is to design the control loop in the Laplace (analog) domain, and convert it to the discrete (digital) domain. 
+Analog PLLs provide a useful abstraction for the development and analysis of Digital PLLs. A common method of developing PLLs for \ac{GPS} receivers is to design the control loop in the Laplace (analog) domain, and convert it to the Z (digital) domain. 
 
 \begin{figure}[!htb] 
     \centering
@@ -109,7 +105,7 @@ Analog PLLs provide a useful abstraction for the development and analysis of Dig
     \centering
     \includegraphics[width=1\textwidth]{LitReview/PhaseAngleHistogram7.eps} 
     \caption{A histogram of the phase angle from plot \ref{fig:PhaseAngleStationary}. A normal distribution with the 
-    same mean and standard deviation ($4.83\degree$) as the phase angle signal is overlaid. As will be discussed later, the standard deviation, $\sigma$ of the phase error is a crucial statistic in understanding the performance of a PLL tracking loop.}
+    same mean (0) and standard deviation ($4.83\degree$) as the phase angle signal is overlaid. As will be discussed later, the standard deviation, $\sigma$ of the phase error is a crucial statistic in understanding the performance of a PLL tracking loop.}
     \label{fig:PhaseAngleHistogramStationary}
 \end{figure}
 
@@ -120,7 +116,7 @@ Analog PLLs provide a useful abstraction for the development and analysis of Dig
     the order of a PLL is always at least 1. 
     
     From table \ref{tab:DopplerDynamics} we can see that the order of the dynamics the receiver
-    experiences has and impact on the order of the doppler shifts that will be seen by the receiver. Appendix \ref{ch:FlightDynamics}
+    experiences has and impact on the order of the Doppler shifts that will be seen by the receiver. Appendix \ref{ch:FlightDynamics}
     and \ref{ch:Falcon9} exhaustively analyse the dynamics that the \ac{LV} will experience, however in summary, the receiver will experience:
     
     \begin{enumerate}
@@ -129,7 +125,7 @@ Analog PLLs provide a useful abstraction for the development and analysis of Dig
     \item{Significant jerk}
     \end{enumerate}
     
-    From table \ref{tab:LoopOrders} we can observe what order of dynamics different loop types are sensitive to. Ultimately, a trade-off exists between filter order and stability. Type 1 \& 2 filters are unconditionally stable in the Laplace domain, however they are not as effective as third order loops at coping with dynamics. For example, the residual error of a type 2 loop is acceleration. This makes it unsuitable for any application where sustained acceleration is likely to be encountered, as the error will increase over time, until phase lock is lost. However, type 2 are effectively insensitive to velocity, this is because the integrator in the loop filter contains and estimate of the doppler shift due the current velocity. In most real world scenarios, sustained acceleration is limited, due to limits on maximum achievable velocities. For space based applications however, velocities of thousands of meters per second are routinely achieved. Hence while a type 2 loop may be suitable for terrestrial applications, a type 3 loops is required for spaced based applications. A type 3 loop is insensitive to acceleration and velocity, because the loop filter contains a pair of integrators. One of the integrators contains an estimate of the current velocity, the other of the current acceleration\cite{Kaplan}. 
+    From table \ref{tab:LoopOrders} we can observe what order of dynamics different loop types are sensitive to. Ultimately, a trade-off exists between filter order and stability. Type 1 \& 2 filters are unconditionally stable in the Laplace domain, however they are not as effective as type 3 loops at coping with dynamics. For example, the residual error of a type 2 loop is acceleration. This makes it unsuitable for any application where sustained acceleration is likely to be encountered, as the error will increase over time, until phase lock is lost. However, type 2 are effectively insensitive to velocity, this is because the integrator in the loop filter contains and estimate of the Doppler shift due the current velocity. In most real world scenarios, sustained acceleration is limited, due to limits on maximum achievable velocities. For space based applications however, velocities of thousands of meters per second are routinely achieved. Hence while a type 2 loop may be suitable for terrestrial applications, a type 3 loop is typically required for spaced based applications. A type 3 loop is insensitive to acceleration and velocity, because the loop filter contains a pair of integrators. One of the integrators contains an estimate of the current velocity, the other of the current acceleration\cite{Kaplan}. 
     
     \input{Tables/LoopOrders}
     
@@ -139,15 +135,14 @@ Analog PLLs provide a useful abstraction for the development and analysis of Dig
 		\ref{ch:FlightDynamics}
 		\ref{ch:Falcon9}
 		\subsubsection{Vibration}
-		\ref{ch:Vibrations}
-
-    \subsection{Noise Bandwidth}
+		\ref{ch:Falcon9}
+    \subsection{Noise bandwidth}
     
     
 	\subsection{Loop coefficients}
-	The determination of loop coefficients has been the subject of significant effort in the literature.  While the choice of loop type is relatively straightforward, and dictated by the application, the selection of appropriate coefficients for the loop filter is somewhat more nuanced. Hence, a the focus of this thesis has been on critically analysing the loop coefficients used in the current \ac{NAMURU} receiver. 
+	The determination of loop coefficients has been the subject of significant effort in the literature.  While the choice of loop type is relatively straightforward, and dictated by the application, the selection of appropriate coefficients for the loop filter is somewhat more nuanced. Hence, a focus of this thesis has been on critically analysing the loop coefficients used in the current \ac{NAMURU} receiver. 
 	
-	Kaplan describes the loop filters objective as reducing noise, in order to produce an accurate estimate of the original signal\cite{Kaplan}. Gardner on the other hand takes a subtly different view, choosing to focus more on the loop filters ability to regulate the output signal dynamics\cite{Gardner}. Again, it is important to recall at this point that the terms loop filter and loop controller are synonymous. 
+	Kaplan describes the loop filter's objective as reducing noise, in order to produce an accurate estimate of the original signal\cite{Kaplan}. Gardner on the other hand takes a subtly different view, choosing to focus more on the loop filter's ability to regulate the output signal dynamics\cite{Gardner}. Again, it is important to recall at this point that the terms loop filter and loop controller are synonymous. 
 	
 	
 	The \ac{NAMURU} receiver uses a number of different PLL's while in different operational states. The relationship between the different types of PLL's used as further analysis is carried out in appendix \ref{ch:StateTransitions} and \ref{ch:LaplaceAnalysis}. The state that will receive the most thorough analysis in this thesis is the type 3 PLL. 
@@ -162,15 +157,17 @@ Analog PLLs provide a useful abstraction for the development and analysis of Dig
 	\end{equation}
 	
 	
-	The design method which was used to originally design \ac{NAMURU} is described by Ward and Kaplan, \cite{Ward},\cite{Kaplan}, and relies on designing the PLL in the Laplace (analog) domain, and then transforming into the digital domain for implementation. The method developed by Ward enjoys significant popularity, in part because it develops relatively robust designs, based on proven rules of thumb. The design process used will be described in more comprehensive detail in chapter \ref{ch:MyWork}, however it is important to recognise other design methods that exist. 
-	
-	\subsection{Transient response}
-	
+	The design method which was used to originally design \ac{NAMURU} is described by Ward and Kaplan, \cite{Ward,Kaplan}, and relies on designing the PLL in the Laplace (analog) domain, and then transforming into the digital domain for implementation. The method developed by Ward enjoys significant popularity, in part because it develops relatively robust designs, based on proven rules of thumb. The design process used will be described in more comprehensive detail in chapter \ref{ch:MyWork}, however it is important to recognise other design methods that exist. 
 	\subsection{Stability}
 
 \clearpage
 
 \section{Digital PLL's}
-	\subsection{Bilinear vs Boxcar}
+	\subsection{Integrators}
+	One of the most important aspects of the digital design is the method used to transform integrators the the Laplace domain to the Z domain. The Aquarius firmware\cite{FirmwareCode} written by Glennnon extensively uses the boxcar transform. The boxcar integrator is also used by Van Dierendonck  \cite{Spilker} in his GPS architecture. Conversely, Kaplan \cite{Kaplan} demonstrates an implementation of a tracking loop using Ward's parameters using bilinear integrators. The important and effect of using different integrators will be discussed more thoroughly in \ref{ch:MyWork}.
+	
 	\subsection{Stability}
-	\subsection{Transient response}
+	    While analysis in the S domain is instructive, further analysis of stability in the Z domain is authoritative in the design process. Gardner 
+	    
+	    Kaplan's contribution to an understanding of stability is somewhat limited. While he provides a formulaic approach to designing tracking loops, the reader is warned that the loop noise bandwidth of a type 3 PLL must not exceed 18Hz\cite{Kaplan}. The reasoning behind this statement is explored in more detail by Kazemi, who spends significant effort analysing the effect of sampling time on the stability of the PLL. In summary, with a sufficiently high loop bandwidth time product, the closed poles of the transfer function will migrate outside the unit circle. As discussed at length in Gardner \cite{Gardner}, this leads to instability. 
+	    

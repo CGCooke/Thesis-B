@@ -2,7 +2,6 @@ Rework Lit Review
 Write PLL chapter
 Rework myworkThesisA
 
-
 Rework conclusion
 Move stuff from myworkThesisA to Namuru
 Put in an example for re-entry
@@ -10,14 +9,12 @@ Put in an example for re-entry
 Put in FLL stuff
 Put in PLL/FLL stuff for other loop orders.
 
-
-Improvement producer 
+Improvement 
 For Jerk CNO = 45
 Initially 32/10 = 78.9344213116
 Change to 32/0 = 127.377452451
 Change Coherent integration time to 2ms =  199.82800172
 Sample skipping disabled = 199.73200536
-
 
 For Acceleration
 Initially 32/10 = 5.51588968221
@@ -25,6 +22,32 @@ Change to 32/0 = 87.1622567549
 Change Coherent integration time to 2ms = 0.605993940061
 Sample skipping disabled = 12.0637587248
 
+A
+Constant Snap
+Breaking Point g/s^3 76.1205175896 3.01471693763
+Phase Jitter (0-50g/s^3) 5.68424251031 0.0809666424344
+Phase Jitter (0-70g/s^3) 5.77987052071 0.280738421289
+
+B
+Constant Snap
+Breaking Point g/s^3 131.841683166 1.4191526405
+Phase Jitter (0-50g/s^3) 4.22565262096 0.0540896199389
+Phase Jitter (0-70g/s^3) 4.3143405835 0.0443823631819
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+To underscore the importance of an accurate velocity estimate, The nominal rate per kg to transport cargo to \ac{LEO} is \$5,000USD. The Falcon9 V1.1 second stage engine burns $\approx 250 kg/s$ of fuel per second. Every m/s error in the engine cutoff, results the burn being extended for 20ms. Assuming that an equal mass of fuel is required to correct the orbit, this results in \$50,000 worth of lost cargo revenue.
+
+Every second of additional burn during the hover-slam procedure is worth \$875,000USD in terms of lost cargo revenue. 

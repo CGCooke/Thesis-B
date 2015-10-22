@@ -5,25 +5,18 @@ A significant amount of time has been invested gaining an understanding of the \
 
 A detailed understanding of the receiver is crucial, if it is to be accurately modelled, in particular the ways that non idealities cause the performance of the receiver to deviate from analog models. For example, delays and jitter introduced  by the receiver's \ac{RTOS}. The Aquarius firmware developed by Glennon \cite{Glennon11aquariusfirmware} implements the tracking loop algorithm using 4,100 lines of optimised C, illustrating the complexity of the implementation.
 
-
-The \ac{NAMURU} receiver uses a number of different tracking loops to track the incoming signal. During operation, the receiver transitions between a number of different states, choosing the most appropriate tracking loop at each point in time. A thorough overview of the different tracking loops employed by the receiver can be found in appendix \ref{StateTransitions}. Particular attention has been paid in this thesis to the type 3 PLL/ type 2 FLL which represents the final state for the tracking system. The type 3 PLL uses a 2nd order filter, while the type 2 FLL uses a 1st order filter. This filter architecture can be observed in figure \ref{fig:TrackingLoopeOverview}. 
+The \ac{NAMURU} receiver uses a number of different tracking loops to track the incoming signal. During operation, the receiver transitions between a number of different states, choosing the most appropriate tracking loop at each point in time. A thorough overview of the different tracking loops employed by the receiver can be found in appendix \ref{ch:StateTransitions}. Particular attention has been paid in this thesis to the type 3 PLL/ type 2 FLL which represents the final state for the tracking system. The type 3 PLL uses a 2nd order filter, while the type 2 FLL uses a 1st order filter. This filter architecture can be observed in figure \ref{fig:TrackingLoopeOverview}. 
 
 \input{Diagrams/MyWork/ReceiverOverviewAnalog}
 
-
-
 \subsection{Some other section}
 
-
-
-
-
-After conducting a literature review, it was decided to model the control loops used by the \ac{NAMURU} receiver in the Laplace domain. The choice of the coefficients from the tracking loop comes from a method devised by Ward \cite{Ward}. While this method is conceptually simple, requiring only a loop order and noise bandwidth as parameters, it generates robust tracking loops for most applications. Because of this, the Ward method has experienced significant popularity, amongst receiver designers.  
+After conducting a literature review, it was decided to model the control loops used by the \ac{NAMURU} receiver in the Laplace domain. The choice of the coefficients from the tracking loop comes from a method devised by Ward \cite{Ward}. While this method is conceptually simple, requiring only a loop order and noise bandwidth as parameters, it generates robust tracking loops for most applications. Because of this, the Ward method has experienced significant popularity amongst receiver designers.  
 
 
 The method used by Ward for design will be described below for context: 
 
-\subsection{\ac{FLL} Filter}
+\subsection{\ac{FLL} filter}
 In the Laplace domain, we can represent the second order \ac{FLL} filter as:  $F(s) = K_1 + \frac{K_2}{s}$. The design method from Ward \cite{Ward} is used in order to determine the coefficients $K_1$ and $K_2$.  
 
 \begin{align*}
@@ -46,14 +39,14 @@ K_2 & = 128.16\\
 \end{split}
 \end{equation}
 
-\subsection{\ac{PLL} Filter}
+\subsection{\ac{PLL} filter}
 Ward's method is also used to design the co-efficients for the \ac{PLL}. In the Laplace domain, we can represent the second order filter  of the third order \ac{PLL} as : 
 
 \begin{equation} \label{eq6}
 F(s) = K_1 + \frac{K_2}{s} + \frac{K_3}{s^2}
 \end{equation}
 
-A loop bandwidth of 18Hz was originally chosen for the \ac{PLL}, as Kaplan\cite{Kaplan} demonstrated, using a Monte Carlo simulation, that higher loops bandwidths typically result in unstable behaviour. However the limiting factor for stability is the loop noise bandwidth time product. Kaplan uses an integration time of 20ms, resulting in a $BLT$ of 0.36. Conversely \ac{NAMURU} uses an integration time of 8ms, which means that any loop noise bandwidth $\leq 45$ can be used. 
+A loop bandwidth of 18Hz was originally chosen for the \ac{PLL}, as Kaplan\cite{Kaplan} demonstrated, using a Monte Carlo simulation, that higher loops bandwidths typically result in unstable behaviour. However the limiting factor for stability is the loop noise bandwidth time product. Kaplan uses an integration time of 20ms, resulting in a $B_LT$ of 0.36. Conversely \ac{NAMURU} uses an integration time of 8ms, which means that any loop noise bandwidth $\leq 45$ can be used. 
 
 Using Ward's method\cite{Ward} for finding $K_1,K_2 \& K_3$:
 
@@ -86,6 +79,7 @@ K_5 & = \omega_{0}^3\\
 \end{equation}
 
 
+\begin{comment}
 The next stage of Laplace domain analysis after determining the transfer function of the filter is to determine the transfer function of the closed loop system.
 
 Multiplying equation \ref{eq6} by $\frac{s^2}{s^2}$ we get :
@@ -106,18 +100,21 @@ Multiplying by $\frac{s^2}{s^2}$ we get :
 \begin{equation}
  H(s) = \frac{K_{VCO}(K_1s^2 + K_2s + K_3)}{s^3+K_{VCO}(K_1s^2 + K_2s + K_3)}
  \end{equation}
-
+\end{comment}
 
 
 \clearpage
-\subsection{Combining FLL \& PLL}
+
+\section{Laplace Analysis}
+
+\section{Combining FLL \& PLL}
 
 The structure described by Ward is a combination of FLL/PLL, which operate in conjunction. This structure, which is described by Ward in his seminal paper  may initially give the impression that the FLL and PLL act independently, however a critical analysis in the Laplace domain shows that they are intricately linked\cite{Ward}.
 
 The philosophy behind Ward's design is that the FLL will bring the frequency estimate of the tracking loop to within locking range, at which point the PLL will bring the tracking loop into phase lock. Upon further scrutiny, it becomes apparent that the PLL \& FLL form a hybrid loop, which can be analysed in the Laplace domain.
 
 
-Paying particular attention to figure \ref{fig:TrackingLoopeOverview}, we can observe the PLL and FLL arms of the loop controller. The blocks $D_{PLL}$ and $D_{FLL}$ represent the PLL and FLL discriminators respectively. More information about the implementation of these discriminators can be found in appendix \ref{app:Discriminators}. 
+Paying particular attention to figure \ref{fig:TrackingLoopeOverview}, we can observe the PLL and FLL arms of the loop controller. The blocks $D_{PLL}$ and $D_{FLL}$ represent the PLL and FLL discriminators respectively. More information about the implementation of these discriminators can be found in appendix \ref{ch:Discriminators}. 
 
 
 \input{Diagrams/MyWork/ReceiverOverviewLaplace}
@@ -133,7 +130,7 @@ From figure \ref{fig:ModifiedStructure2} we can find the open loop transfer func
 \label{eq:CombinedOpenLoopTF}
 \end{equation}
 
-We can convert the open loop transfer function $F(s)$ to the closed loop transfer function $H(s)$ as follows\cite{KazemiPHD}\cite{Gardner}:
+We can convert the open loop transfer function $F(s)$ to the closed loop transfer function $H(s)$ as follows\cite{KazemiPHD,Gardner}:
 
 \begin{equation}
  H(s) = \frac{K_{VCO}F(s)}{1+K_{VCO}F(s)}
@@ -186,28 +183,25 @@ K_5 &=\frac{B_{nPLL}^3}{0.7845^3}\\
     &=0.4828B_{nPLL}^3
 \end{align*}
 
-It is clear at this point 
+It is clear at this point that the behaviour of the combined loop is entirely parametrised by $B_{nFLL}$,  $B_{nPLL}$ and $T$. $T$ is equal to the time between phase samples, which is currently 4ms for the \ac{NAMURU} receiver.
 
-
-\subsection{Euler integration Approximation}
+\subsection{Euler integration approximation}
 
 \begin{equation}
 s \approx \Big(\frac{z-1}{Tz}\Big)
 \end{equation}
 
-
-
+\begin{comment}
 \begin{equation}
  H(s) = \frac{s^2(K1) + s(K2) + K3}
  {s^3+ s^2(K1)+ s(K2) + K3}
 \end{equation}
 
-
 \begin{equation}
  H(s) = \frac{\Big(\frac{z-1}{Tz}\Big)^2(K1) + \Big(\frac{z-1}{Tz}\Big)(K2) + K3}{\Big(\frac{z-1}{Tz}\Big)^3+ \Big(\frac{z-1}{Tz}\Big)^2(K1)+ \Big(\frac{z-1}{Tz}\Big)(K2) + K3}
 \end{equation}
+\end{comment}
 
-My Equation
 \begin{equation}
 \frac{\frac{K_{1}}{t} + K_{3} + \frac{K_{5}}{s^{2}} + \frac{1}{s} \left(\frac{K_{2}}{t} + K_{4}\right)}{s \left(1 + \frac{1}{s} \left(\frac{K_{1}}{t} + K_{3} + \frac{K_{5}}{s^{2}} + \frac{1}{s} \left(\frac{K_{2}}{t} + K_{4}\right)\right)\right)}
 \end{equation}
@@ -222,39 +216,11 @@ My Equation
 
 \clearpage
 
-Book Example
 
-\begin{equation}
-\frac{1.0 z \left(14.48 z^{2} - 28.21 z + 13.73\right)}{15.48 z^{3} - 31.21 z^{2} + 16.73 z - 1.0}
-\end{equation}
-
-
-
-\clearpage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\section{Ward Analysis}
+\section{Ward analysis}
 
 From Kazemi, \cite{Kazemi2008}, the Loop Noise Bandwidth time product ($B_L T$) must be less than 0.55. 
-For an 8ms integration time, we have 
+For an 8ms integration time, corresponding to a 125Hz update rate we have:
 
 \begin{align*}
 B_n &\leq \frac{0.55}{0.008} \text{ (Hz)}\\
@@ -342,7 +308,7 @@ For $B_n$ =18, we have $\theta_{A3}=1.4\degree$.
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{mywork/18ContourPLL.eps} 
-    \caption{A contour plot for a 3rd order loop with a $B_n$ of 18Hz. A value of $1.4\degree$ for the Allan variance oscillator jitter and $1.8\degree$ for vibration oscillator jitter is used. The conservative threshold of 15\degree can be seen in red. From this, we can conclude that the loop is likely to loose phase lock at a $C/N_0$ of 30,  at a jerk of $150ms^{-3}$.}
+    \caption{A contour plot for a 3rd order loop with a $B_n$ of 18Hz. A value of $1.4\degree$ for the Allan variance oscillator jitter and $1.8\degree$ for vibration oscillator jitter is used. The conservative threshold of 15\degree can be seen in red. From this, we can conclude that the loop is likely to loose phase lock at a jerk of $150ms^{-3}$ given a $C/N_0$ of 30.}
 \end{figure}
 
 \begin{figure}[!htb] 
@@ -375,7 +341,6 @@ Also talk about section 5.6.2
 \end{equation}
 
 For T = 4ms, we have $\sigma_{FLL} \leq 20.83$ Hz.
-
 
 Where:
 \begin{align*}
@@ -430,10 +395,11 @@ A model of the operation of the tracking loops can be established by building up
 
 \ac{PLL}, \ac{FLL} and \ac{DLL} are all examples of control systems. By convention, what is referred to in the parlance of control theory as a "controller" is referred to as the "loop filter" in \ac{GNSS} related literature. One key point to keep in mind with a \ac{PLL} is that a phase input results in a frequency output. This effective integration occurs in the \ac{VCO}.
 
-\section{Zeros and Poles}
-The behaviour of a closed loop system is determined by the locations of the zeros and the poles. In particular, their location determines if the system is stable for all possible inputs. Even if the system is found not to be stable for all possible inputs, it may be stable for all \emph{reasonable} inputs. An important caveat is that the location of the zeros and poles is for an analog model of the system, the locations will be different for a digital model, with the difference in location depending on the $B_LT$ product.  Hence it is possible to design a system which is stable in the Laplace domain but unstable in the Z Domain. 
+\section{Zeros and poles}
+The behaviour of a closed loop system is determined by the locations of the zeros and the poles. An important caveat is that the location of the zeros and poles is for an analog model of the system, the locations will be different for a digital model, with the difference in location depending on the $B_LT$ product.  Hence it is possible to design a system which is stable in the Laplace domain but unstable in the Z Domain. 
 
-Root locus provides an efficient graphical method for analysing the stability of a system in the Laplace domain\cite{Nise}. Matlab was used to generate a Root Locus plot of the current Laplace domain model of the \ac{PLL} implementation using the following code:
+Root locus provides an efficient graphical method for analysing the stability of a system in the Laplace domain\cite{Nise}. 
+
 
 \begin{comment}
 \begin{lstlisting}[frame=single]
@@ -451,25 +417,17 @@ rlocus(H);
 \end{lstlisting}
 \end{comment}
 
-\begin{comment}
-The results of this analysis can be seen in figure \ref{fig:RootLocus}, from this analysis of the root locus, we can determine  that the system is stable, for values of the \ac{VCO} gain which are larger than 0.38. This is an important result, as intuitively, increasing the gain will typically make a system unstable. However, this result demonstrates the value of Root Locus analysis for evaluating the stability of a higher order system.
-
-In order to verify the implementation of the analog model was correct, a second graphical model was constructed in CircuitLab. This model can be seen in figure \ref{fig:gpsLoopModel}. By adjusting the VCO gain, the threshold between stable and unstable behaviour for a step input was confirmed to be 0.38. The results from this experiment can be seen in figures \ref{fig:Stable} and \ref{fig:Unstable}
-
-Additionally, this model confirmed that the current\ac{NAMURU} architecture is able to integrate up velocity and acceleration however it is vulnerable to Jerk. This was assessed by applying ramp and parabolic inputs to the input, and comparing to the output.
-\end{comment}
-
 \section{Simulation}
 
 \subsection{Hardware simulation}
 A software based receiver has been developed as part of the thesis, in order to gain a greater understanding of the performance of tracking loops on real world data. 
 
-The software receiver was developed in python, based on the authors previous experience with the language, as well the need to interface with domain specific libraries. 
+The software receiver was developed in Python, based on the authors previous experience with the language, as well the need to interface with domain specific libraries. 
 The approach of using an \ac{GNSS}, and testing in software was effectively used by Kazemi \cite{KazemiPHD} in order to critically evaluate the performance of the new tracking loops developed as part of his PHD.
 
 A signal was generated by a Spirent \ac{GPS} simulator, which can be seen in figure \ref{fig:Spirent}. This signal was then digitised using a NordNav \ac{SDR}, with a sampling rate of $16.3676 \times 10^6$ samples per second. 
 
-A range of simulations were created in order to better understand the performance of the software receiver. In particular, scenarios for 0g, 1g, 2g, 5g, 7.5g and 10g were created. In figure \ref{fig:Doppler}, the output from the \ac{NCO} of the software receiver can be seen. In the simulation, the receiver remains stationary until 8s, at which point it starts acceleration directly upwards at 10g, creating a ramp in the \ac{NCO} frequency. It is important to note that while the receiver is accelerating at 10g, the \ac{LOS} dynamics may only be 5g. 
+A range of simulations were created in order to better understand the performance of the software receiver. In particular, scenarios for 0g, 1g, 2g, 5g, 7.5g and 10g were created. In figure \ref{fig:Doppler}, the output from the \ac{NCO} of the software receiver can be seen. In the simulation, the receiver remains stationary until 8s, at which point it starts accelerating directly upwards at 10g, creating a ramp in the \ac{NCO} frequency. It is important to note that while the receiver is accelerating at 10g, the \ac{LOS} dynamics may only be 5g. 
 
 \begin{figure}[!htb] 
     \centering
@@ -497,9 +455,9 @@ A range of simulations were created in order to better understand the performanc
 The correct performance of a \ac{PLL} can be examined by attempting to decode the navigation message transmitted by the satellite. Other, more sophisticated methods for determining if the  receiver is in phase lock, will be examined in Thesis B. In figures \ref{fig:RawSignal} and \ref{fig:DigitalSignal}, the decoded message can be clearly seen, indicating that the receiver is maintaining phase lock with the signal.
 
 \subsection{Software simulation}
-\ref{app:Code}
+\ref{ch:Code}
 
-\section{Airborne Experiment}
+\section{Airborne experiment}
 
 \begin{figure}[!htb] 
     \centering
@@ -512,9 +470,16 @@ A real-world data-set was processed, consisting of data taken captured a flight 
 
 The actual carrier doppler shift, as measured by taking the finite difference of the satellite pseudoranges, and converted to Hz, was compared against the measured Doppler shift in the software receiver. There is a small offset because of drift in the receiver crystal. The results of this experiment can be see in figure \ref{fig:SimulatedDynamics}. While the dynamics experienced by the receiver were on the order of $\pm 5m/s^2$, somewhat less than the dynamics that are experienced by a \ac{LV}, This experiment is important, as it verifies the real world performance of the soft receiver. 
 
+\section{Modifications to receiver}
 
+\subsection{New Coefficients}
 
-\section{My Stuff}
+\subsection{Pruning state space}
+
+\subsection{Adaptive control}
+
+\section{Results}
+
 
 CNO = 45
 
@@ -530,4 +495,21 @@ PLLBW = 32
 FLLBW = 0
 131.6 std = 1.64
 
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{mywork/BoxplotJerk.eps} 
+    \caption{}
+    \label{fig:BoxplotJerk}
+\end{figure}
 
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{mywork/BoxplotJerk.eps} 
+    \caption{}
+    \label{fig:BoxplotPhaseJitter}
+\end{figure}
+
+
+
+\section{Future Work}

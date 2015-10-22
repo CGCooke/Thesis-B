@@ -50,7 +50,7 @@ Time (s) & Event                                \\ \hline
 \rowcolor[HTML]{EFEFEF} 
 540      & 207km alt, 6700m/s, 925km down range \\ \hline
 \end{tabular}
-\caption{CRS-4 Flight transcript \cite{CRS4}}
+\caption{CRS-4 flight transcript \cite{CRS4}}
 \label{tab:CRS4}
 \end{table}
 
@@ -86,7 +86,7 @@ Time (s) & Event                                \\ \hline
 540      & 208km, 6900m/s 850km down range      \\ \hline
 565      & Stage 2 engine shutdown              \\ \hline
 \end{tabular}
-\caption{CRS-5 Flight transcript \cite{CRS5}}
+\caption{CRS-5 flight transcript \cite{CRS5}}
 \label{tab:CRS5}
 \end{table}
 
@@ -115,7 +115,7 @@ Time (s) & Event                                 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
 574      & Stage 2 shutdown \\ \hline
 \end{tabular}
-\caption{CRS-6 Flight transcript \cite{CRS6}}
+\caption{CRS-6 flight transcript \cite{CRS6}}
 \label{tab:CRS6}
 \end{table}
 
@@ -128,7 +128,7 @@ Time (s) & Event                                 \\ \hline
 \label{fig:Rocket}
 \end{figure}
 
-\section{Velocity Requirements}
+\section{Velocity requirements}
 The 2nd stage burn must be terminated at precisely the right time, to ensure that the final velocity is correct. This is because the orbital height is dictated by the velocity, 
 
 \begin{equation}
@@ -191,7 +191,7 @@ Time (s) & Event                                     \\ \hline
 199.2    & Payload fairing jettison                  \\ \hline
 475.9    & Second stage engine cut off               \\ \hline
 \end{tabular}
-\caption{Falcon 9 Sample Flight Time-line \cite{Falcon9}}
+\caption{Falcon 9 sample flight Ttime-line \cite{Falcon9}}
 \label{tab:Falcon9Timeline}
 \end{table}
 
@@ -228,7 +228,7 @@ Time (s) & Event                                     \\ \hline
 \end{figure}
 
 
-\section{Launch Azimuth}
+\section{Launch azimuth}
 
 \begin{equation}
 \beta = arcsin \Big(\frac{cos(i)}{cos(\phi)}\Big)
@@ -274,3 +274,20 @@ Space Exploration Technologies Corporation (SpaceX) is attempting to reduce laun
 
 
 
+Thinking out aloud : 
+So each engine uses 240Kg/s of fuel,
+At 100\% thrust, each engine develops 66.73 tons of thrust.
+Empty first stage is 25.6 Tons,
+
+Because each engine can only be throttled to 70\%, or 46.5 tons of thrust, then the rocket is actually trying to accelerate upwards at 1.8G when empty (Or just before landing), which is why it's non trivial!
+
+The first stage initially has 396 tons of fuel, I have no idea how much is needed to return the first stage, lets guesimate 10\%.
+
+I think the most efficient burn is going to be all 9 engines, at 100\% thrust, 
+With a vehicle mass of 39.6T propellant + 25.6 Tons, there is a total mass of 65.2 tons.
+So the 1st stage will commence the burn back with an acceleration of 9.2G, The maximum possible acceleration is 23.5G, at zero fuel.
+
+I think that's where the higher G numbers come from,
+
+
+Space Exploration Technologies Corporation (SpaceX) is attempting to reduce launch costs by recovering the first stage of their Falcon 9-R launch vehicle. After first stage separation, the first stage performs a burn-back procedure, to fly back to the launch pad. During the burn-back, there is an inferred maximum de-acceleration of $\approx 7.8 g$ during the hypersonic burn, based on published performance figures. An overview of the flight profile can be found in figure \ref{fig:Falcon9Profile}. Additional information regarding the Falcon 9 V1.1 can be found in appendix \ref{ch:Falcon9}.

@@ -2,11 +2,11 @@
 \chapter{Flight Dynamics}
 
 \section{Overview}
-In order to design a receiver able to cope with high dynamics experienced during space flight, it is crucial to have an understanding of the types of dynamics the receiver is likely to occur. Based on a thorough analysis of a range of Launch Services User's Guide published by commercial space flight operators, the following phases of flight have been identified as exhibiting the most severe dynamics: 
+In order to design a receiver able to cope with high dynamics experienced during space flight, it is crucial to have an understanding of the types of dynamics the receiver is likely to encounter. Based on a thorough analysis of a range of Launch Services User's Guide published by commercial space flight operators, the following phases of flight have been identified as exhibiting the most severe dynamics: 
 
 \begin{enumerate}
 \item{Launch}
-\item{Stage Separation}
+\item{Stage separation}
 \item{Re-entry}
 \end{enumerate}
 
@@ -54,7 +54,7 @@ Soyuz               & 5.0 g \cite{Soyuz}      & 1.8 g \cite{Soyuz}     \\ \hline
 
 
 
-\subsection{Stage Separation}
+\subsection{Stage separation}
 
 Significant shocks can be generated during stage separation, due to pyrotechnic events and fairing jettison\cite{AtlasV,Ariane,DeltaIV}. While these shocks have no impact on the line of sight dynamics experienced by the receiver, they do have an impact on the crystal. Mechanical vibrations can modulate the output frequency of the crystal, placing stress on the tracking loops. A mission profile for a Minotaur rocket can be seen in figure \ref{fig:MinotaurMissionProfile}.
 
@@ -89,15 +89,6 @@ Soyuz         & 10 g \cite{ReentryDynamics}          \\ \hline
 \label{ReEntryTable}
 \end{table}
 
-Space Exploration Technologies Corporation (SpaceX) is attempting to reduce launch costs by recovering the first stage of their Falcon 9-R launch vehicle. After first stage separation, the first stage performs a burn-back procedure, to fly back to the launch pad. During the burn-back, there is an inferred maximum de-acceleration of $\approx 7.8 g$ during the hypersonic burn, based on published performance figures. An overview of the flight profile can be found in figure \ref{fig:Falcon9Profile}. Additional information regarding the Falcon 9 V1.1 can be found in appendix \ref{ch:Falcon9}.
-
-\begin{figure}[!htb] 
-    \centering
-    \includegraphics[width=1\textwidth]{FlightDynamics/Falcon9Profile.png} 
-    \caption{An overview of the Falcon 9-R flight profile.}
-    \label{fig:Falcon9Profile}
-\end{figure}
-
 The maximum acceleration experienced during re-entry can be closely approximated parametrically using the following equation from \cite{eastre}: 
 
 \begin{equation}
@@ -114,7 +105,7 @@ V_0 &= \text{Velocity prior to entering atmosphere}\\
        &= 2.7182\ldots
 \end{align*}
 
-This is convenient, as it provides an intuitive understanding of how the maximum acceleration varies with velocity, as well as allowing performance to be estimated, when official figures are not published. 
+This convenient formula provides an intuitive understanding of how the maximum acceleration varies with velocity, as well as allowing performance to be estimated, when official figures are not published. A contour plot which can be used for reference can be found in figure \ref{fig:MaxReentryAcceleration}.
 
 
 \begin{figure}[!htb] 

@@ -1,6 +1,6 @@
-\chapter{Namuru}\label{ch:Namuru}
+\chapter{NAMURU}\label{ch:NAMURU}
 
-\section{\ac{GNSS} Receivers}
+\section{\ac{GNSS} receivers}
 
 \ac{GNSS} Receivers use trilateration to position a receiver using signals transmitted from a constellation of satellites. The range to from each satellite to the receiver (pseudorange) is computed based on the time of arrival of the signal transmitted by each satellite. 
 
@@ -10,17 +10,17 @@ The sequence used in the \ac{DSSS} modulation is called \ac{PRN} and unique to e
 
 Another tracking loop is used to track the incoming carrier frequency of the signal. Due to the relative motion of the satellite and the receiver, there is a doppler shift between the nominal transmission frequency of 1575.42 MHz and the received frequency. 
 
-If both the carrier frequency tracking loop, and the code phase loop are working, then the signal can be de-spread, and the \ac{BPSK} data can be recovered from the signal using a \ac{PLL}.
+If both the carrier frequency tracking loop and the code phase loop are working, then the signal can be de-spread, and the \ac{BPSK} data can be recovered from the signal using a \ac{PLL}.
 
 
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{Namuru/KaplanArchitecture2.png} 
-    \caption{A generic baseband processor. In Namuru, this is implemented on a \ac{FPGA}. Note in the diagram, that the processor (microcontroller) takes samples ($I_E$,$I_P$,$I_L$,$Q_E$,\ldots) and determines the Code-phase increment and the Carrier phase increment. Image from \cite{Kaplan}.}
+    \caption{A generic baseband processor. In \ac{NAMURU}, this is implemented on a \ac{FPGA}. Note in the diagram, that the processor (microcontroller) takes samples ($I_E$,$I_P$,$I_L$,$Q_E$,\ldots) and determines the code-phase increment and the carrier phase increment. Image from \cite{Kaplan}.}
     \label{fig:KaplanArchitecture}
 \end{figure}
 
-\section{Namuru}
+\section{NAMURU}
 
 \subsection{Hardware}
 
@@ -31,13 +31,10 @@ If both the carrier frequency tracking loop, and the code phase loop are working
     \label{fig:Namuru2}
 \end{figure}
 
-
-\subsection{Software}
-
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{Namuru/RecieverDiagram.png} 
-    \caption{A high level diagram of the Namuru architecture. An RF font end digitises the GPS signal, this is then de-spread to baseband by a bank of 12 correlators implemented on a FPGA. The correlators are controlled by a microcontroller,which is implemented as a soft-core processor on the FPGA.}
+    \caption{A high level diagram of the Namuru architecture. An RF font end digitises the GPS signal, this is then de-spread to baseband by a bank of 12 correlators implemented on a FPGA. The correlators are controlled by a microcontroller which is implemented as a soft-core processor on the FPGA.}
     \label{fig:RecieverDiagram}
 \end{figure}
 
@@ -66,16 +63,17 @@ The architecture of a typical \ac{GNSS} \ac{RF} front-end can be found in figure
 In a commercial design, the RF front-end is coupled with an \ac{ASIC} baseband processor. The use of an \ac{ASIC} chip-set is problematic, as historically, most \ac{GNSS} chip-sets come with firmware supplied as pre-compiled binary images \cite{Glennon11aquariusfirmware}. 
 Additionally, manufacturers generally do not publish datasheets that describe the operation of the baseband correlator\cite{Glennon11aquariusfirmware}. Finally the supply of GPS chipsets has become significantly more constrained, acting as a disincentive to the use of chipsets for research.
 
-A solution to this problem, which is popular with academic institutions is the use of \ac{SDR} for the development of receivers. \ac{IF} data is captured using an \ac{SDR}, and processed in software\cite{Glennon11aquariusfirmware}, One example of a MATLAB software receiver is described in \cite{KaiBorre}.
+A solution to this problem, which is popular with academic institutions is the use of \ac{SDR} for the development of receivers. \ac{IF} data is captured using an \ac{SDR}, and processed in software\cite{Glennon11aquariusfirmware}, One example of a MATLAB software \ac{GPS} receiver is described in \cite{KaiBorre}.
 
-The key drawback of this approach is processing speed, because the correlation occurs in software, rather than specialised hardware. Optimised software coupled with powerful hardware is required to carry out process the \ac{IF} data in real time. The use of powerful hardware to carry out the correlation in software results in a solution that is not cost effective and suffers from excessive power consumption.
+The key drawback of this approach is processing speed, because the computationally expensive correlation occurs in software, rather than specialised hardware. Optimised software coupled with powerful hardware is required to carry out process the \ac{IF} data in real time. The use of powerful hardware to carry out the correlation in software results in a solution that is not cost effective and suffers from excessive power consumption.
 
 The development of a \ac{FPGA} digital baseband processor represents an elegant compromise. 
-The architecture of the Namuru receiver can be found in figure \ref{fig:RecieverDiagram}. The receiver contains an \ac{ASIC} front end, a \ac{FPGA} baseband processor, and a microcontroller processor, which controls the tracking loops in the \ac{FPGA}, and computes a navigation solution. In some versions of the Namuru receiver, the processor has been a soft core processor, implemented on the \ac{FPGA}.
+The architecture of the \ac{NAMURU} receiver can be found in figure \ref{fig:RecieverDiagram}. The receiver contains an \ac{ASIC} front end, a \ac{FPGA} baseband processor, and a microcontroller processor, which controls the tracking loops in the \ac{FPGA}, and computes a navigation solution. In some versions of the \ac{NAMURU} receiver, the processor has been a soft core processor, implemented on the \ac{FPGA}.
 
+\begin{comment}
 This digital \ac{IF} signal is processed by a \ac{FPGA} digital baseband processor which contains 12 hardware correlators. The correlators are used to de-spread the signal and recover the navigation data using a \ac{PLL}.
-
-\section{Tracking Loops}
+\subsection{Software}
+\section{Tracking loops}
 In order to recover the data message, a \ac{GNSS} receiver needs to simultaneously track:
 
 \begin{itemize}
@@ -86,4 +84,4 @@ In order to recover the data message, a \ac{GNSS} receiver needs to simultaneous
 \subsection{Code loop}
 
 \subsection{Carrier loop}
-
+\end{comment}

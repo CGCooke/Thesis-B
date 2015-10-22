@@ -1,10 +1,18 @@
 \addcontentsline{toc}{chapter}{Appendix 7}\label{ch:Code}
 \chapter{Code}
 
+\subsection{Overview}
+
+Extensive Monte Carlo simulations were carried out in the course of this thesis in order to gain an understanding of the performance of the receiver.  The simulations were carried out with a replica of the receiver developed in Python. While the actual firmware of the receiver, developed by Dr Eamonn Glennon \cite{Glennon11aquariusfirmware} \cite{FirmwareCode}. This firmware is runs on the NIOSII embedded soft-core processor, and is highly optimised for performance in a resource limited embedded system environment. To assist with the original development and implementation of the tracking loops, Glennon implemented the tracking loops using Matlab\cite{MatlabCode}, before translating the code on a line by line basis to C. 
+
+In order to understand the receiver, and effectively modify to implementation to bring about improvements in the performance of the receiver, the code was translated into Python by the author of this thesis. During the translation process, significant amounts of vestigial code was removed, and the code was re-factored into functions, however the actual behaviour of the Python implementation (Polaris) is identical to the Matlab implementation
+
+
 \subsection{Receiver.py}
 \lstinputlisting[language=Python]{Code/Receiver.py}
 
 \subsection{TrackingLoop.py}
+This code is a re-factored translation of the code developed by Dr Glennon \cite{MatlabCode}.
 \lstinputlisting[language=Python]{Code/TrackingLoop.py}
 
 \subsection{GenSignal.py}

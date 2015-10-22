@@ -1,4 +1,4 @@
-\addcontentsline{toc}{chapter}{Appendix 8}\label{ch:Vibrations}
+\addcontentsline{toc}{chapter}{Appendix 8}\label{ch:FOOBAR}
 \chapter{Vibrations}
 
 
@@ -36,15 +36,21 @@ There are 4 main strategies for mitigation.
 \item{Electrical compensation}
 \end{itemize}
 
-"Frequency shift is a function of the magnitude and direction of the
-acceleration, and is usually linear with magnitude up to at least 50 g's."
-\cite{CrystalVibration}
-
-
 \subsubsection{Part specification}
+Correctly specifying a receiver with a low g-sensitivity is an effectiv method of reducing the effects of vibration on the reciever. With the current \ac{XO} used on the \ac{NAMURU} board, there is a degree of uncertinty regarding the effect of vibration, because the g-sensitivity is not specified. This is somewhat troublesome, given that it is possible that the sensitivity of different crystals from different batches may differ. Hence a reciever may fail in the field due to vibrations, while a nominally identicall reciever used for development and testing may operate satisfactraly. By chosing parts which meets a minimal standard for g-sensitivity, increased confidence in the performance of the reciever can be gained, at the cost of increased financial outlay. 
+
 \subsubsection{Orientation}
+Quartz crystals are anisotropic in nature, so it is not unexpected that the frequency shift is a function of the direction of acceleration. For a typical crystal which is cut for use in g-sensitive applications, there is approximately a two fold difference between the sensitivity between the most and least sensitive axis \cite{CrystalVibration}. Hence judicious orientation of the crystal or receiver can have a significant impact on performance. In the case of liquid fueled rockets, one insidious form of vibration is POGO, a type of self excited combustion osciallation in liquid fuled rocket engines\cite{Pogo}. 
+
+While this type of vibration has largely been eliminated through careful engineering design, in a system which may be su
+
+
 \subsubsection{Mechanical isolation}
+By mounting the PCB which the \ac{NAMURU} receiver is mounted on in an approiate matter, vibratoins can be mechanically suppressed. Judicious application of mechanical dampers where the board is mounted can be effective in preventing the transmission of high frequency vibrations to the board. 
+
 \subsubsection{Electrical compensation}
+Electrical compensation uses an acceleromter to bias the output from the crystal depending on the acceleration being experiened. This method is an analog for the control scheme used in an \ac{TCXO} \cite{CrystalVibration}. 
+
 
 \subsection{Determining g-sensitivity}
 There are three main methods for determining the the g-sensitivity of the receiver.
@@ -210,10 +216,15 @@ Space Exploration Technologies Corp  specifies four main shock events
 \end{itemize}
 
 \subsection{Acoustic stresses}
+During launch, the \ac{LV} experiences a challenging acoustic environment. Noise from the rocket motors has a tendency to deflect from the ground and surrounding structures, impacting the launch vehicle. If acoustic pressure waves, mechanically couple with the \ac{PCB} which \ac{NAMURU}, then this may lead to additional vibrations which may further degrade performance. Fortunately, the most acoustically challenging time is at launch, which is when for a successful launch, dynamics are at their lowest. 
+
+Conversely, in the event of a launch failure, the launch abort system may be used to extradite the crew capsule away from the \ac{LV}. In this scenario, the receiver will experience significant dynamics, while also being exposed to significant acoustic stresses. In the case of the \ac{LV} detonating, then an intense shock-wave is likely to impact the receiver. While this scenario is not unprecedented in the history of spaceflight, positioning provided by an \ac{IMU} is likely to be satisfactory in this case.
 
 
 \subsection{Antenna phase-centre displacement}
-One effect that is often overlooked, is that the antenna is physically displaced.
+One effect that is often overlooked, is that the antenna is physically displaced. Because the LOS distance is between the satellite antenna phase centre and the receiver phase centre, the physical movement of the antenna can have a detrimental effect on the receiver. From an analytical point of view, moving the antenna phase centre results in a change in detected frequency,  ASK EAMONN.
+
+While no empirical formula for analysis of this issue were uncovered during the literature review, this issue represents an opportunity for further analysis. During testing, this effect can be accounted for by performing the vibration test in an anechoic chamber, and transmitting a signal wireless to a vibrating receiver/antenna assembly. 
 
 
 Equation 5.8
