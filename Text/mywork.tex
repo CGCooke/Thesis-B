@@ -185,7 +185,7 @@ K_5 &=\frac{B_{nPLL}^3}{0.7845^3}\\
 
 It is clear at this point that the behaviour of the combined loop is entirely parametrised by $B_{nFLL}$,  $B_{nPLL}$ and $T$. $T$ is equal to the time between phase samples, which is currently 4ms for the \ac{NAMURU} receiver.
 
-\subsection{Euler integration approximation}
+\subsection{Backward difference}
 
 \begin{equation}
 s \approx \Big(\frac{z-1}{Tz}\Big)
@@ -214,6 +214,21 @@ s \approx \Big(\frac{z-1}{Tz}\Big)
 \frac{T z \left(K_{1} \left(z - 1\right)^{2} + K_{3} t \left(z - 1\right)^{2} + K_{5} T^{2} t z^{2} + T z \left(K_{2} + K_{4} t\right) \left(z - 1\right)\right)}{T z \left(K_{1} \left(z - 1\right)^{2} + K_{3} t \left(z - 1\right)^{2} + K_{5} T^{2} t z^{2} + T z \left(K_{2} + K_{4} t\right) \left(z - 1\right)\right) + t \left(z - 1\right)^{3}}
 \end{equation}
 
+
+\cite{arashBook}
+\clearpage
+\subsection{Bilinear}
+
+\frac{T \left(z + 1\right) \left(4 K_{1} \left(z - 1\right)^{2} + 4 K_{3} t \left(z - 1\right)^{2} + K_{5} T^{2} t \left(z + 1\right)^{2} + 2 T \left(K_{2} + K_{4} t\right) \left(z - 1\right) \left(z + 1\right)\right)}{T \left(z + 1\right) \left(4 K_{1} \left(z - 1\right)^{2} + 4 K_{3} t \left(z - 1\right)^{2} + K_{5} T^{2} t \left(z + 1\right)^{2} + 2 T \left(K_{2} + K_{4} t\right) \left(z - 1\right) \left(z + 1\right)\right) + 8 t \left(z - 1\right)^{3}}
+
+
+\frac{7.05247536717789 z^{3} - 6.67966310868464 z^{2} - 7.05030356097697 z + 6.68183491489099}{8.05247536717789 z^{3} - 9.67966310868464 z^{2} - 4.05030356097697 z + 5.68183491489099}
+\clearpage
+\section{Forward difference}
+\frac{K_{1} \left(z - 1\right)^{2} + K_{3} t \left(z - 1\right)^{2} + K_{5} t^{3} + t \left(K_{2} + K_{4} t\right) \left(z - 1\right)}{K_{1} \left(z - 1\right)^{2} + K_{3} t \left(z - 1\right)^{2} + K_{5} t^{3} + t \left(K_{2} + K_{4} t\right) \left(z - 1\right) + \left(z - 1\right)^{3}}
+
+
+\frac{6705675966.29209 z^{3} - 19393120765.5002 z^{2} + 18677697250.1105 z - 5990252450.90247}{244140625.0 z^{4} + 5729113466.29209 z^{3} - 17928277015.5002 z^{2} + 17701134750.1105 z - 5746111825.90247}
 \clearpage
 
 
