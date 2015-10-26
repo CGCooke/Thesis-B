@@ -16,7 +16,7 @@ After conducting a literature review, it was decided to model the control loops 
 The method used by Ward for design will be described below for context: 
 
 \subsection{\ac{FLL} filter}
-In the Laplace domain, we can represent the second order \ac{FLL} filter as:  $F(s) = K_1 + \frac{K_2}{s}$. The design method from Ward \cite{Ward} is used in order to determine the coefficients $K_1$ and $K_2$.  
+In the Laplace domain, we can represent the second order \ac{FLL} filter as:  $G(s) = K_1 + \frac{K_2}{s}$. The design method from Ward \cite{Ward} is used in order to determine the coefficients $K_1$ and $K_2$.  
 
 \begin{align*}
 B_n &= 6\\
@@ -42,7 +42,7 @@ K_2 & = 128.16\\
 Ward's method is also used to design the co-efficients for the \ac{PLL}. In the Laplace domain, we can represent the second order filter  of the third order \ac{PLL} as : 
 
 \begin{equation} \label{eq6}
-F(s) = K_1 + \frac{K_2}{s} + \frac{K_3}{s^2}
+G(s) = K_1 + \frac{K_2}{s} + \frac{K_3}{s^2}
 \end{equation}
 
 A loop bandwidth of 18Hz was originally chosen for the \ac{PLL}, as Kaplan\cite{Kaplan} demonstrated, using a Monte Carlo simulation, that higher loops bandwidths typically result in unstable behaviour. However the limiting factor for stability is the loop noise bandwidth time product. Kaplan uses an integration time of 20ms, resulting in a $B_LT$ of 0.36. Conversely \ac{NAMURU} uses an integration time of 8ms, which means that any loop noise bandwidth $\leq 45$ can be used. 
@@ -84,7 +84,7 @@ The next stage of Laplace domain analysis after determining the transfer functio
 Multiplying equation \ref{eq6} by $\frac{s^2}{s^2}$ we get :
 
 \begin{equation}
-F(s) = \frac{K_3s^2 + K_4 s + K_5}{s^2}
+G(s) = \frac{K_3s^2 + K_4 s + K_5}{s^2}
 \end{equation}
 
 The \ac{VCO} has the following transfer function : $G(s) = \frac{K_{vco}}{s}$
@@ -123,20 +123,20 @@ Paying particular attention to figure \ref{fig:TrackingLoopeOverview}, we can ob
 From figure \ref{fig:ModifiedStructure2} we can find the open loop transfer function as:
 
 \begin{equation}
-\frac{1}{s} (K_1+K_3 + \frac{1}{s}(K_2+K_4) + \frac{1}{s^2} K_5)
+G(s) = \frac{1}{s} (K_1+K_3 + \frac{1}{s}(K_2+K_4) + \frac{1}{s^2} K_5)
 \label{eq:CombinedOpenLoopTF}
 \end{equation}
 
-We can convert the open loop transfer function $F(s)$ to the closed loop transfer function $H(s)$ as follows\cite{KazemiPHD,Gardner}:
+We can convert the open loop transfer function $G(s)$ to the closed loop transfer function $H(s)$ as follows\cite{KazemiPHD,Gardner}:
 
 \begin{equation}
- H(s) = \frac{K_{VCO}F(s)}{1+K_{VCO}F(s)}
+ H(s) = \frac{K_{VCO}G(s)}{1+K_{VCO}G(s)}
 \end{equation}
 
 Assuming $K_{VCO}=1$:
 
 \begin{equation}
- H(s) = \frac{F(s)}{1+F(s)}
+ H(s) = \frac{G(s)}{1+G(s)}
 \label{eq:OpenLoopToClosedLoop}
 \end{equation}
 
