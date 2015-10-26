@@ -13,7 +13,6 @@ The \ac{NAMURU} receiver uses a number of different tracking loops to track the 
 
 After conducting a literature review, it was decided to model the control loops used by the \ac{NAMURU} receiver in the Laplace domain. The choice of the coefficients from the tracking loop comes from a method devised by Ward \cite{Ward}. While this method is conceptually simple, requiring only a loop order and noise bandwidth as parameters, it generates robust tracking loops for most applications. Because of this, the Ward method has experienced significant popularity amongst receiver designers.  
 
-
 The method used by Ward for design will be described below for context: 
 
 \subsection{\ac{FLL} filter}
@@ -90,7 +89,6 @@ F(s) = \frac{K_3s^2 + K_4 s + K_5}{s^2}
 
 The \ac{VCO} has the following transfer function : $G(s) = \frac{K_{vco}}{s}$
 
-
 \begin{equation}
  H(s) = \frac{K_{VCO}(K_1 + \frac{K_2}{s} + \frac{K_3}{s^2})}{s+K_{VCO}(K_1 + \frac{K_2}{s} + \frac{K_3}{s^2})}
 \end{equation}
@@ -116,7 +114,6 @@ The philosophy behind Ward's design is that the FLL will bring the frequency est
 
 Paying particular attention to figure \ref{fig:TrackingLoopeOverview}, we can observe the PLL and FLL arms of the loop controller. The blocks $D_{PLL}$ and $D_{FLL}$ represent the PLL and FLL discriminators respectively. More information about the implementation of these discriminators can be found in appendix \ref{ch:Discriminators}. 
 
-
 \input{Diagrams/MyWork/ReceiverOverviewLaplace}
 
 \input{Diagrams/MyWork/ModifiedStructure}
@@ -126,7 +123,7 @@ Paying particular attention to figure \ref{fig:TrackingLoopeOverview}, we can ob
 From figure \ref{fig:ModifiedStructure2} we can find the open loop transfer function as:
 
 \begin{equation}
-\frac{1}{s} (\frac{K_1}{T}+K_3 + \frac{1}{s}(\frac{K_2}{T}+K_4) + \frac{1}{s^2} K_5)
+\frac{1}{s} (K_1+K_3 + \frac{1}{s}(K_2+K_4) + \frac{1}{s^2} K_5)
 \label{eq:CombinedOpenLoopTF}
 \end{equation}
 
@@ -146,12 +143,12 @@ Assuming $K_{VCO}=1$:
 Substituting equation \ref{eq:CombinedOpenLoopTF} into equation \ref{eq:OpenLoopToClosedLoop}:
 
 \begin{equation}
- H(s) = \frac{\frac{1}{s} (\frac{K_1}{T}+K_3 + \frac{1}{s}(\frac{K_2}{T}+K_4) + \frac{1}{s^2} K_5)}{1+\frac{1}{s} (\frac{K_1}{T}+K_3 + \frac{1}{s}(\frac{K_2}{T}+K_4) + \frac{1}{s^2} K_5)}
+ H(s) = \frac{\frac{1}{s} (K_1+K_3 + \frac{1}{s}(K_2+K_4) + \frac{1}{s^2} K_5)}{1+\frac{1}{s} (K_1+K_3 + \frac{1}{s}(K_2+K_4) + \frac{1}{s^2} K_5)}
 \end{equation}
 
 \begin{equation}
- H(s) = \frac{s^2(\frac{K_1}{T}+K_3) + s(\frac{K_2}{T}+K_4) + K_5}
- {s^3+ s^2(\frac{K_1}{T}+K_3)+ s(\frac{K_2}{T}+K_4) + K_5}
+ H(s) = \frac{s^2(K_1+K_3) + s(K_2+K_4) + K_5}
+ {s^3+ s^2(K_1+K_3)+ s(K_2+K_4) + K_5}
 \end{equation}
 \clearpage
 
@@ -214,23 +211,94 @@ s \approx \Big(\frac{z-1}{Tz}\Big)
 \frac{T z \left(K_{1} \left(z - 1\right)^{2} + K_{3} t \left(z - 1\right)^{2} + K_{5} T^{2} t z^{2} + T z \left(K_{2} + K_{4} t\right) \left(z - 1\right)\right)}{T z \left(K_{1} \left(z - 1\right)^{2} + K_{3} t \left(z - 1\right)^{2} + K_{5} T^{2} t z^{2} + T z \left(K_{2} + K_{4} t\right) \left(z - 1\right)\right) + t \left(z - 1\right)^{3}}
 \end{equation}
 
+For 10,32 8ms CohInt and 8ms update rate
+
+\begin{equation}
+\frac{1.0 z \left(30.5 z^{2} - 57.9 z + 27.5\right)}{31.5 z^{3} - 60.9 z^{2} + 30.5 z - 1.0}
+\end{equation}
+
 
 \cite{arashBook}
 \clearpage
+
+
 \subsection{Bilinear}
 
+\subsubsection{Transform}
+\begin{equation}
+\frac{2 z - 2}{T \left(z + 1\right)}
+\end{equation}
+
+OL TF BN = 32,10
+
+\subsubsection{S Domain open loop}
+\begin{equation}
+\frac{1}{s} \left(\frac{K_{1}}{t} + K_{3} + \frac{K_{5}}{s^{2}} + \frac{1}{s} \left(\frac{K_{2}}{t} + K_{4}\right)\right)
+\end{equation}
+
+\subsubsection{Z Domain open loop}
+
+\begin{equation}
+\frac{T\left(z + 1\right) }{8 t \left(z - 1\right)^{3}} \left(4(K_{1}  + K_{3} t)  \left(z - 1\right)^{2}  + 2 T \left(K_{2} + K_{4} t\right) \left(z - 1\right) \left(z + 1\right) + K_{5} T^{2} t \left(z + 1\right)^{2} \right)
+\end{equation}
+
+\subsubsection{Z Domain open loop 2}
+\begin{equation}
+\frac{\left(z + 1\right)}{8 \left(z - 1\right)^{3}} \left(4(K_{1}  + K_{3} t)  \left(z - 1\right)^{2} + 2 t \left(K_{2} + K_{4} t\right) \left(z - 1\right) \left(z + 1\right) + K_{5} t^{3} \left(z + 1\right)^{2}\right)
+\end{equation}
+
+
+
+
+
+
+\subsubsection{S Domain Open Loop with values (32,10,8ms)}
+\begin{equation}
+\frac{1}{s^{3}} \left(3.43 \cdot 10^{3} s^{2} + 4.63 \cdot 10^{4} s + 6.79 \cdot 10^{4}\right)
+\end{equation}
+
+
+\subsubsection{Z Domain Open Loop with values (32,10,8ms,125Hz)}
+\begin{equation}
+\frac{14.5 z^{3} - 13.0 z^{2} - 14.5 z + 13.0}{1.0 z^{3} - 3.0 z^{2} + 3.0 z - 1.0}
+\end{equation}
+
+
+
+
+
+\subsubsection{Z Domain closed loop}
+\begin{equation}
 \frac{T \left(z + 1\right) \left(4 K_{1} \left(z - 1\right)^{2} + 4 K_{3} t \left(z - 1\right)^{2} + K_{5} T^{2} t \left(z + 1\right)^{2} + 2 T \left(K_{2} + K_{4} t\right) \left(z - 1\right) \left(z + 1\right)\right)}{T \left(z + 1\right) \left(4 K_{1} \left(z - 1\right)^{2} + 4 K_{3} t \left(z - 1\right)^{2} + K_{5} T^{2} t \left(z + 1\right)^{2} + 2 T \left(K_{2} + K_{4} t\right) \left(z - 1\right) \left(z + 1\right)\right) + 8 t \left(z - 1\right)^{3}}
+\end{equation}
 
 
-\frac{7.05247536717789 z^{3} - 6.67966310868464 z^{2} - 7.05030356097697 z + 6.68183491489099}{8.05247536717789 z^{3} - 9.67966310868464 z^{2} - 4.05030356097697 z + 5.68183491489099}
+
+
+For 10,32 8ms CohInt and 8ms update rate
+
+
+
+\begin{equation}
+\frac{14.5 z^{3} - 13.0 z^{2} - 14.5 z + 13.0}{15.5 z^{3} - 16.0 z^{2} - 11.5 z + 12.0}\end{equation}
 \clearpage
+
+
 \section{Forward difference}
+
+\begin{equation}
 \frac{K_{1} \left(z - 1\right)^{2} + K_{3} t \left(z - 1\right)^{2} + K_{5} t^{3} + t \left(K_{2} + K_{4} t\right) \left(z - 1\right)}{K_{1} \left(z - 1\right)^{2} + K_{3} t \left(z - 1\right)^{2} + K_{5} t^{3} + t \left(K_{2} + K_{4} t\right) \left(z - 1\right) + \left(z - 1\right)^{3}}
+\end{equation}
 
 
-\frac{6705675966.29209 z^{3} - 19393120765.5002 z^{2} + 18677697250.1105 z - 5990252450.90247}{244140625.0 z^{4} + 5729113466.29209 z^{3} - 17928277015.5002 z^{2} + 17701134750.1105 z - 5746111825.90247}
+For 10,32 8ms CohInt and 8ms update rate
+
+\begin{equation}
+\frac{6.71 \cdot 10^{9} z^{2} - 1.27 \cdot 10^{10} z + 5.99 \cdot 10^{9}}{2.44 \cdot 10^{8} z^{3} + 5.97 \cdot 10^{9} z^{2} - 1.2 \cdot 10^{10} z + 5.75 \cdot 10^{9}}
+\end{equation}
+
+
 \clearpage
-
 
 \section{Ward analysis}
 
@@ -307,7 +375,7 @@ c & = 2.99792458 \times 10^8 ms^{-1}
 
 Where:
 \begin{align*}
-\sigma_A(\tau) &= 10 \times 10^{-10} \text{ (dimensionless units of }\Delta f/f\text{)}
+\sigma_A(\tau) &= 1 \times 10^{-10} \text{ (dimensionless units of }\Delta f/f\text{)}
 \end{align*}
 
 From \cite{VT803Datasheet}
@@ -338,6 +406,42 @@ For $B_n$ =18, we have $\theta_{A3}=1.4\degree$.
     \includegraphics[width=1\textwidth]{mywork/PLLStresses.eps} 
     \caption{This plot breaks down the sources of error. Note that the phase jitter is at a minimum for a value of $B_n$ equal to approximately 27.}
 \end{figure}
+
+
+Optimising to find the minimum
+
+\begin{equation}
+\sigma_{PLL} = \sqrt{\frac{Bn}{C/N_0} \left(3280 + \frac{1640}{C/N_0 \cdot T}\right) + 4 + \frac{635}{Bn^{2}}} + \frac{304 Jerk}{Bn^{3}}
+\end{equation}
+
+
+\begin{equation}
+\sigma_{PLL}^2 = \frac{Bn}{C/N_0} \left(3280 + \frac{1640}{C/N_0 \cdot T}\right) + 4 + \frac{635}{Bn^{2}} + \frac{Jerk^{2}}{Bn^{6}} 9.26 \cdot 10^{4}
+\end{equation}
+
+
+\begin{equation}
+0=\frac{1}{C/N_0} \left(3280 + \frac{1640}{C/N_0 \dot T}\right) - \frac{1}{Bn^{3}} 1.27 \cdot 10^{3} - \frac{Jerk^{2}}{Bn^{7}} 5.56 \cdot 10^{5}
+\end{equation}
+
+
+\begin{equation}
+0=Bn^{7} \left(\frac{1}{C/N_0} \left(3280 + \frac{1640}{C/N_0 \cdot T}\right) - \frac{1}{Bn^{3}} 1.27 \cdot 10^{3} - \frac{Jerk^{2}}{Bn^{7}} 5.56 \cdot 10^{5}\right)
+\end{equation}
+
+
+
+\begin{equation}
+0=\frac{3280 Bn^{7}}{C/N_0} + \frac{1640 Bn^{7}}{C/N_0^{2} \cdot T} - 1.27 \cdot 10^{3} Bn^{4} - 5.56 \cdot 10^{5} Jerk^{2}
+\end{equation}
+
+
+
+\begin{equation}
+0=(\frac{3280}{C/N_0} + \frac{1640}{C/N_0^{2} \cdot T})Bn^{7}  - 1.27 \cdot 10^{3} Bn^{4} - 5.56 \cdot 10^{5} Jerk^{2}
+\end{equation}
+
+
 
 
 \subsection{FLL}
@@ -447,7 +551,7 @@ A range of simulations were created in order to better understand the performanc
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{PolarisCharts/3Polaris.eps} 
-    \caption{An example of a simulation. The receiver undergoes a sequence of increasing accelerations, which }
+    \caption{An example of a simulation. This scenario, called  "HIGHG3" is designed to stress test the receiver by exposing it to high dynamics, in particular velocities of up to 9,000m/s and 15g. The scenario was generated using the \emph{SimGen} software which can be seen in figure \ref{fig:HighGScreenshot}.}
     \label{fig:Polaris3}
 \end{figure}
 
@@ -455,7 +559,7 @@ A range of simulations were created in order to better understand the performanc
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{mywork/Spirent-GSS8000.jpg} 
-    \caption{An example of a Spirent \ac{GPS} simulator. The actual model used differs from the one pictured.}
+    \caption{An example of a Spirent \ac{GPS} simulator. The actual model used for this research differs from the one pictured. The simulator is controlled by a tethered computer, which runs the \emph{SimGen} software, pictured in figure \ref{:HighGScreenshot}.}
     \label{fig:Spirent}
 \end{figure}
 
@@ -463,7 +567,7 @@ A range of simulations were created in order to better understand the performanc
     \centering
     \includegraphics[width=1\textwidth]{mywork/HighGScreenshot.png} 
     \caption{The SimGen software, used to define scenarios and control the \ac{GNSS} simulator.}
-    \label{fig:HighGScreenshot}
+    \label{:HighGScreenshot}
 \end{figure}
 
 

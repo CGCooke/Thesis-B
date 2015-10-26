@@ -89,8 +89,8 @@ Analog PLLs provide a useful abstraction for the development and analysis of Dig
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{LitReview/DopplerShift7.eps} 
-    \caption{The raw output from the receiver while it is operating over a 10 second period. 
-    The receiver is stationary, and tracking a live satellite.}
+    \caption{The raw output from the \ac{NAMURU} receiver while it is operating over a 10 second period. 
+    The receiver is stationary, and tracking a live satellite. Note that the this data was extracted using the KeaDebug feature, and is quantised to 1Hz resolution before transmission to the host computer. The NCO is capable of mHz resolution.}
     \label{fig:DopplerShiftStationary}
 \end{figure}
 
@@ -125,7 +125,7 @@ Analog PLLs provide a useful abstraction for the development and analysis of Dig
     \item{Significant jerk}
     \end{enumerate}
     
-    From table \ref{tab:LoopOrders} we can observe what order of dynamics different loop types are sensitive to. Ultimately, a trade-off exists between filter order and stability. Type 1 \& 2 filters are unconditionally stable in the Laplace domain, however they are not as effective as type 3 loops at coping with dynamics. For example, the residual error of a type 2 loop is acceleration. This makes it unsuitable for any application where sustained acceleration is likely to be encountered, as the error will increase over time, until phase lock is lost. However, type 2 are effectively insensitive to velocity, this is because the integrator in the loop filter contains and estimate of the Doppler shift due the current velocity. In most real world scenarios, sustained acceleration is limited, due to limits on maximum achievable velocities. For space based applications however, velocities of thousands of meters per second are routinely achieved. Hence while a type 2 loop may be suitable for terrestrial applications, a type 3 loop is typically required for spaced based applications. A type 3 loop is insensitive to acceleration and velocity, because the loop filter contains a pair of integrators. One of the integrators contains an estimate of the current velocity, the other of the current acceleration\cite{Kaplan}. 
+    From table \ref{tab:LoopOrders} we can observe what order of dynamics different loop types are sensitive to. Ultimately, a trade-off exists between filter order and stability. Type 1 \& 2 filters are unconditionally stable in the Laplace domain, however they are not as effective as type 3 loops at coping with dynamics. For example, the residual error of a type 2 loop is acceleration. This makes it unsuitable for any application where sustained acceleration is likely to be encountered, as the error will increase over time, until phase lock is lost. However, type 2 filters are effectively insensitive to velocity, this is because the integrator in the loop filter contains and estimate of the Doppler shift due the current velocity. In most real world scenarios, sustained acceleration is limited, due to limits on maximum achievable velocities. For space based applications however, velocities of thousands of meters per second are routinely achieved. Hence while a type 2 loop may be suitable for terrestrial applications, a type 3 loop is typically required for spaced based applications. A type 3 loop is insensitive to acceleration and velocity, because the loop filter contains a pair of integrators. One of the integrators contains an estimate of the current velocity, the other of the current acceleration\cite{Kaplan}. 
     
     \input{Tables/LoopOrders}
     

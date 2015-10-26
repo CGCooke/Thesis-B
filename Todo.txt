@@ -1,13 +1,12 @@
-Rework Lit Review
-Write PLL chapter
-Rework myworkThesisA
+There is possibly something very wrong with the t factor.
+
+
+
 
 Rework conclusion
 Move stuff from myworkThesisA to Namuru
 Put in an example for re-entry
 
-Put in FLL stuff
-Put in PLL/FLL stuff for other loop orders.
 
 Improvement 
 For Jerk CNO = 45

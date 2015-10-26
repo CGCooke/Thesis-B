@@ -1,4 +1,4 @@
-\addcontentsline{toc}{chapter}{Appendix 8}
+\addcontentsline{toc}{chapter}{Vibrations}\label{ch:Vibrations}
 \chapter{Vibrations}
 
 \begin{comment}
@@ -36,19 +36,19 @@ There are 4 main strategies for mitigation.
 \end{itemize}
 
 \subsubsection{Part specification}
-Correctly specifying a receiver with a low g-sensitivity is an effectiv method of reducing the effects of vibration on the reciever. With the current \ac{XO} used on the \ac{NAMURU} board, there is a degree of uncertinty regarding the effect of vibration, because the g-sensitivity is not specified. This is somewhat troublesome, given that it is possible that the sensitivity of different crystals from different batches may differ. Hence a reciever may fail in the field due to vibrations, while a nominally identicall reciever used for development and testing may operate satisfactraly. By chosing parts which meets a minimal standard for g-sensitivity, increased confidence in the performance of the reciever can be gained, at the cost of increased financial outlay. 
+Correctly specifying a receiver with a low g-sensitivity is an effective method of reducing the effects of vibration on the receiver. With the current \ac{XO} used on the \ac{NAMURU} board, there is a degree of uncertainty regarding the effect of vibration, because the g-sensitivity is not specified. This is somewhat troublesome, given that it is possible that the sensitivity of different crystals from different batches may differ. Hence a receiver may fail in the field due to vibrations, while a nominally identical receiver used for development and testing may operate satisfactorily. By choosing parts which meets a minimal standard for g-sensitivity, increased confidence in the performance of the receiver can be gained, at the cost of increased financial outlay. 
 
 \subsubsection{Orientation}
-Quartz crystals are anisotropic in nature, so it is not unexpected that the frequency shift is a function of the direction of acceleration. For a typical crystal which is cut for use in g-sensitive applications, there is approximately a two fold difference between the sensitivity between the most and least sensitive axis \cite{CrystalVibration}. Hence judicious orientation of the crystal or receiver can have a significant impact on performance. In the case of liquid fueled rockets, one insidious form of vibration is POGO, a type of self excited combustion osciallation in liquid fuled rocket engines\cite{Pogo}. 
+Quartz crystals are anisotropic in nature, so it is not unexpected that the frequency shift is a function of the direction of acceleration. For a typical crystal which is cut for use in g-sensitive applications, there is approximately a two fold difference between the sensitivity between the most and least sensitive axis \cite{CrystalVibration}. Hence judicious orientation of the crystal or receiver can have a significant impact on performance. In the case of liquid fueled rockets, one insidious form of vibration is POGO, a type of self excited combustion oscillation in liquid fueled rocket engines\cite{Pogo}. 
 
 While this type of vibration has largely been eliminated through careful engineering design, in a system which may be su
 
 
 \subsubsection{Mechanical isolation}
-By mounting the PCB which the \ac{NAMURU} receiver is mounted on in an approiate matter, vibratoins can be mechanically suppressed. Judicious application of mechanical dampers where the board is mounted can be effective in preventing the transmission of high frequency vibrations to the board. 
+By mounting the PCB which the \ac{NAMURU} receiver is mounted on in an appropriate manner, vibrations can be mechanically suppressed. Judicious application of mechanical dampers where the board is mounted can be effective in preventing the transmission of high frequency vibrations to the board. 
 
 \subsubsection{Electrical compensation}
-Electrical compensation uses an acceleromter to bias the output from the crystal depending on the acceleration being experiened. This method is an analog for the control scheme used in an \ac{TCXO} \cite{CrystalVibration}. 
+Electrical compensation uses an accelerometer to bias the output from the crystal depending on the acceleration being experienced. This method is an analog for the control scheme used in an \ac{TCXO} \cite{CrystalVibration}. 
 
 
 \subsection{Determining g-sensitivity}
@@ -85,12 +85,11 @@ g-sensitivity values [1]. With such reduced levels of
 acceleration sensitivity, the need has arisen for a
 measurement system with appropriately higher resolution.
 The most obvious method for determination of g-sensitivity
-for a stable ovenized oscillator is the '2g tip over
+for a stable ovenised oscillator is the '2g tip over
 test', where the whole oscillator is simply inverted, resulting
 in an incremental 2g change in the internal forces applied to
 the resonator [2]. However, since the changes are in the
-order of 1.10-9 per g, the oscillator temperature must be prestabilized,
-and this can be a long process. With this method,
+order of 1.10-9 per g, the oscillator temperature must be prestabilised, and this can be a long process. With this method,
 care must also be taken to avoid convectional temperature
 effects in the oven cavity, which can cause misleading
 results.
@@ -167,7 +166,6 @@ f_m &= \text{random vibration modulation frequency in Hz} \\
 P(f_m) &= \text{power curve of the random vibration in }g^2/Hz \text{ as a function of } f_m \\
 g &= \text{acceleration due to gravity} \approx 9.8 m/s^2
 \end{align*}
-
 
 
 \begin{itemize}

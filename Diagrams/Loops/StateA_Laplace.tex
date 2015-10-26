@@ -16,20 +16,11 @@ pinstyle/.style = {pin edge={to-,thin,black}
     cm](Rotator){\Large$+$};
     
     %FLL Stuff
-    \node [block, right of=Rotator,node distance=3cm] (DiscriminatorFLL) {$\frac{d}{dt}$};
-    \node [block, right of=DiscriminatorFLL] (SamplingTime){$\frac{1}{T}$};
+    \node [block, right of=Rotator,node distance=3cm] (DiscriminatorFLL) {$S$};
     \node [block, below of = DiscriminatorFLL,node distance =6cm](K1FLL){$K_{1}$};
-    
-    
-    
-    \node [block, below of = Rotator](VCO){$\displaystyle \int$};
-    
-    
-    
+    \node [block, below of = Rotator](VCO){$\frac{1}{S}$};
     \node [block, below of = VCO](VCOGain){$K_{VCO}$};
-    
-    
-    \node [block, below of = VCOGain](VCOIntegrator){$\displaystyle \int$};
+    \node [block, below of = VCOGain](VCOIntegrator){$\frac{1}{S}$};
     
     
     %Common
@@ -37,9 +28,7 @@ pinstyle/.style = {pin edge={to-,thin,black}
     
     %FLL Stuff
     \draw [->] (Rotator) -- node{$\phi_{Error}$} (DiscriminatorFLL);
-    \draw [->] (DiscriminatorFLL) -- node{} (SamplingTime);
-    
-    \draw [-] (SamplingTime) |- node{$f_{Error}$} (K1FLL);
+    \draw [->] (DiscriminatorFLL) -- node{$f_{Error}$} (K1FLL);
   
     \draw [->] (K1FLL) -- node{} (VCOIntegrator);
     \draw [->] (VCOIntegrator) -- node{} (VCOGain);

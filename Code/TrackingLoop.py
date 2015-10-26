@@ -13,9 +13,13 @@ class InitGpsSignal():
 		self.PrevISample = 0
 		self.PrevQSample = 0
 
-		self.FrequencyEstimate  = 0 #Estimate of frequency based on the change in phase between two samples, divided by the time difference. 
+		self.FrequencyEstimate  = 0 #Estimate of frequency \
+		#based on the change in phase between two samples, \
+		#divided by the time difference. 
 		self.FreqHzFiltered = 0
-		self.SumFreqHz = 0 #Integral of DeltaFreqHz, it's an Integral of the estimate of the frequency, (Phase)
+		self.SumFreqHz = 0 #Integral of DeltaFreqHz, \
+		#it's an Integral of the estimate of the frequency,\
+		#(Phase)
 		self.AbsFreqHzFiltered = 0
 		
 		self.Phase = 0
@@ -35,18 +39,19 @@ class InitGpsSignal():
 		self.PLLBW = PLLBW
 
 		self.CarrierDcoFreq = 80
-		self.DopplerHistHzS = [self.CarrierDcoFreq,self.CarrierDcoFreq,self.CarrierDcoFreq]
+		self.DopplerHistHzS = [self.CarrierDcoFreq,\
+		self.CarrierDcoFreq,self.CarrierDcoFreq]
 
 def TrackingLoop(Prompt,GpsSignal):
 	GpsSignal.CurrentISample = np.real(Prompt)
 	GpsSignal.CurrentQSample = np.imag(Prompt)
 
-	# 'CarrierTrackingLoop' performs the carrier tracking loop.
-
-	# The carrier tracking loop requires pairs of samples in order to
-	# allow an FLL assisted PLL to be implemented while using independent
-	# frequency and phase estimates.  This is handled through the use of
-	# the 'Mod2' flag that is toggled as each sample is received.
+	#The carrier tracking loop requires pairs
+	#of samples in order to allow an FLL assisted
+	#PLL to be implemented while using independent
+	#frequency and phase estimates.  This is 
+	#handled through the use of the 'Mod2' flag
+	#that is toggled as each sample is received.
 	
 	cNoLock = 0
 	cCodeLock = 1
@@ -60,17 +65,22 @@ def TrackingLoop(Prompt,GpsSignal):
 		
 		#Frequency proportional term
 		if (GpsSignal.FLLCount>16):
-			GpsSignal.FrequencyEstimate = Phase2Quadrant/(GpsSignal.coherentIntegrationTime*0.001)
+			GpsSignal.FrequencyEstimate = \
+			Phase2Quadrant/(GpsSignal.\
+			coherentIntegrationTime*0.001)
 		else:
-			GpsSignal.FrequencyEstimate = Phase4Quadrant/(GpsSignal.coherentIntegrationTime*0.001)
+			GpsSignal.FrequencyEstimate = \
+			Phase4Quadrant/(GpsSignal.\
+			coherentIntegrationTime*0.001)
 		
 		if (GpsSignal.FLLCount>=16):          # Settling time
 			#Frequency Integral term
 			GpsSignal.SumFreqHz +=  GpsSignal.FrequencyEstimate
 
-		# Update filtered absolute frequency error that is used to 
-		# determine when the FLL is locked, where the filter has been 
-		# designed to avoid a long startup transient.         
+		# Update filtered absolute frequency error
+		#that is used to determine when the FLL is
+		#locked, where the filter has been designed 
+		#to avoid a long startup transient.         
 
 		computeAbsFreqHzFiltered(GpsSignal)
 
@@ -117,19 +127,25 @@ def FLLDiscriminator(GpsSignal):
 	#To do this employ an 'atan(Cross,Dot)' frequency estimator.
 	#See Table 5.4, Page 171 of Kaplan
 	
-	dot = (GpsSignal.CurrentISample*GpsSignal.PrevISample) + (GpsSignal.CurrentQSample*GpsSignal.PrevQSample)
-	cross = (GpsSignal.CurrentQSample*GpsSignal.PrevISample) - (GpsSignal.CurrentISample*GpsSignal.PrevQSample)
+	dot = (GpsSignal.CurrentISample*GpsSignal.PrevISample)\
+	+ (GpsSignal.CurrentQSample*GpsSignal.PrevQSample)
+	cross = (GpsSignal.CurrentQSample*GpsSignal.PrevISample)\
+	- (GpsSignal.CurrentISample*GpsSignal.PrevQSample)
 	Phase4Quadrant,Phase2Quadrant = ATanCycles(cross,dot)
 	return(Phase4Quadrant,Phase2Quadrant)
 
 def PLLDiscriminator(GpsSignal):
 	# Estimate noisy phase for the PLL loop.
-	# The phase estimate is calculated every second coherent integration
-	# period using the decision directed coherent sum of the two previous 
-	# samples.
+	# The phase estimate is calculated every
+	# second coherent integration period using
+	# the decision directed coherent sum
+	# of the two previous samples.
 	
-	#This is equivilant to Z_k*conj(Z_(k-1)), and tests if the vectors are less than +/- 90 degrees apart
-	dot = (GpsSignal.CurrentISample*GpsSignal.PrevISample) + (GpsSignal.CurrentQSample*GpsSignal.PrevQSample)
+	#This is equivilant to Z_k*conj(Z_(k-1)), and tests if 
+	#the vectors are less than +/- 90 degrees apart
+	
+	dot = (GpsSignal.CurrentISample*GpsSignal.PrevISample)\
+	+ (GpsSignal.CurrentQSample*GpsSignal.PrevQSample)
 	
 	if (dot>0):
 		ReTerm = GpsSignal.PrevISample + GpsSignal.CurrentISample
@@ -159,33 +175,35 @@ def ATanCycles(ValueY,ValueX):
 	return(ATan4Quadrant,ATan2Quadrant)
 
 def DetermineTrackingMode(GpsSignal):
-	#--------------------------------------------------------------------------
-	## DetermineTrackingMode
-	# 'DetermineTrackingMode' is used to select the type of tracking that the 
-	#  receiver should be trying to perform.  This is done by examining the
-	#  various metrics that are maintained by the receiver, including the 
-	#  filtered 'dot' and 'cross' terms, as well the as the filtered value of
-	#  absolute residual phase.  These can then be used to determine whether
-	#  frequency lock and phase lock have been achieved.
+	# DetermineTrackingMode
+	# 'DetermineTrackingMode' is used to select the type of
+	# tracking that the receiver should be trying to perform.
+	# This is done by examining the various metrics that are
+	# maintained by the receiver, including the filtered 'dot'
+	# and 'cross' terms, as well the as the filtered value of
+	# absolute residual phase.  These can then be used to 
+	# determine whether frequency lock and phase lock have 
+	# been achieved.
 
-	#   One danger with this approach is that if 'CodeLock' is lost for
-	#  any reason, the carrier phase will be reset.  However, 'CodeLock'
-	#  is determined by measuring the average absolute tracking error
-	#  and a micro-jump or activity dip on the TCXO occurs, then a glitch
-	#  in the tracking error may well occur.  However, this need not be 
-	#  fatal, provided the tracking loop can adapt sufficiently quickly
-	#  and the filtering on 'AbsErrorChipsSFiltered' removes the worst of the 
-	#  tracking error.
+	# One danger with this approach is that if 'CodeLock' 
+	# is lost for any reason, the carrier phase will be reset.
+	# However, 'CodeLock' is determined by measuring the average
+	# absolute tracking error and a micro-jump or activity dip on
+	# the TCXO occurs, then a glitch in the tracking error may
+	# well occur.  However, this need not be fatal, provided the
+	# tracking loop can adapt sufficiently quickly and the 
+	# filtering on 'AbsErrorChipsSFiltered' removes the worst of 
+	# the tracking error.
 	#
-	#  The lock indicator for the PLL in this code requires that the 
-	#  maximum measured instantaneous phase error be within 30 degrees
-	#  20 times within the last 32 measurements. Note that this is quite
-	#  a loose definition of phase lock compared to the lock indicator
-	#  described by Van Dierendonck. The Van Dierendonck PLL lock-indicator
-	#  requires that (I*I-Q*Q)/(I*I + Q*Q)>0.4, which can be shown to be
-	#  equivalent to requiring that the instantaneous phase angle always be
-	#  within 33 degrees.
-
+	# The lock indicator for the PLL in this code requires
+	# that the maximum measured instantaneous phase error be
+	# within 30 degrees 20 times within the last 32 measurements.
+	# Note that this is quite a loose definition of phase lock
+	# compared to the lock indicator described by Van Dierendonck.
+	# The Van Dierendonck PLL lock-indicator requires that 
+	# (I*I-Q*Q)/(I*I + Q*Q)>0.4, which can be shown to be 
+	# equivalent to requiring that the instantaneous phase 
+	# angle always be within 33 degrees.
 
 	# Defines
 	cCodeLock = 1
@@ -194,12 +212,12 @@ def DetermineTrackingMode(GpsSignal):
  
 	FreqErrorThreshold = 30 #Hz
 	MinNumberMeasurements = 32 #counts
-	NumSamplesWithinTolerence = 20 #At least this many samples must be within tolorence
+	NumSamplesWithinTolerence = 20 #At least this many 
+	#samples must be within tolorence
 
-	FreqLock = (GpsSignal.AbsFreqHzFiltered < FreqErrorThreshold) and (GpsSignal.FLLCount > MinNumberMeasurements)
+	FreqLock = (GpsSignal.AbsFreqHzFiltered < FreqErrorThreshold)\
+	 and (GpsSignal.FLLCount > MinNumberMeasurements)
 	
-	#PhaseLt30Deg = abs(GpsSignal.Phase2Quadrant)<(1.0/12.0) #+/- 30 degrees
-
 	if abs(GpsSignal.Phase2Quadrant)<(1.0/12.0): #+/- 30 degrees
 		GpsSignal.PhaseWithinLimits.append(1)
 	else:
@@ -208,9 +226,11 @@ def DetermineTrackingMode(GpsSignal):
 	if (len(GpsSignal.PhaseWithinLimits)>MinNumberMeasurements):
 		GpsSignal.PhaseWithinLimits.pop(0)
 		
-	PhaseLt30Deg=(GpsSignal.PhaseWithinLimits.count(1) > NumSamplesWithinTolerence)
+	PhaseLt30Deg=(GpsSignal.PhaseWithinLimits.count(1)\
+	 > NumSamplesWithinTolerence)
 	
-	PhaseLock = FreqLock and PhaseLt30Deg and GpsSignal.PLLCount > MinNumberMeasurements
+	PhaseLock = FreqLock and PhaseLt30Deg and \
+	GpsSignal.PLLCount > MinNumberMeasurements
 
 	GpsSignal.FLLCount += 1
 	
@@ -227,14 +247,18 @@ def DetermineTrackingMode(GpsSignal):
 		GpsSignal.TrackMode = cPhaseLock
 		
 def GetLoopParameters(LoopType,GpsSignal):
-	# FLL and PLL coefficients for 2nd order FLL and 3rd order PLL, both 
-	# normalised for 1 Hz noise bandwidth and a sample period of 1 ms.
-	# These values come straight out of Chapter 5 of  'Understanding GPS:
-	# Principles and Applications:2nd Edition', although the coefficients
-	# have been normalised for unit noise bandwidth and unit predetection
-	# integration (assuming use of 'paired' samples, so consecutive pairs
-	# are used to estimate frequency and the decision directed sum of those 
-	# pairs the phase).  This explains the factor of 2 in (2*0.001), where 
+	# FLL and PLL coefficients for 2nd order FLL
+	# and 3rd order PLL, both normalised for 1 Hz
+	# noise bandwidth and a sample period of 1 ms. 
+	# These values come straight out of Chapter 5 
+	# of  'Understanding GPS: Principles and 
+	# Applications:2nd Edition', although the 
+	# coefficients have been normalised for unit 
+	# noise bandwidth and unit predetection integration 
+	# (assuming use of 'paired' samples, so consecutive p
+	# airs are used to estimate frequency and the 
+	# decision directed sum of those pairs the phase).
+	# This explains the factor of 2 in (2*0.001), where 
 	# the 0.001 indicates 1 ms.
 
 	PLLBW = GpsSignal.PLLBW
@@ -250,7 +274,6 @@ def GetLoopParameters(LoopType,GpsSignal):
 	a3 = 1.1
 	b3 = 2.4
 
-	#What is this value of T meant to be?
 	T = (2*0.001)
 
 	FLL1Bn = 5
@@ -271,18 +294,16 @@ def GetLoopParameters(LoopType,GpsSignal):
 	PLL2WithFLL1Assist = False
 	PureFLL = False   
 
-	#Possibly move this to another function
 	# Select tracking loop parameters
 	if (GpsSignal.TrackMode==cCodeLock):
 		PureFLL = True     
 	elif (GpsSignal.TrackMode==cFreqLock):
 		PLL2WithFLL1Assist = True
-	elif (GpsSignal.TrackMode==cPhaseLock):
+	elif(GpsSignal.TrackMode==cPhaseLock):
 		if (GpsSignal.PLLCount<192):
 			PLL2WithFLL1Assist = True
 		else:
 			PLL3WithFLL2Assist = True
-
 		if (GpsSignal.PLLCount==192):
 			GpsSignal.SumFreqHz = 0
 			GpsSignal.SumPhase2Quadrant = 0
@@ -291,23 +312,25 @@ def GetLoopParameters(LoopType,GpsSignal):
 	if (PLL3WithFLL2Assist==True):
 		if (LoopType==1): # FLL
 			LoopCoef[0] = 0
-			LoopCoef[1] = (FLLBW*FLL2C1)*GpsSignal.coherentIntegrationTime
-			LoopCoef[2] = (FLLBW**2 *FLL2C2)*GpsSignal.coherentIntegrationTime**2
+			LoopCoef[1] = (FLLBW*FLL2C1)* \
+			GpsSignal.coherentIntegrationTime
+			LoopCoef[2] = (FLLBW**2 *FLL2C2)* \
+			GpsSignal.coherentIntegrationTime**2
 		elif (LoopType==2): # PLL
-			LoopCoef[0] = (PLLBW*PLL3C0)#+(FLLBW*FLL2C1)*GpsSignal.coherentIntegrationTime
-			LoopCoef[1] = (PLLBW**2 *PLL3C1)*GpsSignal.coherentIntegrationTime#+(FLLBW**2 *FLL2C2)*GpsSignal.coherentIntegrationTime**2
-			LoopCoef[2] = (PLLBW**3 *PLL3C2)*GpsSignal.coherentIntegrationTime**2
+			LoopCoef[0] = (PLLBW*PLL3C0)
+			LoopCoef[1] = (PLLBW**2 *PLL3C1)* \
+			GpsSignal.coherentIntegrationTime
+			LoopCoef[2] = (PLLBW**3 *PLL3C2)* \ 
+			GpsSignal.coherentIntegrationTime**2
 	elif (PLL2WithFLL1Assist==True):
-		#PLLBW = 18
-		#FLLBW = 1
-
 		if (LoopType==1): # FLL
 			LoopCoef[0] = 0
 			LoopCoef[1] = (FLL1Bn*FLL1C1)
 			LoopCoef[2] = 0
 		elif (LoopType==2): # PLL
 			LoopCoef[0] = (PLL2Bn*PLL2C0)
-			LoopCoef[1] = (PLL2Bn**2 *PLL2C1)*GpsSignal.coherentIntegrationTime
+			LoopCoef[1] = (PLL2Bn**2 *PLL2C1)* \
+			GpsSignal.coherentIntegrationTime
 			LoopCoef[2] = 0
 	elif (PureFLL==True):
 		if (LoopType==1):
@@ -331,7 +354,8 @@ def limitPhaseAngle(phase):
 
 def computeAbsFreqHzFiltered(GpsSignal):
 	#AbsFreqHzFiltered is used for determining code lock 
-	AbsDeltaFreqHz = abs(GpsSignal.FrequencyEstimate)-GpsSignal.AbsFreqHzFiltered
+	AbsDeltaFreqHz = abs(GpsSignal.FrequencyEstimate)\
+	-GpsSignal.AbsFreqHzFiltered
 
 	if (GpsSignal.FLLCount<2):
 		weightingFactor=1
@@ -343,24 +367,35 @@ def computeAbsFreqHzFiltered(GpsSignal):
 		weightingFactor= 0.125
 	else:
 		weightingFactor= 0.0625
-	GpsSignal.AbsFreqHzFiltered += weightingFactor*(abs(GpsSignal.FrequencyEstimate)-GpsSignal.AbsFreqHzFiltered)
+	GpsSignal.AbsFreqHzFiltered += weightingFactor* \
+	(abs(GpsSignal.FrequencyEstimate)- \
+	GpsSignal.AbsFreqHzFiltered)
 
 def LoopFilters(GpsSignal):
 	DcoFreq = GpsSignal.DcoFreq
 
 	#FLL
 	LoopCoef = GetLoopParameters(1, GpsSignal)
-	ProportionalTermFLL  = (LoopCoef[1]*GpsSignal.FrequencyEstimate)    #Proportional
-	IntegralTermFLL = (LoopCoef[2]*GpsSignal.SumFreqHz) #Integral
+	ProportionalTermFLL  = (LoopCoef[1] \ 
+	*GpsSignal.FrequencyEstimate)#Proportional
+	IntegralTermFLL = (LoopCoef[2] \
+	*GpsSignal.SumFreqHz) #Integral
 
 	#PLL
 	LoopCoef = GetLoopParameters(2,GpsSignal)
-	DifferentialTermPLL = (LoopCoef[0]*GpsSignal.DeltaPhase2Quadrant) #Differential
-	ProportionalTermPLL = (LoopCoef[1]*GpsSignal.Phase2Quadrant) #Proportional 
-	IntegralTermPLL = (LoopCoef[2]*GpsSignal.SumPhase2Quadrant) #Integral
+	DifferentialTermPLL = (LoopCoef[0] \
+	*GpsSignal.DeltaPhase2Quadrant) #Differential
+	ProportionalTermPLL = (LoopCoef[1] \ 
+	*GpsSignal.Phase2Quadrant) #Proportional 
+	IntegralTermPLL = (LoopCoef[2] \ 
+	*GpsSignal.SumPhase2Quadrant) #Integral
 
 	#Integrating up
-	DcoFreq +=  ProportionalTermFLL  + IntegralTermFLL +  DifferentialTermPLL + ProportionalTermPLL + IntegralTermPLL
-
+	DcoFreq +=  ProportionalTermFLL  \
+	+ IntegralTermFLL \
+	+  DifferentialTermPLL \
+	+ ProportionalTermPLL \
+	+ IntegralTermPLL
+	
 	GpsSignal.DopplerHistHzS[0] = DcoFreq
 

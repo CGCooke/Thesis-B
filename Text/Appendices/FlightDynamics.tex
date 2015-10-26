@@ -1,4 +1,4 @@
-\addcontentsline{toc}{chapter}{Appendix 1}\label{ch:FlightDynamics}
+\addcontentsline{toc}{chapter}{Flight Dynamics}\label{ch:FlightDynamics}
 \chapter{Flight Dynamics}
 
 \section{Overview}
@@ -16,42 +16,19 @@ Launch is the most obvious case of dynamics that a \ac{GNSS} receiver would expe
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{FlightDynamics/SoyuzAcceleration.png} 
-    \caption{Typical longitudinal acceleration experienced by the Soyuz payload. Note the significant change in acceleration (Jerk) upon stage separation. Image from \cite{Soyuz}}
+    \caption{Typical longitudinal acceleration experienced by the Soyuz payload. Note the significant change in acceleration (jerk) upon stage separation. Image from \cite{Soyuz}.}
     \label{fig:SoyuzAcceleration}
 \end{figure}
 
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{FlightDynamics/SoyuzRelativeVelocity.png} 
-    \caption{Typical Soyuz velocity. Image from \cite{Soyuz}}
+    \caption{Typical Soyuz velocity profile. Noticed that 3 separate stages, and 2 stage separation events can be observed in this plot. Image from \cite{Soyuz}.}
     \label{fig:SoyuzRelativeVelocity}
 \end{figure}
 
 
-
-\begin{table}[!htb]
-\centering
-\begin{tabular}{|l|l|l|}
-\hline
-\rowcolor[HTML]{C0C0C0} 
-Space Vehicle       & Axial                   & Lateral                \\ \hline
-Ariane 5            & 4.6 g \cite{Ariane}     & 2.0 g \cite{Ariane}    \\ \hline
-\rowcolor[HTML]{EFEFEF} 
-Atlas V 400         & 5.0 g \cite{AtlasV}     & 2.0 g \cite{AtlasV}    \\ \hline
-Atlas V 500         & 4.6 g \cite{AtlasV}     & 2.0 g \cite{AtlasV}    \\ \hline
-\rowcolor[HTML]{EFEFEF} 
-Delta IV Medium     & 6.0 g \cite{DeltaIV}    & 2.0 g \cite{DeltaIV}   \\ \hline
-Delta IV Heavy      & 5.5 g \cite{DeltaIV}    & 2.0 g \cite{DeltaIV}   \\ \hline
-\rowcolor[HTML]{EFEFEF} 
-Falcon 9 Revision 0 & 6.0 g \cite{Falcon9}    & 2.0 g \cite{Falcon9}   \\ \hline
-Minotaur            & 13.0 g  \cite{Minotaur} & 12.0 g \cite{Minotaur} \\ \hline
-\rowcolor[HTML]{EFEFEF} 
-Soyuz               & 5.0 g \cite{Soyuz}      & 1.8 g \cite{Soyuz}     \\ \hline
-\end{tabular}
-\caption{Maximum \ac{QSL} experienced during launch.}
-\label{QSLTable}
-\end{table}
-
+\input{Tables/QSLTable}
 
 
 \subsection{Stage separation}
@@ -71,23 +48,8 @@ Getting to space is only half the challenge. Accurate guidance during re-entry i
 
 During re-entry, the extreme temperatures ionises the gasses surrounding the vehicle, forming  layer of plasma. This layer of plasma severely attenuates radio signals, resulting in what is termed 'reentry blackout'. GNSS receiver design presents an inherent trade off between sensitivity and high dynamics performance. It is likely that the receiver will loose track of the the signal, and be forced to re-acquire at a lower altitude, once the plasma has subsided. 
 
+\input{Tables/ReEntryTable}
 
-\begin{table}[!htb]
-\centering
-\begin{tabular}{|l|l|}
-\hline
-\rowcolor[HTML]{C0C0C0} 
-Space Vehicle & Peak acceleration                    \\ \hline
-Gemini        & 12 g \cite{FAA}                      \\ \hline
-\rowcolor[HTML]{EFEFEF} 
-Apollo        & 7.19 g \cite{johnston1975biomedical} \\ \hline
-Dragon        & 5.0 g \cite{trevino2008spacex}       \\ \hline
-\rowcolor[HTML]{EFEFEF} 
-Soyuz         & 10 g \cite{ReentryDynamics}          \\ \hline
-\end{tabular}
-\caption{Peak acceleration experienced by different \ac{SV}'s during re-entry}
-\label{ReEntryTable}
-\end{table}
 
 The maximum acceleration experienced during re-entry can be closely approximated parametrically using the following equation from \cite{eastre}: 
 

@@ -20,8 +20,8 @@ pinstyle/.style = {pin edge={to-,thin,black}
     
     \node at (4,-6) [sum] (sum1PLL) {\Large$+$};
   
-    \node [block, above of = sum1PLL](K1PLL){$\frac{K_{1}}{T} + K_{3}$};
-    \node [block, right of = sum1PLL](K2PLL){$\frac{K_{2}}{T} + K_{4}$};
+    \node [block, above of = sum1PLL](K1PLL){$K_{1} + K_{3}$};
+    \node [block, right of = sum1PLL](K2PLL){$K_{2} + K_{4}$};
     \node [block, right of = K2PLL](ExtraIntegrator){$\frac{1}{S}$};
     
     \node [block, below of = K2PLL](IntegratorPLL){$\frac{1}{S^2}$};

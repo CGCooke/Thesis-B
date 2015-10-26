@@ -20,7 +20,7 @@ pinstyle/.style = {pin edge={to-,thin,black}
     
     %FLL Stuff
    
-    \node [block, right of=Rotator,node distance =4cm] (SamplingTime){$\frac{1}{T}$};
+    \node [input, right of=Rotator,node distance =4cm] (SamplingTime){};
     
     \node [block, below of = SamplingTime,node distance =8cm](K1FLL){$K_{1}$};
     
@@ -59,7 +59,7 @@ pinstyle/.style = {pin edge={to-,thin,black}
     
     %FLL Stuff
     \draw [-] (Rotator) -- node{$\phi_{Error}$} (RotatorPickoffPoint);
-    \draw [->] (RotatorPickoffPoint) -- node{} (SamplingTime);
+    \draw [-] (RotatorPickoffPoint) -- node{} (SamplingTime);
     
     
     \draw [-] (SamplingTime) -| node{} (FLLPickoffPoint);

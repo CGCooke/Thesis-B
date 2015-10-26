@@ -20,7 +20,7 @@ pinstyle/.style = {pin edge={to-,thin,black}
     
     %FLL Stuff
     \node [block, right of=Rotator,node distance=4cm] (DiscriminatorFLL){$S$};
-    \node [block, right of=DiscriminatorFLL] (SamplingTime){$\frac{1}{T}$};
+    \node [input, right of=DiscriminatorFLL] (SamplingTime){};
     \node [block, below of = DiscriminatorFLL,node distance =8cm](K1FLL){$K_{1}$};
     \node [block, below of = K1FLL](IntegratorFLL){$\frac{1}{S}$};
     \node [block, left of = IntegratorFLL](K2FLL){$K_{2}$};
@@ -59,7 +59,7 @@ pinstyle/.style = {pin edge={to-,thin,black}
     \draw [->] (RotatorPickoffPoint) -- node{} (DiscriminatorFLL);
     
     
-    \draw [->] (DiscriminatorFLL) -- node{} (SamplingTime);
+    \draw [-] (DiscriminatorFLL) -- node{} (SamplingTime);
     
     \draw [-] (SamplingTime) |- node{} (FLLPickoffPoint);
     \draw [->] (FLLPickoffPoint) -- node{} (K1FLL);

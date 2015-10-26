@@ -51,7 +51,7 @@ def GenerateTrajectory(TStart, TEnd, initialState, Manoeuvres,dT=0.001):
         stateHistory[i,:] = X
     return(sampleTimes,stateHistory)
     
-def GenerateSignal(T,stateHistory,CNR=41,Noise=True,seedNum=1337):
+def GenerateSignal(T,stateHistory,CNO=41,Noise=True,seedNum=1337):
     L1Freq = 1.57542*10**9 #Hz
     SpeedOfLight = 2.99792*10**8 #M/s
     CyclesPerMeter = L1Freq/SpeedOfLight
@@ -59,9 +59,9 @@ def GenerateSignal(T,stateHistory,CNR=41,Noise=True,seedNum=1337):
     Y = stateHistory[:,0]
 
     SignalPhase = Y*CyclesPerMeter  #m to cycles
-    Amp0 = np.sqrt((10.0**(CNR/10.0))/1000.0)
+    Amp0 = np.sqrt((10.0**(CNO/10.0))/1000.0)
     
-    np.random.seed(seedNum)
+    #np.random.seed(seedNum)
     #Generating noise
     if(Noise==True):
         NoiseIn = np.random.randn(SignalPhase.size) + 1j*np.random.randn(SignalPhase.size)
@@ -77,7 +77,7 @@ def GenerateSignal(T,stateHistory,CNR=41,Noise=True,seedNum=1337):
 
     return(SignalIn)
     
-def createStepAccelerationScenario(CNR):
+def createStepAccelerationScenario(CNO):
     motionList = []
     Jerk = 100
     
@@ -93,10 +93,10 @@ def createStepAccelerationScenario(CNR):
     initialState = [0, 0, 0]
 
     T,stateHistory = GenerateTrajectory(TMin, TMax, initialState, motionList)
-    SignalIn = GenerateSignal(T,stateHistory,CNR)
+    SignalIn = GenerateSignal(T,stateHistory,CNO)
     return(T,SignalIn,stateHistory)
 
-def createScenarioFromSpirentFile(SVNum,CNR=38,Quantize=False):
+def createScenarioFromSpirentFile(SVNum,CNO=38,Quantize=False):
     Jerk = 100
     dT = 0.001
     satelliteDict = Scenario.readSimulatorMotionFile()
@@ -126,15 +126,13 @@ def createScenarioFromSpirentFile(SVNum,CNR=38,Quantize=False):
     T,stateHistory = GenerateTrajectory(TMin, TMax, initialState, motionList,dT)
     if Quantize==True:
         stateHistory = quantizeSpirentStateHistory(T,stateHistory)
-    SignalIn = GenerateSignal(T,stateHistory,CNR)
+    SignalIn = GenerateSignal(T,stateHistory,CNO)
     return(T,SignalIn,stateHistory)
 
 def quantizeSpirentStateHistory(T,stateHistory):
     #Quantizing State history in time
     plt.plot(stateHistory[:,1],label='Before')
-
     velocity = stateHistory[:,1]
-
     for i in range(0,T.size):
         if(i%2)==0:
             v = velocity[i]
@@ -149,14 +147,38 @@ def quantizeSpirentStateHistory(T,stateHistory):
     plt.show()
     return(stateHistory)
 
-if __name__ == '__main__':
-    CNR = 48
-    #T,SignalIn,stateHistory = createStepAccelerationScenario(CNR)
-    #plt.plot(SignalIn)
-    #plt.show()
+def constantAcceleration(a,CNO,numSeconds):
+    t = np.linspace(0,numSeconds,1000*numSeconds)
+    v = a*t
+    y = a*t**2/2.0
 
-    T,SignalIn,stateHistory = createScenarioFromSpirentFile(CNR)
-    
-    #plt.plot(SignalIn)
-    #plt.show()
+    a = a*np.ones((1000*numSeconds))
+    stateHistory = np.vstack((y,v,a)).T
+    SignalIn = GenerateSignal(t,stateHistory,CNO)
+    return(t,SignalIn,stateHistory)
+
+def constantJerk(jerk,CNO,numSeconds):
+    t = np.linspace(0,numSeconds,1000*numSeconds)
+    a = jerk*t
+    v = jerk*t**2/2.0
+    y = jerk*t**3/6.0    
+    stateHistory = np.vstack((y,v,a)).T
+    SignalIn = GenerateSignal(t,stateHistory,CNO)
+    return(t,SignalIn,stateHistory)
+
+def constantSnap(snap,CNO,numSeconds):
+    t = np.linspace(0,numSeconds,1000*numSeconds)
+    j = snap*t
+    a = snap*t**2/2.0
+    v = snap*t**3/6.0
+    y = snap*t**4/24.0
+    stateHistory = np.vstack((y,v,a)).T
+    SignalIn = GenerateSignal(t,stateHistory,CNO)
+    return(t,SignalIn,stateHistory)
+
+if __name__ == '__main__':
+    pass
+
+
+
 
