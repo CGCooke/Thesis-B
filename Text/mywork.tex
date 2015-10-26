@@ -1,4 +1,127 @@
 \chapter{My Work}\label{ch:MyWork}
+\addcontentsline{toc}{chapter}{An Introduction to Tracking Loops}\label{ch:TrackingLoops}
+
+
+In summary, the goal of the carrier tracking loop is to predict the future carrier phase $\phi$, $T$ seconds in the future, based on past and current measurements of the carrier phase. For successful phase lock to be maintained, the predicted phase must be within a small fraction of a cycle of the actual phase. 
+
+\section{Ambiguities}
+
+We can describe the elapsed phase (in radians) between the satellite and the receiver using the following equation :  
+\begin{equation}
+Phase = 2 \pi N  + \phi 
+\label{eq:Phase}
+\end{equation}
+
+If we examine equation \ref{eq:Phase} in the spatial domain, we find that: 
+\begin{equation}
+Range = \lambda N + \Phi
+\label{eq:Distance}
+\end{equation}
+
+From Equations \ref{eq:Phase} and \ref{eq:Distance} it is obvious that prediction of the angular phase $\phi$ is equivalent to prediction of the spatial phase $\Phi$.
+
+It is important to note, that predicting $\Phi$ is equivalent to predicting the change in the LOS range ($\Delta$), hence the receiver does not need to be aware of the number of full cycles $N$, between it and the satellite. This ambiguity is the one that is resolved during the process of carrier phase positioning. 
+
+\section{Error bounds}
+In the case of the GPS signal, where the $L_1$ 1.575Ghz signal is being tracked, the carrier wavelength, $\lambda \approx 19.03 cm$ long. As a heuristic, the difference between the actual carrier phase $\phi$ , and the predicted carrier phase $\hat{\phi}$ must be no more than $\pm30 \degree$. 
+
+This concept is clearly illustrated in figure \ref{fig:PhaseDelay}. 
+
+Denoting our prediction of $\Delta$ as $\hat{\Delta}$, we have :
+
+\begin{align}
+|\Delta-\hat{\Delta}|& < \frac{30\degree}{360\degree} \lambda\\
+|\Delta-\hat{\Delta}|&<\epsilon\\
+|\Delta-\hat{\Delta}|&<1.58cm\\
+\label{eq:RangeErrorBound}
+\end{align}
+
+Hence, our estimate of $\Delta$ must be accurate to $< 1.58cm$, if the receiver is to remain in phase lock.
+
+By examining figure \ref{fig:ValidPositions} we can begin to understand that the locus of all possible positions which meet this criteria is a spherical shell surrounding the satellite. 
+
+When we consider that GPS utilises multiple satellites for positioning, we can conclude with the aid of figure \ref{fig:Intersections} that a bound on the magnitude of the error is formed by the sphere of radius $\epsilon$ surrounding the point X, which is the true position of the receiver. 
+
+\begin{comment}
+
+Hence, we have :
+
+\begin{align}
+| X(t)-\hat{X}(t) | & < \frac{30\degree}{360\degree} \lambda \\
+| X(t)-\hat{X}(t) | &<\Delta\\
+| X(t)-\hat{X}(t) | & < 1.58cm
+\label{eq:PositionErrorBound}
+\end{align}
+\end{comment}
+
+\section{Mechanics}
+
+By conceptualising we can immediately gain insight into some of the fundamental challenges that will be faced in the development of tracking algorithms for coping with high dynamics.
+
+\input{Diagrams/Introduction/PhaseDelay}
+
+\input{Diagrams/Introduction/ValidPositions}
+
+\input{Diagrams/Introduction/Intersections}
+
+
+Returning to first principles of mechanics, we have \cite{salas1999etgen} : 
+
+\begin{comment}
+Need to fix this up
+\end{comment}
+
+\begin{align}
+v & = \frac{\Delta}{T} m s^{-1} \\
+a & = \frac{dv}{dt} m s^{-2} \\
+Jerk & = \frac{da}{dt} m s^{-3}
+\end{align}
+
+
+Note that over time, the acceleration of the receiver is integrated to form it's velocity, and the velocity is integrated in order to form it's position. 
+
+Note that our estimate of the position $\hat{X}(t+T)$ is dependent on our current velocity $\dot{X}(t)$. When use this velocity, we are implicit assuming that the average velocity for the next time period is the same. 
+
+However,as illustrated in figure \ref{fig:PhaseDelay}, and in equation \ref{eq:RangeErrorBound}, our estimate of the new range to the satellite must fall within 
+position must fall within a close 
+
+our estimate of the velocity must fall within the following bounds:
+
+\begin{equation}
+V_{min} < \hat{\dot{X}}(t) < V_{max}
+\end{equation}
+
+\section{Motion models}
+
+Given we are attempting to predict the carrier $T$ seconds into the future, we can start to investigate the maximum dynamics our receiver will be able to track for a given sampling period $T$. \cite{salas1999etgen}
+
+
+\begin{equation}
+X = \int_{t_1}^{t_2} \dot{X} dt + X(t_1)
+\label{eq:PositionIntergral}
+\end{equation}
+
+\begin{equation}
+\dot{X} = \int_{t_1}^{t_2} \ddot{X} dt + \dot{X}(t_1)
+\end{equation}
+
+
+Equation \ref{eq:PositionIntergral} suggests that we can form an prediction of the range to the satellite using the current range and the current line of sight velocity. 
+
+\begin{equation}
+\hat{X}(t+T) = X(t) +  \dot{X}(t) T
+\end{equation}
+
+\begin{equation}
+t = nT
+\end{equation}
+
+\begin{equation}
+\hat{X}[n+1] = X[n] +  \dot{X}[n] T
+\end{equation}
+
+
+
 
 \section{Current \ac{NAMURU} architecture}
 A significant amount of time has been invested gaining an understanding of the \ac{NAMURU} receiver, its architecture and the operation of it's sub-systems. The receiver is a mixed signal device, which has been the focus of a decade of research and development. 
@@ -9,34 +132,10 @@ The \ac{NAMURU} receiver uses a number of different tracking loops to track the 
 
 \input{Diagrams/MyWork/ReceiverOverviewAnalog}
 
-\subsection{Some other section}
-
 After conducting a literature review, it was decided to model the control loops used by the \ac{NAMURU} receiver in the Laplace domain. The choice of the coefficients from the tracking loop comes from a method devised by Ward \cite{Ward}. While this method is conceptually simple, requiring only a loop order and noise bandwidth as parameters, it generates robust tracking loops for most applications. Because of this, the Ward method has experienced significant popularity amongst receiver designers.  
 
 The method used by Ward for design will be described below for context: 
 
-\subsection{\ac{FLL} filter}
-In the Laplace domain, we can represent the second order \ac{FLL} filter as:  $G(s) = K_1 + \frac{K_2}{s}$. The design method from Ward \cite{Ward} is used in order to determine the coefficients $K_1$ and $K_2$.  
-
-\begin{align*}
-B_n &= 6\\
-a_2 &= \sqrt(2)\\
-\omega_{0}&=\frac{B_n}{0.53}\\
-\end{align*}
-
-\begin{equation} \label{eq1}
-\begin{split}
-K_1 & = a_2 \omega_{0}\\
-K_1 & = 16.00\\
-\end{split}
-\end{equation}
-
-\begin{equation} \label{eq2}
-\begin{split}
-K_2 & = \omega_{0}^2\\
-K_2 & = 128.16\\
-\end{split}
-\end{equation}
 
 \subsection{\ac{PLL} filter}
 Ward's method is also used to design the co-efficients for the \ac{PLL}. In the Laplace domain, we can represent the second order filter  of the third order \ac{PLL} as : 
@@ -56,54 +155,33 @@ b_3&=2.4\\
 \omega_{0}&=\frac{B_n}{0.7845}
 \end{align*}
 
-\begin{equation} \label{eq3}
-\begin{split}
-K_3 & = b_3  \omega_{0}\\
+\begin{align*} \label{eq3}
+K_3 & = b_3 \omega_{0}\\
     & = 55.1\\
-\end{split}
-\end{equation}
-
-\begin{equation} \label{eq4}
-\begin{split}
-K_4 & = a_3  \omega_{0}^2\\ 
+K_4 & = a_3 \omega_{0}^2\\ 
     & = 579.13\\
-\end{split}
-\end{equation}
-
-\begin{equation} \label{eq5}
-\begin{split}
 K_5 & = \omega_{0}^3\\
-    & = 12079\\
-\end{split}
-\end{equation}
+    & = 12079
+\end{align*}
 
 
-\begin{comment}
-The next stage of Laplace domain analysis after determining the transfer function of the filter is to determine the transfer function of the closed loop system.
+\subsection{\ac{FLL} filter}
+In the Laplace domain, we can represent the second order \ac{FLL} filter as:  $G(s) = K_1 + \frac{K_2}{s}$. The design method from Ward \cite{Ward} is used in order to determine the coefficients $K_1$ and $K_2$.  
 
-Multiplying equation \ref{eq6} by $\frac{s^2}{s^2}$ we get :
+\begin{align*}
+B_n &= 6\\
+a_2 &= \sqrt(2)\\
+\omega_{0}&=\frac{B_n}{0.53}\\
+\end{align*}
 
-\begin{equation}
-G(s) = \frac{K_3s^2 + K_4 s + K_5}{s^2}
-\end{equation}
-
-The \ac{VCO} has the following transfer function : $G(s) = \frac{K_{vco}}{s}$
-
-\begin{equation}
- H(s) = \frac{K_{VCO}(K_1 + \frac{K_2}{s} + \frac{K_3}{s^2})}{s+K_{VCO}(K_1 + \frac{K_2}{s} + \frac{K_3}{s^2})}
-\end{equation}
-
-Multiplying by $\frac{s^2}{s^2}$ we get :
-
-\begin{equation}
- H(s) = \frac{K_{VCO}(K_1s^2 + K_2s + K_3)}{s^3+K_{VCO}(K_1s^2 + K_2s + K_3)}
- \end{equation}
-\end{comment}
-
+\begin{align*}
+K_1 & = a_2 \omega_{0}\\
+    & = 16.00\\
+K_2 & = \omega_{0}^2\\
+    & = 128.16
+\end{align*}
 
 \clearpage
-
-\section{Laplace Analysis}
 
 \section{Combining FLL \& PLL}
 
@@ -157,25 +235,13 @@ From Wards method \cite{Ward}, we have the following coefficients:
 
 \begin{align*}
 K_1 &=\frac{\sqrt{2}B_{nFLL}}{0.53}\\
-    &= 2.668 B_{nFLL}
-\end{align*}
-
-\begin{align*}
+    &= 2.668 B_{nFLL}\\
 K_2 &=\frac{B_{nFLL}^2}{0.53^2}\\
-    &= 0.2809 B_{nFLL}^2
-\end{align*}
-
-\begin{align*}
+    &= 0.2809 B_{nFLL}^2\\
 K_3 &=\frac{2.4B_{nPLL}}{0.7845}\\ 
     &=3.059 B_{nPLL}\\
-\end{align*}
-
-\begin{align*}
 K_4 &=\frac{1.1B_{nPLL}^2}{0.7845^2}\\
-    &=1.787 B_{nPLL}^2
-\end{align*}
-
-\begin{align*}
+    &=1.787 B_{nPLL}^2\\
 K_5 &=\frac{B_{nPLL}^3}{0.7845^3}\\
     &=0.4828B_{nPLL}^3
 \end{align*}
@@ -283,7 +349,6 @@ For 10,32 8ms CohInt and 8ms update rate
 \frac{14.5 z^{3} - 13.0 z^{2} - 14.5 z + 13.0}{15.5 z^{3} - 16.0 z^{2} - 11.5 z + 12.0}\end{equation}
 \clearpage
 
-
 \section{Forward difference}
 
 \begin{equation}
@@ -302,6 +367,8 @@ For 10,32 8ms CohInt and 8ms update rate
 
 \section{Ward analysis}
 
+Ward introduces a number of incredibly useful rules of thumb for designing tracking loops for PLLs. 
+
 From Kazemi, \cite{Kazemi2008}, the Loop Noise Bandwidth time product ($B_L T$) must be less than 0.55. 
 For an 8ms integration time, corresponding to a 125Hz update rate we have:
 
@@ -311,11 +378,12 @@ B_n &\leq \frac{0.55}{0.008} \text{ (Hz)}\\
 \end{align*}
 
 \subsection{PLL}
-Kaplan suggests that "A conservative rule of thumb for tracking threshold is that the 3-sigma jitter must not exceed one-fourth of the phase pull-in range of the PLL discriminator." %\cite{Kaplan}
+Kaplan suggests that "A conservative rule of thumb for tracking threshold is that the 3-sigma jitter must not exceed one-fourth of the phase pull-in range of the PLL discriminator"\cite{Kaplan}. This forms the basis of the "15 $\degree$" heuristic which is commonly used for analysis. Based on extensive experimental experience with the \ac{NAMURU} receiver, this heuristic has proved to be valuable in providing a rough estimate for the breaking point of the PLL. The 15 $\degree$ can be thought of an an error budget, which is eroded by different sources of error.
 
-\begin{equation}
-3 \sigma_{PLL} = 3 \sigma_j +\theta_e \leq 45 \degree
-\end{equation}
+\begin{align}
+3 \sigma_{PLL} &= 3 \sigma_j +\theta_e \leq 45 \degree\\
+\sigma_{PLL} &=\sigma_j + \frac{\theta_e}{3} \leq 15 \degree
+\end{align}
 
 Where:
 \begin{align*}
@@ -323,11 +391,12 @@ Where:
 \theta_e &= \text{dynamic stress error in the PLL tracking loop}
 \end{align*}
 
-%\cite{Kaplan}
+Jwo breaks the equation down into more detail\cite{Jwo}, identifying the contributions to the error from the thermal noise in the signal as well as two contributions from the crystal, the vibration induced jitter and Allan variance intrinsic to the crystal.
+
+
 \begin{equation}
 \sigma_{PLL} = \sqrt{\sigma^2_{tPLL} + \sigma^2_v+ \theta^2_A} + \frac{\theta_e}{3} \leq 15 \degree 
 \end{equation}
-%\cite{Jwo}
 
 Where:
 \begin{align*}
@@ -354,8 +423,11 @@ T &= \text{pre-detection (coherent) integration time (s)} \\
 \end{align*}
 
 
+
+The dynamic stress error is due to the motion of the receiver, for a 3rd order PLL, the error is due to the \ac{LOS} jerk. The \ac{LOS} jerk is the projection of jerk vector onto the vector between the \ac{GPS} satellite and the receiver.  
+
 \begin{equation}
-\theta_e = \frac{360 \cdot d^3R/dt^3  \cdot f_L}{c  \cdot \omega^3_0} \text{ (degrees)}
+\theta_e = \frac{360 \cdot Jerk  \cdot f_L}{c  \cdot \omega^3_0} \text{ (degrees)}
 \end{equation}
 
 
@@ -367,20 +439,19 @@ c & = 2.99792458 \times 10^8 ms^{-1}
 \end{align*}
 
 
-
+Finally, the Allan variance is an error which is intrinsic to the crystal itself. 
 
 \begin{equation}
+\label{eq:AllanVariance}
 \theta_{A3} = 160 \frac{\sigma_A(\tau)f_L}{B_n} \text{ (degrees)}
 \end{equation}
 
-Where:
+From the data sheet for the current crystal used in the \ac{NAMURU} receiver\cite{VT803Datasheet}, we find that: 
 \begin{align*}
 \sigma_A(\tau) &= 1 \times 10^{-10} \text{ (dimensionless units of }\Delta f/f\text{)}
 \end{align*}
 
-From \cite{VT803Datasheet}
-
-
+Hence we can simplify equation \label{eq:AllanVariance} as:
 \begin{equation}
 \theta_{A3} =\frac{25.2}{B_n} \text{ (degrees)}
 \end{equation}
@@ -408,45 +479,53 @@ For $B_n$ =18, we have $\theta_{A3}=1.4\degree$.
 \end{figure}
 
 
-Optimising to find the minimum
-
-\begin{equation}
-\sigma_{PLL} = \sqrt{\frac{Bn}{C/N_0} \left(3280 + \frac{1640}{C/N_0 \cdot T}\right) + 4 + \frac{635}{Bn^{2}}} + \frac{304 Jerk}{Bn^{3}}
-\end{equation}
 
 
-\begin{equation}
-\sigma_{PLL}^2 = \frac{Bn}{C/N_0} \left(3280 + \frac{1640}{C/N_0 \cdot T}\right) + 4 + \frac{635}{Bn^{2}} + \frac{Jerk^{2}}{Bn^{6}} 9.26 \cdot 10^{4}
-\end{equation}
+\section{Adaptive control}
+
+No single controller can
+optimally operate the PLL
+under different conditions.
+An algorithm was designed
+which minimises the phase
+jitter, by adapting the
+coefficients of the tracking
+loop controller and update
+rates and integration times,
+based on the cur rent
+dynamics, SNR and the
+vibration.
+By adaptively adjusting the update rates, computation resources
+are allocated to the tracking loops which are experiencing the
+highest dynamics, and demand the highest controller
+bandwidths.
 
 
-\begin{equation}
-0=\frac{1}{C/N_0} \left(3280 + \frac{1640}{C/N_0 \dot T}\right) - \frac{1}{Bn^{3}} 1.27 \cdot 10^{3} - \frac{Jerk^{2}}{Bn^{7}} 5.56 \cdot 10^{5}
-\end{equation}
-
-
-\begin{equation}
-0=Bn^{7} \left(\frac{1}{C/N_0} \left(3280 + \frac{1640}{C/N_0 \cdot T}\right) - \frac{1}{Bn^{3}} 1.27 \cdot 10^{3} - \frac{Jerk^{2}}{Bn^{7}} 5.56 \cdot 10^{5}\right)
-\end{equation}
-
-
-
-\begin{equation}
-0=\frac{3280 Bn^{7}}{C/N_0} + \frac{1640 Bn^{7}}{C/N_0^{2} \cdot T} - 1.27 \cdot 10^{3} Bn^{4} - 5.56 \cdot 10^{5} Jerk^{2}
-\end{equation}
+In order to analytically determine the correct value of $B_n$, we can use the rules of thumb introduced by ward as a starting point. 
 
 
 
-\begin{equation}
-0=(\frac{3280}{C/N_0} + \frac{1640}{C/N_0^{2} \cdot T})Bn^{7}  - 1.27 \cdot 10^{3} Bn^{4} - 5.56 \cdot 10^{5} Jerk^{2}
-\end{equation}
 
 
+Optimising to find the minimum:
 
+\begin{align*}
+\sigma_{PLL} &= \sqrt{\frac{Bn}{C/N_0} \left(3280 + \frac{1640}{C/N_0 \cdot T}\right) + 4 + \frac{635}{Bn^{2}}} + \frac{304 Jerk}{Bn^{3}}\\
+\sigma_{PLL}^2 &= \frac{Bn}{C/N_0} \left(3280 + \frac{1640}{C/N_0 \cdot T}\right) + 4 + \frac{635}{Bn^{2}} + \frac{Jerk^{2}}{Bn^{6}} 9.26 \cdot 10^{4}
+\end{align*}
+
+
+\begin{align*}
+0&=\frac{1}{C/N_0} \left(3280 + \frac{1640}{C/N_0 \dot T}\right) - \frac{1}{Bn^{3}} 1.27 \cdot 10^{3} - \frac{Jerk^{2}}{Bn^{7}} 5.56 \cdot 10^{5}\\
+0&=Bn^{7} \left(\frac{1}{C/N_0} \left(3280 + \frac{1640}{C/N_0 \cdot T}\right) - \frac{1}{Bn^{3}} 1.27 \cdot 10^{3} - \frac{Jerk^{2}}{Bn^{7}} 5.56 \cdot 10^{5}\right)\\
+0&=\frac{3280 Bn^{7}}{C/N_0} + \frac{1640 Bn^{7}}{C/N_0^{2} \cdot T} - 1.27 \cdot 10^{3} Bn^{4} - 5.56 \cdot 10^{5} Jerk^{2}\\
+0&=(\frac{3280}{C/N_0} + \frac{1640}{C/N_0^{2} \cdot T})Bn^{7}  - 1.27 \cdot 10^{3} Bn^{4} - 5.56 \cdot 10^{5} Jerk^{2}
+\end{align*}
 
 \subsection{FLL}
 
 
+\begin{comment}
 Talk about this
 5.6.2 FLL Tracking Loop Measurement Errors
 
@@ -454,8 +533,9 @@ Generate figure 5.24
 Generate figure 5.25
 
 Also talk about section 5.6.2
+\end{comment}
 
-\begin{equation}
+\begin{equation}\label{eq:FLLJitter}
 \sigma_{FLL} =  \sigma_{tFLL} + \frac{f_e}{3} \leq \frac{T}{12} \text{ (Hz)}
 \end{equation}
 
@@ -486,13 +566,14 @@ f_e = \frac{d}{dt}(\frac{1}{360 \omega^n_0}\frac{d^nR}{dt^n}) = \frac{1}{360\ome
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{mywork/1ContourFLL.eps} 
-    \caption{The cutoff for the FLL is 20.83 Hz.}
+    \caption{A contour plot of equation \ref{eq:FLLJitter}. Note that the cutoff for the FLL is 20.83 Hz. }
+\label{fig:FLLContour1}
 \end{figure}
 
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{mywork/10ContourFLL.eps} 
-    \caption{}
+    \caption{A contour plot of equation \ref{eq:FLLJitter}. Comparing to figure \ref{fig:FLLContour1}, the significantly increased bandwidth allows the FLL to track significantly higher dynamics, for a given FLL jitter.}
 \end{figure}
 
 
@@ -500,9 +581,8 @@ f_e = \frac{d}{dt}(\frac{1}{360 \omega^n_0}\frac{d^nR}{dt^n}) = \frac{1}{360\ome
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{mywork/FLLStresses.eps} 
-    \caption{This plot breaks down the sources of error. Note that the phase jitter is at a minimum for a value of $B_n$ equal to approximately 27.}
+    \caption{This plot breaks down the sources of error. Note that the phase jitter is at a minimum for a value of $B_n$ equal to approximately 27. Ideally the FLL bandwidth should be selected so that the FLL can always operate at this optimum point.}
 \end{figure}
-
 
 
 
@@ -599,7 +679,6 @@ The actual carrier doppler shift, as measured by taking the finite difference of
 
 \section{Results}
 
-
 CNO = 45
 
 PLLBW =32
@@ -617,7 +696,7 @@ FLLBW = 0
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{mywork/BoxplotJerk.eps} 
-    \caption{}
+    \caption{ 76.135, std = 2.3549 vs 131.6 std = 1.64}
     \label{fig:BoxplotJerk}
 \end{figure}
 
@@ -625,10 +704,16 @@ FLLBW = 0
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{mywork/BoxplotJerk.eps} 
-    \caption{}
+    \caption{5.77987052071 0.280738421289 vs 4.3143405835 0.0443823631819}
     \label{fig:BoxplotPhaseJitter}
 \end{figure}
 
 
 
 \section{Future Work}
+This work has raised a number of salient issues, which are likely to be investigated in the future.
+In particular, the modifications identified to the receiver need to be implemented, allowing the performance benefits to be realised. In particular, the performance needs to be assessed, to "close the loop" and assess the accuracy and validity of the modelling techniques used.
+
+
+
+

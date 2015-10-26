@@ -1,13 +1,12 @@
-\addcontentsline{toc}{chapter}{State Transitions}\label{ch:StateTransitions}
-\chapter{State Transitions}
+\addcontentsline{toc}{chapter}{State transitions}\label{ch:StateTransitions}
+\chapter{State transitions}
 
 \input{Diagrams/StateTransitionDiagram}
 
-The Namuru Implementation use a number of different tracking loops depending on state. A state transition diagram can be seen in figure \ref{fig:StateTransitionDiagram}. In this diagram, 4 different states are visible. My thesis focuses on the carrier tracking loops, so a simplifying assumption is made that the receiver is always perfectly tracking the code phase. 
 
-Given the robustness of the code phase tracking loops, this is a reasonable assumption.
+The \ac{NAMURU} implementation employs a number of different tracking loops which are chosed depending on the current state. A state transition diagram can be seen in figure \ref{fig:StateTransitionDiagram}. In this diagram, 4 different states are visible. This thesis focuses on the carrier tracking loops, so a simplifying assumption is made that the receiver is always perfectly tracking the code phase. 
 
-In reality however, the receiver is initially in a acquisition state, where a delay doppler map is computed, in order to try and produce a rough estimate of the code and carrier phase.  An example of a delay doppler map can be seen in figures \ref{fig:DelayDopplerMap} and \ref{fig:DelayDopplerMapSubsection}.
+Given the robustness of the code phase tracking loops, this is a reasonable assumption. In reality however, the receiver is initially in a acquisition state, where a delay doppler map is computed, in order to try and produce a rough estimate of the code and carrier phase.  An example of a delay doppler map can be seen in figures \ref{fig:DelayDopplerMap} and \ref{fig:DelayDopplerMapSubsection}.
 
 
 \section{State A}
@@ -22,39 +21,23 @@ As alluded to before, the lock range of the receiver is given by:
 When $T = 0.004$, the FLL has a locking range of $\pm 125Hz$. At the L1 frequency, 125Hz corresponds to $23.8ms^{-1}$. Accelerating at 15g ($147ms^{-2}$), the receiver needs to start locking within $\approx 160ms$, otherwise the doppler frequency will be outside the locking range.
 
 \section{State B}
-Once the receiver has been in the A state for at least 256ms, and once a filtered version of the frequency error is less then $30 \degree$, then the receiver transitions into state B.
-
-State B uses a second order PLL with a first order FLL (Check this is correct). State B is also known as "Frequency lock".
-
-\begin{comment}
-The gain for the FLL can be computed from :  
-\begin{align*}
-T = (2\times0.001)
-FLL1Bn = 5
-FLL1C1 = \frac{T}{0.25}
-K = FLL1B \times FLL1C1
-K = 0.04
-\end{align*}
-
-\end{comment}
-
-The second order loop structure of the PLL can be seen in figure \ref{fig:SecondOrderLoopKaplan}. This 
-
-\begin{figure}[!htb] 
-    \centering
-    \includegraphics[width=1\textwidth]{Images/LoopArchitectures/SecondOrderLoop.png}
-    \caption{Second order loop structure.}
-    \label{fig:SecondOrderLoopKaplan}
-\end{figure}
+Once the receiver has been in the A state for at least 256ms, and once a filtered version of the frequency error is less then $30 \degree$, then the receiver transitions into state B. State B uses a second order PLL with a first order FLL. State B is also known as "Frequency lock".
 
 
 \section{State C}
-Once the receiver has been in state B for at least 256ms, and if at least 20 of the past 32 measurements have a phase error of less than 30 degrees, then the receiver transitions to state C.
-
-State C has exactly the same loop structure as state B, however the receiver is now considered to be in "phase lock", and data extraction can begin.
+Once the receiver has been in state B for at least 256ms, and if at least 20 of the past 32 measurements have a phase error of less than 30 degrees, then the receiver transitions to state C. State C has exactly the same loop structure as state B, however the receiver is now considered to be in "phase lock", and data extraction can begin.
 
 \section{State D}
-Once the receiver has been in state C for at least 1280ms, the receiver transitions to state D. State D has a 3rd order PLL and a 2nd order FLL.
+Once the receiver has been in state C for at least 1280ms, the receiver transitions to state D. State D has a 3rd order PLL and a 2nd order FLL, and forms the focus of this thesis. While any of the PLLs can be used to decode the incoming data, only the 3rd order PLL is insensitive to acceleration.  
 
 
+
+\section{Analysis}
+Careful analysis of the state transitions reveals some salient insights. In particular, it is possible to transition directly from state B to state D, if the receiver has previously been in state C. This transition is intriguing, given that the GPS should ideally be agnostic to it's state history. After a careful discussion with Dr Glennon, it became apparent that this quirk was an unintended bug in the firmware.
+
+Further analysis identifies the potential to radically simplify the state transitions, in conjunction with modifying the structures and loop bandwidths employed in the different states. From an intuitive perspective, the goal of the firmware should be to attempt to move the receiver into a state which produces more accurate measurements. This philosophy is illustrated in the movement from simple FLL which eliminates gross errors to a combination  PLL/FLL. However, the final step to a 3rd order PLL / 2nd order FLL is perplexing. 
+
+In particular, the noise bandwidth $B_n$ of state D (32,10) is larger than that of state B\&C (18,1). Hence, in the case that the PLL/FLL in state D fails, the receiver will drop down to state B, which will immediately fail due to it's higher sensitivity to dynamics. At this point, the receiver will drop into state A. Conversely, this suggests that it should be possible to transition  directly from state A to state D, without the requirements for states B \& C. 
+
+This leads to the conclusion that states B \& C are potentially vestigial, and should be removed. An alternative point of view is that the PLL \& FLL $B_n$ of state B \& C should be significantly increased, and state D should be converted from a PLL \& FLL to a pure PLL, provided that state C is capable of sufficiently reducing the frequency error so that it is within the locking range of state D's PLL.
 

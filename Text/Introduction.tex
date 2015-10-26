@@ -9,6 +9,33 @@ Using a modified version of the \ac{NAMURU} \ac{GNSS} receiver optimised for hig
 
 In this thesis, novel modifications to the receiver are analysed for their feasibility and steps for effective implementation are suggested.
 
+
+The Falcon 9 V1.1, constructed and launched by
+Space Exploration Technologies is a 70m tall, 540
+ton, \$85M rocket capable of launching payloads of
+up to 4.85 tons to Low Earth Orbit (LEO).
+During the ascent, accurate knowledge of the
+velocity of the rocket is vital for placing the payload
+in the correct orbit. The velocity of the rocket is used
+to determine when to shut off the 2nd stage engine,
+Every second worth of additional fuel carried for the
+engine costs \$1.7M in lost payload revenue, hence
+accurately estimating the velocity is crucial. Each
+m/s error in velocity changes the orbital height of the
+payload by 1.6Km, and requires \$70,000 worth of
+fuel to correct.
+
+In order to reduce costs, the body of 1st stage can fly
+back to a waiting barge and land, allowing a
+significant component of the rocket to be reused.
+Safely landing the rocket requires accurate
+estimates of position and velocity, with minimal
+margin for error. Accurate measurement of velocity
+of the 1st stage allows an optimum trajectory to be
+planned, optimising the fuel burn and allowing more
+cargo, worth \$5,000 a kg to be carried into orbit.
+
+
 \section{Problem definition \& project objectives}
 
 The University of New South Wales has been developing the \ac{NAMURU} family of \ac{GNSS} receivers since 2004\cite{MumfordNamuru}. The Namuru family of receivers uses a digital base-band processor implemented on a \ac{FPGA}\cite{Glennon11aquariusfirmware}. A photo of a recent incarnation of the receiver can be seen in figure \ref{fig:Namuru1}.
