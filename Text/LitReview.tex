@@ -1,11 +1,12 @@
 \chapter{Literature Review}\label{ch:LitReview}
 
 \section{Context}
-In order to understand this thesis, it is import to first understand it's context, in particular why tracking is both critical to the operation of the receiver, as well as why it is so challenging. This chapter aims to provide a broad overview of the relationship between the material covered in this thesis, as well as it's connection to other work covered in the literature. 
+To understand this thesis, it is import to first understand it's context, in particular why tracking is both critical to the operation of the receiver, and why it is so challenging. This chapter aims to provide a broad overview of the relationship between the material covered in this thesis, and it's connection to other work covered in the literature. 
+
 
 \subsection{Challenges}
-Using a GPS receiver for \ac{LV} exposes the receiver to some of the most extreme circumstances imaginable. As elicited in table \ref{tab:Requirements}, we can observe that the receiver experiences velocities and accelerations far beyond what would be experienced in terrestrial applications.  The rationale behind these requirements can be found in appendix \ref{ch:FlightDynamics} and \ref{ch:Falcon9}. 
-While \ac{GPS} receivers are normally used to provide provide absolute positions, the ability to provide highly accurate velocity data is incredibly valuable for spacecraft guidance. In order to insert a satellite into the proper orbit, the \ac{LV} engine-cutoff must be precisely timed, as orbital height is a function of orbital velocity. Based on analysis carried out in appendix \ref{ch:Falcon9}, we can conclude that the receiver needs to be able to provide velocity solutions which are accurate $\leq 1m/s$, while travelling at 6,000m/s. 
+Using a GPS receiver for \ac{LV} exposes the receiver to some of the most extreme circumstances imaginable. As elicited in table \ref{tab:Requirements}, we can observe that the receiver experiences velocities and accelerations far beyond what would be experienced in terrestrial applications. The rationale behind these requirements can be found in appendix \ref{ch:FlightDynamics} and \ref{ch:Falcon9}. 
+While \ac{GPS} receivers are typically used to provide absolute positions, the ability to generate highly accurate velocity data is incredibly valuable for spacecraft guidance. To insert a satellite into the proper orbit, the \ac{LV} engine-cutoff must be precisely timed, as orbital height is a function of orbital velocity. Based on analysis carried out in appendix \ref{ch:Falcon9}, we can conclude that the receiver needs to provide velocity solutions accurate $\leq 1m/s$, while travelling at 6,000m/s.
 
 \input{Tables/Requirements}
 

@@ -314,10 +314,6 @@ OL TF BN = 32,10
 \end{equation}
 
 
-
-
-
-
 \subsubsection{S Domain Open Loop with values (32,10,8ms)}
 \begin{equation}
 \frac{1}{s^{3}} \left(3.43 \cdot 10^{3} s^{2} + 4.63 \cdot 10^{4} s + 6.79 \cdot 10^{4}\right)
@@ -477,8 +473,6 @@ For $B_n$ =18, we have $\theta_{A3}=1.4\degree$.
     \includegraphics[width=1\textwidth]{mywork/PLLStresses.eps} 
     \caption{This plot breaks down the sources of error. Note that the phase jitter is at a minimum for a value of $B_n$ equal to approximately 27.}
 \end{figure}
-
-
 
 
 \section{Adaptive control}
@@ -673,10 +667,6 @@ The actual carrier doppler shift, as measured by taking the finite difference of
 
 \subsection{New Coefficients}
 
-\subsection{Pruning state space}
-
-\subsection{Adaptive control}
-
 \section{Results}
 
 CNO = 45
@@ -713,6 +703,16 @@ FLLBW = 0
 \section{Future Work}
 This work has raised a number of salient issues, which are likely to be investigated in the future.
 In particular, the modifications identified to the receiver need to be implemented, allowing the performance benefits to be realised. In particular, the performance needs to be assessed, to "close the loop" and assess the accuracy and validity of the modelling techniques used.
+
+A number of other promising approaches exist. The analysis conducted on this thesis treated each of the channels tracking GPS satellites in isolation. By considering that the dynamics are correlated across each channels, and exploiting this information, a vector tracking scheme can be developed. In a vector tracking scheme, feedback from individual loop filters is replaced by feedback from a navigation processor, which combines information from each of the channels, and possibly from an IMU in order to generate estimate for the carrier phase for each channel. 
+
+
+
+
+
+
+
+
 
 
 

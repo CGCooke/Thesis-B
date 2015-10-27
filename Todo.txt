@@ -1,3 +1,9 @@
+Put in chart about Satellite locations
+
+Talk about LOS dynamics
+
+
+
 
 Improvement 
 For Jerk CNO = 45

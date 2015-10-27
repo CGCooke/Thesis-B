@@ -3,14 +3,12 @@
 \section{Motivation}
 \ac{GNSS} receivers should provide accurate and reliable guidance for space vehicles during launch and re-entry. Accurate guidance helps ensure safe, repeatable and cost effective access to space.
 
-However, significant dynamics and vibrations experienced during launch and re-entry prevent \ac{GNSS} receivers from reliably tracking the signal from \ac{GNSS} satellites. This in turn prevents the receiver from providing accurate position, velocity and timing information to the spacecraft, forcing engineers to rely on inferior solutions for guiding the spacecraft.
-
-Using a modified version of the \ac{NAMURU} \ac{GNSS} receiver optimised for high dynamics, accurate and reliable performance can be achieved during periods of significant dynamics during launch and re-entry. 
+However, significant dynamics and vibrations experienced during launch and re-entry prevent \ac{GNSS} receivers from reliably tracking the signal from \ac{GNSS} satellites. This in turn prevents the receiver from providing accurate position, velocity and timing information to the spacecraft, forcing engineers to rely on inferior solutions for guiding the spacecraft. Using a modified version of the \ac{NAMURU} \ac{GNSS} receiver optimised for high dynamics, accurate and reliable performance can be achieved during periods of significant dynamics during launch and re-entry. 
 
 In this thesis, novel modifications to the receiver are analysed for their feasibility and steps for effective implementation are suggested.
 
 
-The Falcon 9 V1.1, constructed and launched by
+In order to understand the value proposition of this thesis to the space industry, it is instructive to examine a specific application. The Falcon 9 V1.1, constructed and launched by
 Space Exploration Technologies is a 70m tall, 540
 ton, \$85M rocket capable of launching payloads of
 up to 4.85 tons to Low Earth Orbit (LEO).
@@ -35,6 +33,7 @@ of the 1st stage allows an optimum trajectory to be
 planned, optimising the fuel burn and allowing more
 cargo, worth \$5,000 a kg to be carried into orbit.
 
+From this, it is possible to conclude that development of a reliable high dynamics GNSS receiver optimised for guiding launcher vehicles is likely to have a significant beneficial effect on the economics of spaceflight.
 
 \section{Problem definition \& project objectives}
 
@@ -62,14 +61,14 @@ The aim of this thesis is to improve the high dynamics performance of the \ac{NA
 \item{Validation of the existing implementation against the theory}
 \item{Effect of jitter and lag on the \ac{PLL}}
 \item{Alternative lock detectors and switching logic}
-\item{Effects of using a direct phase controlled correlator}
 \item{Implementing new techniques discussed in the literature}
 \item{Effects of vibration on the \ac{PLL}}
 \end{itemize}
 
 The objectives of this thesis are as follows : 
 \begin{itemize}
-\item{Sustained tracking with \ac{LOS} dynamics of 15 g}
+\item{Sustained tracking with \ac{LOS} dynamics of 15 g \& jerks of 10g/s.}
 \item{Reliable operation during simulations of launch and re-entry}
 \item{Reliable operation while while experiencing realistic levels of vibration}
 \end{itemize}
+
