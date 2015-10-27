@@ -4,11 +4,12 @@
 
 \input{Diagrams/StateTransitionDiagram}
 
-
-The \ac{NAMURU} implementation employs a number of different tracking loops which are chosed depending on the current state. A state transition diagram can be seen in figure \ref{fig:StateTransitionDiagram}. In this diagram, 4 different states are visible. This thesis focuses on the carrier tracking loops, so a simplifying assumption is made that the receiver is always perfectly tracking the code phase. 
+\ac{NAMURU} employs a number of different tracking loops which are chosen depending on the current state. A state transition diagram can be seen in figure \ref{fig:StateTransitionDiagram}. In this diagram, 4 different states are visible. This thesis focuses on the carrier tracking loops, so a simplifying assumption is made that the receiver is always perfectly tracking the code phase. 
 
 Given the robustness of the code phase tracking loops, this is a reasonable assumption. In reality however, the receiver is initially in a acquisition state, where a delay doppler map is computed, in order to try and produce a rough estimate of the code and carrier phase.  An example of a delay doppler map can be seen in figures \ref{fig:DelayDopplerMap} and \ref{fig:DelayDopplerMapSubsection}.
 
+
+\input{Tables/StateTransitionDiagramKey}
 
 \section{State A}
 After acquisition, the receiver will achieve code lock almost immediately, at which point the receiver is in state A. Once the receiver is in state A, a FLL is initiated. The FLL is very simple in structure, consisting of a single proportional arm, with a gain of 0.125. As the receiver has not undergone bit alignment, the loop filter needs to be relatively insensitive to bit transitions. As alluded to before, a FLL with a finite gain is unable to completely remove the frequency error, however the goal of the pure FLL state is to get the receiver closer in frequency.
@@ -31,6 +32,12 @@ Once the receiver has been in state B for at least 256ms, and if at least 20 of 
 \section{State D}
 Once the receiver has been in state C for at least 1280ms, the receiver transitions to state D. State D has a 3rd order PLL and a 2nd order FLL, and forms the focus of this thesis. While any of the PLLs can be used to decode the incoming data, only the 3rd order PLL is insensitive to acceleration.  
 
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{LoopStates.eps} 
+    \caption{This figure visualises the process of achieving phase lock. Initially, there is a 80Hz frequency difference between the local oscillator and the carrier frequency. At approximately 900ms, the transition to a larger bandwith tracking loop can be observed. }
+    \label{fig:LoopStatesGraph}
+\end{figure}
 
 
 \section{Analysis}

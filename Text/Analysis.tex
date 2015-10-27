@@ -2,7 +2,7 @@
 \label{ch:TrackingLoops}
 
 
-In summary, the goal of the carrier tracking loop is to predict the future carrier phase $\phi$, $T$ seconds in the future, based on past and current measurements of the carrier phase. For successful phase lock to be maintained, the predicted phase must be within a small fraction of a cycle of the actual phase. 
+In summary, the goal of the carrier tracking loop is to predict the future carrier phase $\phi$, $T$ seconds in the future, based on past and current measurements of the carrier phase. For successful phase lock to be maintained, the predicted phase must be within a small fraction of a cycle of the actual phase on a consistant basis.
 
 \section{Ambiguities}
 
@@ -345,7 +345,7 @@ For 10,32 8ms CohInt and 8ms update rate
 \frac{14.5 z^{3} - 13.0 z^{2} - 14.5 z + 13.0}{15.5 z^{3} - 16.0 z^{2} - 11.5 z + 12.0}\end{equation}
 \clearpage
 
-\section{Forward difference}
+\subsection{Forward difference}
 
 \begin{equation}
 \frac{K_{1} \left(z - 1\right)^{2} + K_{3} t \left(z - 1\right)^{2} + K_{5} t^{3} + t \left(K_{2} + K_{4} t\right) \left(z - 1\right)}{K_{1} \left(z - 1\right)^{2} + K_{3} t \left(z - 1\right)^{2} + K_{5} t^{3} + t \left(K_{2} + K_{4} t\right) \left(z - 1\right) + \left(z - 1\right)^{3}}
@@ -361,11 +361,33 @@ For 10,32 8ms CohInt and 8ms update rate
 
 \clearpage
 
-\section{Ward analysis}
+
+\section{Adaptive control}
+
+No single controller can
+optimally operate the PLL
+under different conditions.
+An algorithm was designed
+which minimises the phase
+jitter, by adapting the
+coefficients of the tracking
+loop controller and update
+rates and integration times,
+based on the cur rent
+dynamics, SNR and the
+vibration.
+By adaptively adjusting the update rates, computation resources
+are allocated to the tracking loops which are experiencing the
+highest dynamics, and demand the highest controller
+bandwidths.
+
 
 Ward introduces a number of incredibly useful rules of thumb for designing tracking loops for PLLs. 
 
-From Kazemi, \cite{Kazemi2008}, the Loop Noise Bandwidth time product ($B_L T$) must be less than 0.55. 
+From Kazemi, \cite{Kazemi2008}, the Loop Noise Bandwidth time product ($B_L T$) must be less than 0.55.
+This is in contrast to Ward, who suggests a maximum  ($B_L T$) of 0.36. This difference of opinion can be resolved by 
+
+
 For an 8ms integration time, corresponding to a 125Hz update rate we have:
 
 \begin{align*}
@@ -439,7 +461,7 @@ Finally, the Allan variance is an error which is intrinsic to the crystal itself
 
 \begin{equation}
 \label{eq:AllanVariance}
-\theta_{A3} = 160 \frac{\sigma_A(\tau)f_L}{B_n} \text{ (degrees)}
+\theta_{A} = 160 \frac{\sigma_A(\tau)f_L}{B_n} \text{ (degrees)}
 \end{equation}
 
 From the data sheet for the current crystal used in the \ac{NAMURU} receiver\cite{VT803Datasheet}, we find that: 
@@ -449,7 +471,7 @@ From the data sheet for the current crystal used in the \ac{NAMURU} receiver\cit
 
 Hence we can simplify equation \label{eq:AllanVariance} as:
 \begin{equation}
-\theta_{A3} =\frac{25.2}{B_n} \text{ (degrees)}
+\theta_{A} =\frac{25.2}{B_n} \text{ (degrees)}
 \end{equation}
 
 For $B_n$ =18, we have $\theta_{A3}=1.4\degree$.
@@ -474,32 +496,7 @@ For $B_n$ =18, we have $\theta_{A3}=1.4\degree$.
     \caption{This plot breaks down the sources of error. Note that the phase jitter is at a minimum for a value of $B_n$ equal to approximately 27.}
 \end{figure}
 
-
-\section{Adaptive control}
-
-No single controller can
-optimally operate the PLL
-under different conditions.
-An algorithm was designed
-which minimises the phase
-jitter, by adapting the
-coefficients of the tracking
-loop controller and update
-rates and integration times,
-based on the cur rent
-dynamics, SNR and the
-vibration.
-By adaptively adjusting the update rates, computation resources
-are allocated to the tracking loops which are experiencing the
-highest dynamics, and demand the highest controller
-bandwidths.
-
-
 In order to analytically determine the correct value of $B_n$, we can use the rules of thumb introduced by ward as a starting point. 
-
-
-
-
 
 Optimising to find the minimum:
 
@@ -508,6 +505,7 @@ Optimising to find the minimum:
 \sigma_{PLL}^2 &= \frac{Bn}{C/N_0} \left(3280 + \frac{1640}{C/N_0 \cdot T}\right) + 4 + \frac{635}{Bn^{2}} + \frac{Jerk^{2}}{Bn^{6}} 9.26 \cdot 10^{4}
 \end{align*}
 
+TALK ABOUT STEP USED
 
 \begin{align*}
 0&=\frac{1}{C/N_0} \left(3280 + \frac{1640}{C/N_0 \dot T}\right) - \frac{1}{Bn^{3}} 1.27 \cdot 10^{3} - \frac{Jerk^{2}}{Bn^{7}} 5.56 \cdot 10^{5}\\
