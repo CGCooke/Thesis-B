@@ -6,17 +6,58 @@ In order to develop relevant solutions to  problems in industry, it is important
 
 \begin{figure}[!htb] 
     \centering
-    \includegraphics[width=0.9\textwidth]{Falcon9/crs6_launch_center.jpg} 
+    \includegraphics[width=0.8\textwidth]{Falcon9/crs6_launch_center.jpg} 
     \caption{CRS-6 Launch. At launch, the rocket has an initial acceleration of $\approx$ 1.2g. Image from \cite{SpaceXPhotos}.}
     \label{fig:Falcon9}
 \end{figure}
 
 
-In order to meet this goal, the Falcon 9 v1.1 rocket was chosen for analysis. This was for a number of salient reasons, At 70M tall, weighing 540 tons at launch and costing \$85M AUD \cite{SpaceX}, the Falcon9 v1.1 has performance characteristics that are typical of a modern \ac{LV}. Space Exploration Technology Corporation (SpaceX) who develop, construct and launch the Falcon 9 are more open regarding the technical details of their \ac{LV} than their contemporaries, allowing numerical models of performance to be developed. Finally, the Falcon 9 v1.1 experiences a wide variety of dynamics, including the first stage conducting a "hover slam" or "suicide burn" manoeuvre, the success of which is reliant on accurate position and velocity estimates.
+\begin{table}[!htb]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+Parameter                   & Value     \\ \hline
+Stage thrust (Sea level)    & 6,806kN   \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+Stage thrust (Vacuum)       & 7,426kN   \\ \hline
+Number of engines           & 9         \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+Fuel flow rate (per engine) & 250kg/s   \\ \hline
+Burn time (9 engines)       & 155.5 s   \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+Burn time (7 engines)       & 18.7 s    \\ \hline
+Fuel mass                   & 382,750kg \\ \hline
+\end{tabular}
+\caption{1st stage key statistics.}
+\label{tab:1stStageStats}
+\end{table}
+
+\begin{table}[!htb]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+Parameter                   & Value    \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+Stage thrust (Vacuum)       & 800kN    \\ \hline
+Number of engines           & 1        \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+Fuel flow rate (per engine) & 250kg/s  \\ \hline
+Burn time                   & 296.7 s  \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+Fuel mass                   & 74,175kg \\ \hline
+\end{tabular}
+\caption{2nd stage key statistics.}
+\label{tab:2ndStageStats}
+\end{table}
+
+
+In order to meet this goal, the Falcon 9 v1.1 rocket was chosen for analysis. This was for a number of salient reasons, At 70M tall, weighing 540 tons at launch and costing \$85M AUD \cite{SpaceXFalcon9}, the Falcon9 v1.1 has performance characteristics that are typical of a modern \ac{LV}. Space Exploration Technology Corporation (SpaceX) who develop, construct and launch the Falcon 9 are more open regarding the technical details of their \ac{LV} than their contemporaries, allowing numerical models of performance to be developed. Finally, the Falcon 9 v1.1 experiences a wide variety of dynamics, including the first stage conducting a "hover slam" or "suicide burn" manoeuvre, the success of which is reliant on accurate position and velocity estimates.
 
 Because the actual flight performance of the Falcon 9 v1.1 is proprietary and confidential, an effort must be made to develop an model which uses publicly disclosed information. In this manner, a model of the performance can be developed, and compared against real world performance of the \ac{LV}.
 
-\section{Physics model}
+%\section{Physics model}
 
 \begin{figure}[!htb] 
     \centering
@@ -27,24 +68,13 @@ Because the actual flight performance of the Falcon 9 v1.1 is proprietary and co
 
 \section{Measured performance}
 
-In order to verify the physics model, it must be compared against real world data. Because the true flight performance is proprietary and confidential, the publicly released videos and associated commentary of three different launches were transcribed. 
+In order to verify the physics model, it must be compared against real world data. Because the true flight performance is strictly proprietary and confidential, the publicly released videos and associated commentary of three different launches were transcribed. This measured performance closely correlated with the modelled performance of the Falcon9 V1.1, and formed the basis for the design of the simulations utilised. 
 
 \input{Tables/CRS4Table}
 \input{Tables/CRS5Table}
-\input{Tables/CRS5Table}
+\input{Tables/CRS6Table}
 
-
-\begin{comment}
-\begin{figure}[!htb]
-\centering
-\includegraphics[scale=1]{Falcon9/Falcon9R.pdf}
-\caption{Falcon 9 Rocket}
-\label{fig:Rocket}
-\end{figure}
-\end{comment}
-
-
-
+\clearpage
 \section{Velocity requirements}
 The 2nd stage burn must be terminated at precisely the right time, to ensure that the final velocity is correct. This is because the orbital height is dictated by the velocity, 
 
@@ -66,7 +96,9 @@ r = \frac{G \cdot M}{v_0^2}
 \frac{dr}{dv} = \frac{-2 \cdot G \cdot M}{v_0^3}
 \end{equation}
 
-For \ac{LEO}, with an orbital velocity of $\approx$ 7,800 m/s, this results in a a differential of 1,679m of altitude, per m/s of velocity. Given that SpaceX guarantees orbital height of $\pm$ 10km, this results in a velocity tolerance of $\pm$ 5.95 m/s, or $\pm$ 31.2 Hz of doppler shift.
+For \ac{LEO}, with an orbital velocity of $\approx$ 7,800 m/s, this results in a a differential of 1,679m of altitude, per m/s of velocity. Given that SpaceX guarantees orbital height of $\pm$ 10km, this results in a velocity tolerance of $\pm$ 5.95 m/s, or $\pm$ 31.2 Hz of doppler shift. 
+
+Using a nominal value of \$5,000 USD for each Kg of cargo delivered to \ac{LEO}, and with a fuel burn rate of 250Kg/s, every second of additional carries an opportunity cost of \$1.25M USD. Given any mistake in velocity requires a burn of approximately equal duration to correct, Each m/s of velocity error costs \$50,000 to rectify. Accelerating at a nominal rate of 50 m/s, this equates to a timing error of 100ms. Based on this information, it can be concluded that the receiver should produce velocity estimates which are accurate to $\leq$ 1m/s.
 
 \input{Tables/Falcon9Missions}
 \input{Tables/Falcon9Timeline}
@@ -82,7 +114,7 @@ For \ac{LEO}, with an orbital velocity of $\approx$ 7,800 m/s, this results in a
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{Falcon9/Model.eps}
-    \caption{}
+    \caption{The modelled acceleration performance. This performance was estimated based on the physical parameters of the vehicle, and should be treated as representative, rather than authoritative.}
     \label{fig:Falcon9Model}
 \end{figure}
 
@@ -90,7 +122,7 @@ For \ac{LEO}, with an orbital velocity of $\approx$ 7,800 m/s, this results in a
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{Falcon9/VelocityProfile.eps}
-    \caption{}
+    \caption{The measured flight velocity from launches CRS-4 to CRS-6. Note the exponential increase in velocity, as as the rocket burns fuel over time.}
     \label{fig:Falcon9VelocityProfile}
 \end{figure}
 
@@ -103,7 +135,7 @@ For \ac{LEO}, with an orbital velocity of $\approx$ 7,800 m/s, this results in a
     \label{fig:Falcon9Launch}
 \end{figure}
 
-
+\clearpage
 \section{Launch azimuth}
 
 \begin{equation}
@@ -117,9 +149,8 @@ Where:
  \beta &= \text{Launch azimuth}\\
 \end{align*}
 
-\cite{LaunchDesign}
 
-The \ac{ISS} has an inclination of $51.6\degree$, hence a launch from Cape Canaveral ($\phi = 28.5\degree$), $\beta=44.9\degree$.
+The \ac{ISS} has an inclination of $51.6\degree$, hence a launch from Cape Canaveral ($\phi = 28.5\degree$), $\beta=44.9\degree$\cite{LaunchDesign}.
 
 
 \begin{figure}[!htb] 
@@ -130,16 +161,20 @@ The \ac{ISS} has an inclination of $51.6\degree$, hence a launch from Cape Canav
 \end{figure}
 
 
+\begin{comment}
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{Falcon9/Skyplot.pdf}
     \caption{}
     \label{fig:Skyplot}
 \end{figure}
+\end{comment}
 
+\clearpage
+\section{Burn-back procedure}
 
+Space Exploration Technologies Corporation (SpaceX) is attempting to reduce launch costs by recovering the first stage of their Falcon 9-R launch vehicle. After first stage separation, the first stage performs a burn-back procedure, to fly back to the launch pad\cite{SpaceXFalcon9}. Given the primary goal of any launch is to deliver the maximum amount of payload to orbit optimisation of the fuel burn is critical. For context, of the gross mass of the launch vehicle, only $\approx$ 2\%  is revenue earning payload. By safely returning the 1st stage, with a nominal value of \$50M, significant savings can be achieved. An overview of the flight profile can be found in figure \ref{fig:Falcon9Profile}.
 
-Space Exploration Technologies Corporation (SpaceX) is attempting to reduce launch costs by recovering the first stage of their Falcon 9-R launch vehicle. After first stage separation, the first stage performs a burn-back procedure, to fly back to the launch pad. During the burn-back, there is an inferred maximum de-acceleration of $\approx 7.8 g$ during the hypersonic burn, based on published performance figures. An overview of the flight profile can be found in figure \ref{fig:Falcon9Profile}. Additional information regarding the Falcon 9 V1.1 can be found in appendix \ref{ch:Falcon9}.
 
 \begin{figure}[!htb] 
     \centering
@@ -149,23 +184,22 @@ Space Exploration Technologies Corporation (SpaceX) is attempting to reduce laun
 \end{figure}
 
 
+The Burn-back procedure requires exquisite timing precision and velocity accuracy for guidance. The most fuel efficient method of returning a rocket to earth is to perform the de-acceleration burn at the last possible moment, at the highest rate possible. The rationale behind this procedure, is that it reduces the flight time, minimising the total downward velocity imparted on the rocket due to gravity. 
 
-Thinking out aloud : 
-So each engine uses 240Kg/s of fuel,
-At 100\% thrust, each engine develops 66.73 tons of thrust.
-Empty first stage is 25.6 Tons,
+Three separate burns are uses as part of the burn-back procedure. The boost-back burn provides gross guidance of the 1st stage towards the landing zone. The hypersonic re-entry burn reduces the velocity from 1300 m/s to  250 m/s using 3 engines. The landing burn slows the 1st stage to 0/ms, at 0 m altitude using a single engine. This sequence can be clearly seen in figure \ref{fig:Falcon9Profile}.
 
-Because each engine can only be throttled to 70\%, or 46.5 tons of thrust, then the rocket is actually trying to accelerate upwards at 1.8G when empty (Or just before landing), which is why it's non trivial!
+While this method optimises the fuel consumption of the rocket, it also minimises the margin for error. If the downward velocity of the rocket is under-estimated, then the rocket will collide with the pad at speed, resulting in the total loss of the \ac{LV}.  To further complicate matters, very little fuel remains in the 1st stage just prior to landing, due to the opportunity cost of carrying un-burned fuel. The Falcon 9 V1.1 R 1st stage has a dry weight of 25.6 tons, each Merlin 1D engine has a rated thrust sea level thrust of of 756Kn, or 66.73 tons. Hence as the 1st stage consumes fuel, it's thrust/weight ratio approaches 2.6. 
 
-The first stage initially has 396 tons of fuel, I have no idea how much is needed to return the first stage, lets guesimate 10\%.
+Because of the positive thrust/weight ratio, once the rocket's vertical velocity has come to zero, it will continue to accelerate upwards unless the throttle is brought to zero. To make the process significantly more complex, that engine can only be throttled between 70-100\% thrust. Even with 70\% throttle, the 1st stage is accelerating upwards at $\approx$ 8.0m/s. Hence, accurate estimates of velocity and position are critical to reliably bring the 1st stage to rest at sea level. An un-successful attempt at this manoeuvre can be seen in figure \ref{fig:Kaboom}.
 
-I think the most efficient burn is going to be all 9 engines, at 100\% thrust, 
-With a vehicle mass of 39.6T propellant + 25.6 Tons, there is a total mass of 65.2 tons.
-So the 1st stage will commence the burn back with an acceleration of 9.2G, The maximum possible acceleration is 23.5G, at zero fuel.
-
-I think that's where the higher G numbers come from,
+During the burn-back, there is an inferred maximum de-acceleration of $\approx 6.8 g$ during the hypersonic burn, based on published performance figures. This figure can be arrived based on use of 3 engines during the hypersonic re-entry burn. 
 
 
-Space Exploration Technologies Corporation (SpaceX) is attempting to reduce launch costs by recovering the first stage of their Falcon 9-R launch vehicle. After first stage separation, the first stage performs a burn-back procedure, to fly back to the launch pad. During the burn-back, there is an inferred maximum de-acceleration of $\approx 7.8 g$ during the hypersonic burn, based on published performance figures. An overview of the flight profile can be found in figure \ref{fig:Falcon9Profile}. Additional information regarding the Falcon 9 V1.1 can be found in appendix \ref{ch:Falcon9}.
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=0.8\textwidth]{Falcon9/CRS6Landing.jpg} 
+    \caption{The CRS-6 1st stage landing attempt. A phase lag in the throttle control loop resulted in unstable behaviour culminating in the  loss of the vehicle in addition to significant damage to the landing pad.}
+    \label{fig:Kaboom}
+\end{figure}
 
-If you come in too fast, you will snap a leg, and blow up the \$85M rocket. 
+
