@@ -13,6 +13,22 @@ Combined PLL/FLL
 \subsection{Software simulation}
 
 \subsubsection{Jerk ramp}
+
+Figure \ref{fig:JerkContourMap} is a parametric study of the effect of differing FLL/PLL bandwidths, in particular, the effect of differing FLL/PLL bandwidths on the robustness of the tracking ability of the receiver. For each integer combination of FLL \& PLL, a 200 second long simulation was conducted, at a $C/N_O$ of 45 db-Hz. During the simulation, the receiver is exposed to a constant snap of 1$m/s^4$. Snap is the fourth derivative of position with respect to time, or the derivative of Jerk with respect to time. The simulation then measures how long it takes for the receiver to lose phase lock, from which the highest jerk endured can be measured. 
+
+This result is both instructive, and matches closely with reality. By comparing to plot \ref{fig:PoleSensitivityContourPlot}, we can notice the similarity in structure. 
+
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{Results/JerkContourMap.eps} 
+    \caption{A contour plot of the breaking point of each PLL/FLL combination in $m/s^3$.}
+    \label{fig:JerkContourMap}
+\end{figure}
+
+A Monte Carlo simulation was carried out in order to compare the performance of the existing FLL/PLL combination (1), with a loop controller with the FLL removed (2). The simulation consisted of a 200 second long ramp in jerk, as above, with the jerk increasing by 1$m/s^3$ per second. The simulation was repeated 100 times, with the breaking point and average phase being recorded. A comparison between the two loop controllers can be seen in figure \ref{fig:BoxplotJerk}. The phase jitter for the first 70 seconds was also recorded, and can be seen in figure \ref{fig:BoxplotPhaseJitter}. 
+
+\begin{comment}
 CNO = 45
 
 PLLBW =32
@@ -26,6 +42,7 @@ FLLBW = 1
 PLLBW = 32
 FLLBW = 0
 131.6 std = 1.64
+\end{comment}
 
 \begin{figure}[!htb] 
     \centering
@@ -34,20 +51,18 @@ FLLBW = 0
     \label{fig:BoxplotJerk}
 \end{figure}
 
+
+
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{mywork/BoxplotPhaseJitter.eps} 
-    \caption{5.77987052071 0.280738421289 vs 4.3143405835 0.0443823631819}
+    \caption{5.78 0.28 vs 4.31 0.044}
     \label{fig:BoxplotPhaseJitter}
 \end{figure}
 
 
-\begin{figure}[!htb] 
-    \centering
-    \includegraphics[width=1\textwidth]{Results/JerkContourMap.eps} 
-    \caption{}
-    \label{fig:JerkContourMap}
-\end{figure}
+
+
 
 
 \clearpage
