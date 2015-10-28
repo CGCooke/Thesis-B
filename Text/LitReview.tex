@@ -8,15 +8,15 @@ While \ac{GPS} receivers are typically used to provide absolute positions, the a
 
 \input{Tables/Requirements}
 
-TALK ABOUT EXPORT CONTROLS
-Unfortunately, the requirements of operation exceed the \ac{COCOM} limits, which prevent the export from the USA of GNSS receivers capable of operating:
+Unfortunately, the requirements of operation of the receiver exceed the \ac{COCOM} limits, now succeeded by the Wassenaar agreement. This arms control agreement covers the export of munitions, including GNSS receivers capable of operating:
 
 \begin{itemize}
 \item{Above 60,000ft (18,000 m)}
 \item{Faster than 1,000 knots (514 m/s) }
 \end{itemize}
 
-This helps to explain the motivation to develop a receiver, which is free from \ac{COCOM} requirements.
+This helps to explain the motivation to develop a receiver which can be utilised TALK MORE ABOUT THIS.
+
 
 Due to the relative motion of the satellite and the receiver, the received signal differs from the transmitted carrier frequency of 1575.42 MHz due to the Doppler effect\cite{Tsui}. The frequency offset due to the \ac{LOS} velocity between the receiver and the satellite can be found using equation \ref{eq:DopplerShift} to be 5.25Hz per m/s. Hence for the velocities experienced by a  \ac{LV} or \ac{SV}, we can expect Doppler shifts in excess of 30KHz.
 
@@ -43,11 +43,7 @@ Making reference to table \ref{tab:DopplerDynamics}, we can observe that differe
 
 \input{Tables/DopplerDynamics}
 
-Turning our attention to the motion of the GPS satellite, Tsui states that the maximum line of sight velocity for a stationary receiver due to the motion of the satellite is $\approx 929 m/s$, or 4.9KHz. Conversely, the maximum \ac{LOS} acceleration due to the motion of the satellite is $\approx 0.188m/s^2$, or 0.936 Hz/s\cite{Tsui}. From this, we can conclude that the LOS acceleration due to the motion of the satellite is inconsequential compared to the motion of the receiver. 
-
-INTRODUCE LOS DYNAMICS HERE
-
-
+Turning our attention to the motion of the GPS satellite, Tsui states that the maximum line of sight velocity for a stationary receiver due to the motion of the satellite is $\approx 929 m/s$, or 4.9KHz. Conversely, the maximum \ac{LOS} acceleration due to the motion of the satellite is $\approx 0.188m/s^2$, or 0.936 Hz/s\cite{Tsui}. From this, we can conclude that the \ac{LOS} acceleration due to the motion of the satellite is inconsequential compared to the motion of the receiver. The term \ac{LOS} refers to the relative motion between the satellite and the receiver. 
 
 
 

@@ -51,7 +51,6 @@ Address & Variable                                                             \
 
 
 
-
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{mywork/Spirent-GSS8000.jpg} 
@@ -67,10 +66,64 @@ Address & Variable                                                             \
 \end{figure}
 
 
-The correct performance of a \ac{PLL} can be determined in a number of ways. The receiver internally uses a lock detection algorithm to decided which state it is currently in, and which set of tracking loops should be used. The current state is can be determined by examining the output from the KeaDebug. Another method that was employed to verify the correct operation of the software receiver is to observe the raw I & Q values. In the case that the receiver is truly in phase lock with the incoming signal, the binary bit-stream transmitted by the satellite can be observed in the prompt I values. 
+The correct performance of a \ac{PLL} can be determined in a number of ways. The receiver internally uses a lock detection algorithm to decided which state it is currently in, and which set of tracking loops should be used. The current state is can be determined by examining the output from the KeaDebug. Another method that was employed to verify the correct operation of the software receiver is to observe the raw I \& Q values. In the case that the receiver is truly in phase lock with the incoming signal, the binary bit-stream transmitted by the satellite can be observed in the prompt I values. In figure \ref{fig:DigitalData} the decoded message can be clearly seen, indicating that the receiver is maintaining phase lock with the signal. 
 
-In figures \ref{fig:RawSignal} and \ref{fig:DigitalSignal}, the decoded message can be clearly seen, indicating that the receiver is maintaining phase lock with the signal.
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{Simulation/DigitalData.eps} 
+    \caption{The 50 bps digital signal decoded from the phase modulated signal from the satellite.}
+    \label{fig:DigitalData}
+\end{figure}
 
+
+
+\subsection{HighG3}
+The scenario \emph{HighG3} is designed to expose the receiver to dynamics that are far in excess of what will ever be experienced during launch. The peak dynamics experienced are summarised in table \ref{tab:HighG3PeakDynamics}, with the exact sequence of steps in table \ref{tab:HighG3Steps}. The long periods of acceleration are designed to ensure that any errors that cause failure by accumulation over time become apparent. 
+
+
+\begin{table}[]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+Derivative   & Value    & Time  \\ \hline
+Velocity     & 9,000m/s & n/a   \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+Acceleration & 150m/s   & 120s  \\ \hline
+Jerk         & 500m/s   & 300ms \\ \hline
+\end{tabular}
+\caption{The peak dynamics experienced during the HighG3 scenario.}
+\label{tab:HighG3PeakDynamics}
+\end{table}
+
+\begin{table}[]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+Time (s) & Action               \\ \hline
+0        & Stationary           \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+900      & 40m/s acceleration east   \\ \hline
+960      & Hold 2,400m/s        \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+970      & -40m/s acceleration east \\ \hline
+1030     & Hold 0 m/s           \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+1050     & 45m/s acceleration  west \\ \hline
+\ldots   & \ldots               \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+4050     & 150m/s acceleration west \\ \hline
+4110     & Hold 9,000m/s        \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+4120     & -150m/s acceleration east\\ \hline
+4180     & Hold 0 m/s           \\ \hline
+\end{tabular}
+\caption{The sequence of dynamics experienced by the receiver. The total run-time of the simulation is approximately 75m including setup time, consisting of 22 separate rounds of acceleration in 5$m/s^2$ intervals.}
+\label{tab:HighG3Steps}
+\end{table}
+
+It is important to note that these are the accelerations applied to the receiver, as opposed to the \ac{LOS} dynamics experienced, which are significantly less. By observing figure \ref{fig:SpirentSatelliteMap} it is possible to identify that satellites 
 
 
 \subsection{Software simulation}
@@ -78,7 +131,7 @@ In figures \ref{fig:RawSignal} and \ref{fig:DigitalSignal}, the decoded message 
 
 A software based receiver has been developed as part of the thesis, in order to gain a greater understanding of the performance of tracking loops on real world data. 
 
-The software receiver was developed in Python, based on the authors previous experience with the language, as well the need to interface with domain specific libraries.  The approach of using an \ac{GNSS}, and testing in software was effectively used by Kazemi \cite{KazemiPHD} in order to critically evaluate the performance of the new tracking loops developed as part of his PHD. Ward also used Montecarlo simulations in order to ascertain the performance limits of his FLL/PLL combined tracking loop.
+The software receiver was developed in Python, based on the authors previous experience with the language, as well the need to interface with domain specific libraries.  The approach of using an \ac{GNSS}, and testing in software was effectively used by Kazemi \cite{KazemiPHD} in order to critically evaluate the performance of the new tracking loops developed as part of his PHD. Ward also used Monte Carlo simulations in order to ascertain the performance limits of his FLL/PLL combined tracking loop.
 
 A signal was generated by a Spirent \ac{GPS} simulator, which can be seen in figure \ref{fig:Spirent}. This signal was then digitised using a NordNav \ac{SDR}, with a sampling rate of $16.3676 \times 10^6$ samples per second. 
 

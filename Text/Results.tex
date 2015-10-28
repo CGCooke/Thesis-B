@@ -10,9 +10,6 @@ Combined PLL/FLL
 ('gm', 0.0046698725352284989, 'pm', 74.63357747832741, 'Wcg', 120.13024452444121, 'Wcp', 4.2259124809846496)
 
 
-
-
-
 \subsection{Software simulation}
 
 \subsubsection{Jerk ramp}
@@ -146,7 +143,7 @@ SVNUM & Lock time (\%) & Phase jitter (degrees) \\ \hline
 \label{my-label}
 \end{table}
 
-\begin{table}[]
+\begin{table}[!htb]
 \centering
 \begin{tabular}{|l|l|l|}
 \hline
@@ -181,6 +178,76 @@ SVNUM & Lock time (\%) & Phase jitter (degrees) \\ \hline
 \subsection{Hardware simulation}
 
 \subsubsection{HighG3}
+
+\begin{table}[!htb]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+Channel number & Satellite number & Phase jitter       \\ \hline
+0              & 3                & 7.0890851635149366 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+1              & 6                & 7.1846731149668361 \\ \hline
+2              & 11               & 7.1113962923551597 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+3              & 14               & 7.114860922180231  \\ \hline
+4              & 16               & 6.8675012560208755 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+5              & 18               & 5.6842895314362698 \\ \hline
+6              & 19               & 7.143998590743041  \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+7              & 22               & 7.1503133672496286 \\ \hline
+\end{tabular}
+\caption{CNO = 48,PLLBW =32,FLL=0}
+\label{my-label}
+\end{table}
+
+
+\begin{table}[!htb]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+Channel number & Satellite number & Phase jitter       \\ \hline
+0              & 3                & 7.7173924790727746 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+1              & 22               & 7.7034738220396086 \\ \hline
+2              & 18               & 6.9821446714065125 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+3              & 6                & 7.7344118878492019 \\ \hline
+4              & 16               & 7.7250225040637863 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+5              & 14               & 5.0364581012747029 \\ \hline
+6              & 19               & 7.7013222000619912 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+7              & 11               & 7.6800954886937101 \\ \hline
+\end{tabular}
+\caption{CNO = 42,PLLBW =32,FLL=0}
+\label{my-label}
+\end{table}
+
+\begin{table}[!htb]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+Channel number & Satellite number & Phase jitter       \\ \hline
+0              & 14               & 5.3700849956867005 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+1              & 3                & 9.1621148870555285 \\ \hline
+2              & 6                & 9.2117802234362305 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+3              & 18               & 9.3463073815586064 \\ \hline
+4              & 11               & 9.1081628079251082 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+5              & 16               & 9.0562395531076589 \\ \hline
+6              & 19               & 9.0678697274451565 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+7              & 22               & 7.8848634630962371 \\ \hline
+\end{tabular}
+\caption{CNO = 42,PLLBW =32,FLL=0}
+\label{my-label}
+\end{table}
 
 \subsection{Discussion}
 

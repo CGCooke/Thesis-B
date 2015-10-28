@@ -602,22 +602,41 @@ The behaviour of a closed loop system is determined by the locations of the zero
 
 Root locus provides an efficient graphical method for analysing the stability of a system in the Laplace domain\cite{Nise}. 
 
+\section{Bode Plots}
 
-\begin{comment}
-\begin{lstlisting}[frame=single]
-Kvco =1;
-Bn = 18;
-a3 = 1.1;
-b3 = 2.4;
-omega = Bn/0.7845;
-k1 = b3*omega;
-k2 = a3*(omega^2);
-k3 = omega^3;
-%H is the forward transfer function
-H = tf([Kvco*k1 Kvco*k2 Kvco*k3],[1 0 0 0]);
-rlocus(H);
-\end{lstlisting}
-\end{comment}
+
+
+
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{mywork/ClosedLoopPlots/BodePlotCombinedPLLFLL.eps} 
+    \caption{}
+\end{figure}
+
+
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{mywork/ClosedLoopPlots/BodePlotPurePLL.eps} 
+    \caption{}
+\end{figure}
+
+
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{mywork/OpenLoopPlots/BodePlotCombinedPLLFLL.eps} 
+    \caption{}
+\end{figure}
+
+
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{mywork/OpenLoopPlots/BodePlotPurePLL.eps} 
+    \caption{}
+\end{figure}
 
 
 
