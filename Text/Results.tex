@@ -2,12 +2,12 @@
 
 \subsection{Analysis}
 
-For open loop
-Pure PLL
-('gm', 0.37878787878787878, 'pm', 77.528695011248502, 'Wcg', 92.061093552734391, 'Wcp', 26.330033371284756)
 
-Combined PLL/FLL
-('gm', 0.0046698725352284989, 'pm', 74.63357747832741, 'Wcg', 120.13024452444121, 'Wcp', 4.2259124809846496)
+\subsubsection{Bode Plots}
+
+From analysis of the closed loop bode plots, which can be seen in figures \ref{fig:BodePlotPurePLLClosedLoop} and \ref{fig:BodePlotCombinedClosedLoop}, we can measure the 3dB bandwidth. This is an important metric, as it dictates the noise that is allowed into the PLL, and dictates signal to noise ratio, and the phase jitter. 
+
+For the pure PLL, with a $B_{nPLL}$ of 32HZ, there is a 3dB Bandwidth of 111.6Hz. For the combined PLL/FLL loop controller with  $B_{nPLL}$ of 32Hz and  $B_{nFLL}$ of 10Hz the 3dB Bandwidth is 147.34Hz. The closed loop bandwidth of the combined PLL/FLL loop controller is 32\% higher than the closed loop bandwidth for the pure PLL.
 
 
 \subsection{Software simulation}
@@ -16,8 +16,7 @@ Combined PLL/FLL
 
 Figure \ref{fig:JerkContourMap} is a parametric study of the effect of differing FLL/PLL bandwidths, in particular, the effect of differing FLL/PLL bandwidths on the robustness of the tracking ability of the receiver. For each integer combination of FLL \& PLL, a 200 second long simulation was conducted, at a $C/N_O$ of 45 db-Hz. During the simulation, the receiver is exposed to a constant snap of 1$m/s^4$. Snap is the fourth derivative of position with respect to time, or the derivative of Jerk with respect to time. The simulation then measures how long it takes for the receiver to lose phase lock, from which the highest jerk endured can be measured. 
 
-This result is both instructive, and matches closely with reality. By comparing to plot \ref{fig:PoleSensitivityContourPlot}, we can notice the similarity in structure. 
-
+This result is both instructive, and matches closely with reality based on comparison testing with the Spirent simulator. 
 
 \begin{figure}[!htb] 
     \centering
@@ -26,44 +25,34 @@ This result is both instructive, and matches closely with reality. By comparing 
     \label{fig:JerkContourMap}
 \end{figure}
 
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{Results/AccelerationContourMap.eps} 
+    \caption{A contour plot of the breaking point of each PLL/FLL combination in $m/s^2$.}
+    \label{fig:AccelerationContourMap}
+\end{figure}
+
+
 A Monte Carlo simulation was carried out in order to compare the performance of the existing FLL/PLL combination (1), with a loop controller with the FLL removed (2). The simulation consisted of a 200 second long ramp in jerk, as above, with the jerk increasing by 1$m/s^3$ per second. The simulation was repeated 100 times, with the breaking point and average phase being recorded. A comparison between the two loop controllers can be seen in figure \ref{fig:BoxplotJerk}. The phase jitter for the first 70 seconds was also recorded, and can be seen in figure \ref{fig:BoxplotPhaseJitter}. 
 
-\begin{comment}
-CNO = 45
-
-PLLBW =32
-FLLBW = 10
-76.135, std = 2.3549
-
-PLLBW = 18
-FLLBW = 1
-128.26,std =  2.59 
-
-PLLBW = 32
-FLLBW = 0
-131.6 std = 1.64
-\end{comment}
+Based on the result of the Monte Carlo simulation, it is possible to conclude that the pure PLL demonstrates a significantly greater robustness with respect to jerk stresses. From a numerical perspective, the pure PLL was able to sustain operation at jerk levels  73\% higher than the combined FLL/PLL tracking loop. 
 
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{mywork/BoxplotJerk.eps} 
-    \caption{ 76.135, std = 2.3549 vs 131.6 std = 1.64}
+    \caption{Boxplot 1 is the combined PLL/FLL, Boxplot 2 is the pure PLL. The combined PLL/FLL has an average breaking point of 76.135$\pm$ 2.36 $m/s^3$. The pure PLL has a breaking point of 131.6 $\pm$ 1.64$m/s^3$.}
     \label{fig:BoxplotJerk}
 \end{figure}
 
-
+Comparing the phase jitter results from the Monte Carlo simulation, it can be ascertained that the the pure PLL demonstrates a 34\% lower phase jitter. This significant improvement helps to drive the improvements in robustness during tracking which were demonstrated in figure \ref{fig:BoxplotJerk}. 
 
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{mywork/BoxplotPhaseJitter.eps} 
-    \caption{5.78 0.28 vs 4.31 0.044}
+    \caption{Boxplot 1 is the combined PLL/FLL, Boxplot 2 is the pure PLL. The combined PLL/FLL has an average phase jitter of 5.78$\pm$0.28$\degree$. The pure PLL has an average phase jitter of 4.31 $\pm$ 0.044 $\degree$.}
     \label{fig:BoxplotPhaseJitter}
 \end{figure}
-
-
-
-
-
 
 \clearpage
 
@@ -75,27 +64,27 @@ FLLBW = 0
 \hline
 \rowcolor[HTML]{C0C0C0} 
 SVNUM & Lock time (\%) & Phase jitter (degrees) \\ \hline
-0     & 99.9938868669  & 2.94532640253          \\ \hline
+0     & 99.99 & 2.94          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-1     & 99.993408762   & 2.94769915199          \\ \hline
-3     & 99.9938868669  & 2.94919518101          \\ \hline
+1     & 99.99   & 2.95          \\ \hline
+3     & 99.99  & 2.95          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-6     & 99.9938868669  & 2.94102526044          \\ \hline
-11    & 99.9938868669  & 2.94545139336          \\ \hline
+6     & 99.99  & 2.94          \\ \hline
+11    & 99.99  & 2.95          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-14    & 99.9923341049  & 2.95730497982          \\ \hline
-16    & 99.9938868669  & 2.94859458495          \\ \hline
+14    & 99.99  & 2.96          \\ \hline
+16    & 99.99  & 2.95          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-18    & 99.9938868669  & 2.94407487114          \\ \hline
-19    & 99.9938868669  & 2.94368018213          \\ \hline
+18    & 99.99  & 2.94          \\ \hline
+19    & 99.99  & 2.94         \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-21    & 99.9446285568  & 3.11426406624          \\ \hline
-22    & 99.9927007366  & 2.943947352            \\ \hline
+21    & 99.94  & 3.11         \\ \hline
+22    & 99.99 & 2.94          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-23    & 99.9932697205  & 2.95135953662          \\ \hline
-25    & 97.5933488168  & 8.73693451462          \\ \hline
+23    & 99.99  & 2.95         \\ \hline
+25    & 97.59  & 8.77          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-31    & 99.9923357734  & 2.94442277494          \\ \hline
+31    & 99.99  & 2.94         \\ \hline
 \end{tabular}
 
 \caption{CNO = 48,PLLBW =32,FLL=0}
@@ -109,27 +98,27 @@ SVNUM & Lock time (\%) & Phase jitter (degrees) \\ \hline
 \hline
 \rowcolor[HTML]{C0C0C0} 
 SVNUM & Lock time (\%) & Phase jitter (degrees) \\ \hline
-0     & 99.9938868669  & 4.10539966514          \\ \hline
+0     & 99.99  & 4.11          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-1     & 99.993408762   & 4.10334714077          \\ \hline
-3     & 99.9938868669  & 4.1079353616           \\ \hline
+1     & 99.99   & 4.10         \\ \hline
+3     & 99.99  & 4.11          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-6     & 99.9938868669  & 4.1031216192           \\ \hline
-11    & 99.9938868669  & 4.11852598123          \\ \hline
+6     & 99.99  & 4.10          \\ \hline
+11    & 99.99  & 4.12          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-14    & 99.9923341049  & 4.12708223476          \\ \hline
-16    & 99.9938868669  & 4.10894682099          \\ \hline
+14    & 99.99  & 4.13          \\ \hline
+16    & 99.99  & 4.11         \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-18    & 99.9938868669  & 4.13975681239          \\ \hline
-19    & 99.9938868669  & 4.12705835872          \\ \hline
+18    & 99.99  & 4.14         \\ \hline
+19    & 99.99  & 4.13          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-21    & 99.9446285568  & 4.17746647598          \\ \hline
-22    & 99.9938868669  & 4.13428070614          \\ \hline
+21    & 99.94  & 4.18          \\ \hline
+22    & 99.99  & 4.13         \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-23    & 99.9917629415  & 4.13411130351          \\ \hline
-25    & 97.5873761308  & 9.22106274762          \\ \hline
+23    & 99.99  & 4.13          \\ \hline
+25    & 97.58  & 9.22          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-31    & 99.9938868669  & 4.11195994528          \\ \hline
+31    & 99.99  & 4.11          \\ \hline
 \end{tabular}
 \caption{CNO = 48,PLLBW =32,FLL=10}
 \label{my-label}
@@ -143,27 +132,27 @@ SVNUM & Lock time (\%) & Phase jitter (degrees) \\ \hline
 \hline
 \rowcolor[HTML]{C0C0C0} 
 SVNUM & Lock time (\%) & Phase jitter (degrees) \\ \hline
-0     & 99.9938868669  & 5.85150590292          \\ \hline
+0     & 99.99  & 5.85         \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-1     & 99.9925233718  & 5.8678088226           \\ \hline
-3     & 99.9923357734  & 5.8552560291           \\ \hline
+1     & 99.99  & 5.87          \\ \hline
+3     & 99.99  & 5.86          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-6     & 99.9938868669  & 5.8622244764           \\ \hline
-11    & 99.9936131445  & 5.86698613227          \\ \hline
+6     & 99.99  & 5.87          \\ \hline
+11    & 99.99  & 5.87          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-14    & 99.9923341049  & 5.85976998793          \\ \hline
-16    & 99.9938868669  & 5.86700880521          \\ \hline
+14    & 99.99  & 5.86          \\ \hline
+16    & 99.99  & 5.87          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-18    & 99.9938868669  & 5.86355144123          \\ \hline
-19    & 99.9919708102  & 5.88993271515          \\ \hline
+18    & 99.99  & 5.86          \\ \hline
+19    & 99.99  & 5.89          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-21    & 99.9446285568  & 5.89517718701          \\ \hline
-22    & 99.9936131445  & 5.86991081749          \\ \hline
+21    & 99.94 & 5.90        \\ \hline
+22    & 99.99  & 5.87        \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-23    & 99.9911602299  & 5.86469530411          \\ \hline
-25    & 59.8254951783  & 33.3414856714          \\ \hline
+23    & 99.99  & 5.86          \\ \hline
+25    & 59.83  & 33.34         \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-31    & 99.9938868669  & 5.86106301871          \\ \hline
+31    & 99.99  & 5.86          \\ \hline
 \end{tabular}
 \caption{CNO = 42,PLLBW =32,FLL=0}
 \label{my-label}
@@ -175,27 +164,27 @@ SVNUM & Lock time (\%) & Phase jitter (degrees) \\ \hline
 \hline
 \rowcolor[HTML]{C0C0C0} 
 SVNUM & Lock time (\%) & Phase jitter (degrees) \\ \hline
-0     & 99.9916058471  & 8.22732333217          \\ \hline
+0     & 99.991  & 8.23         \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-1     & 99.9923266185  & 8.22539162245          \\ \hline
-3     & 99.9927007366  & 8.21735356196          \\ \hline
+1     & 99.99  & 8.23        \\ \hline
+3     & 99.99  & 8.22          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-6     & 99.9938868669  & 8.20734346342          \\ \hline
-11    & 99.9921532918  & 8.21523460807          \\ \hline
+6     & 99.99  & 8.21         \\ \hline
+11    & 99.99  & 8.22         \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-14    & 99.9923341049  & 8.21732089483          \\ \hline
-16    & 99.9927007366  & 8.2150754949           \\ \hline
+14    & 99.99  & 8.22         \\ \hline
+16    & 99.99  & 8.22           \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-18    & 99.9938868669  & 8.2076813485           \\ \hline
-19    & 99.9923357734  & 8.2395476463           \\ \hline
+18    & 99.99  & 8.21          \\ \hline
+19    & 99.99  & 8.24          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-21    & 99.9371906017  & 8.25529372615          \\ \hline
-22    & 99.9928832182  & 8.22342517274          \\ \hline
+21    & 99.94  & 8.26          \\ \hline
+22    & 99.99  & 8.2          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-23    & 99.9917629415  & 8.22683126791          \\ \hline
-25    & 43.5826901319  & 39.6450990098          \\ \hline
+23    & 99.99  & 8.23         \\ \hline
+25    & 43.58  & 39.65          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-31    & 99.9938868669  & 8.2146771752           \\ \hline
+31    & 99.99  & 8.22         \\ \hline
 \end{tabular}
 \caption{CNO = 42,PLLBW =32,FLL=10}
 \label{my-label}
@@ -212,18 +201,18 @@ SVNUM & Lock time (\%) & Phase jitter (degrees) \\ \hline
 \hline
 \rowcolor[HTML]{C0C0C0} 
 Channel number & Satellite number & Phase jitter       \\ \hline
-0              & 3                & 7.0890851635149366 \\ \hline
+0              & 3                & 7.09 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-1              & 6                & 7.1846731149668361 \\ \hline
-2              & 11               & 7.1113962923551597 \\ \hline
+1              & 6                & 7.18 \\ \hline
+2              & 11               & 7.11 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-3              & 14               & 7.114860922180231  \\ \hline
-4              & 16               & 6.8675012560208755 \\ \hline
+3              & 14               & 7.12 \\ \hline
+4              & 16               & 6.87 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-5              & 18               & 5.6842895314362698 \\ \hline
-6              & 19               & 7.143998590743041  \\ \hline
+5              & 18               & 5.68 \\ \hline
+6              & 19               & 7.14  \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-7              & 22               & 7.1503133672496286 \\ \hline
+7              & 22               & 7.15 \\ \hline
 \end{tabular}
 \caption{CNO = 48,PLLBW =32,FLL=0}
 \label{my-label}
@@ -236,18 +225,18 @@ Channel number & Satellite number & Phase jitter       \\ \hline
 \hline
 \rowcolor[HTML]{C0C0C0} 
 Channel number & Satellite number & Phase jitter       \\ \hline
-0              & 3                & 7.7173924790727746 \\ \hline
+0              & 3                & 7.72 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-1              & 22               & 7.7034738220396086 \\ \hline
-2              & 18               & 6.9821446714065125 \\ \hline
+1              & 22               & 7.70 \\ \hline
+2              & 18               & 6.98\\ \hline
 \rowcolor[HTML]{EFEFEF} 
-3              & 6                & 7.7344118878492019 \\ \hline
-4              & 16               & 7.7250225040637863 \\ \hline
+3              & 6                & 7.73 \\ \hline
+4              & 16               & 7.73 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-5              & 14               & 5.0364581012747029 \\ \hline
-6              & 19               & 7.7013222000619912 \\ \hline
+5              & 14               & 5.04 \\ \hline
+6              & 19               & 7.70 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-7              & 11               & 7.6800954886937101 \\ \hline
+7              & 11               & 7.68 \\ \hline
 \end{tabular}
 \caption{CNO = 42,PLLBW =32,FLL=0}
 \label{my-label}
@@ -259,18 +248,18 @@ Channel number & Satellite number & Phase jitter       \\ \hline
 \hline
 \rowcolor[HTML]{C0C0C0} 
 Channel number & Satellite number & Phase jitter       \\ \hline
-0              & 14               & 5.3700849956867005 \\ \hline
+0              & 14               & 5.37 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-1              & 3                & 9.1621148870555285 \\ \hline
-2              & 6                & 9.2117802234362305 \\ \hline
+1              & 3                & 9.16 \\ \hline
+2              & 6                & 9.21 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-3              & 18               & 9.3463073815586064 \\ \hline
-4              & 11               & 9.1081628079251082 \\ \hline
+3              & 18               & 9.35 \\ \hline
+4              & 11               & 9.11 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-5              & 16               & 9.0562395531076589 \\ \hline
-6              & 19               & 9.0678697274451565 \\ \hline
+5              & 16               & 9.06 \\ \hline
+6              & 19               & 9.07 \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-7              & 22               & 7.8848634630962371 \\ \hline
+7              & 22               & 7.89 \\ \hline
 \end{tabular}
 \caption{CNO = 42,PLLBW =32,FLL=0}
 \label{my-label}

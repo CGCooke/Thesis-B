@@ -1,6 +1,5 @@
 \chapter{Analysis}\label{ch:Analysis}
 
-
 In summary, the goal of the carrier tracking loop is to predict the future carrier phase $\phi$, $T$ seconds in the future, based on past and current measurements of the carrier phase. For successful phase lock to be maintained, the predicted phase must be within a small fraction of a cycle of the actual phase on a consistant basis.
 
 \section{Ambiguities}
@@ -411,6 +410,7 @@ Kaplan suggests that "A conservative rule of thumb for tracking threshold is tha
 \begin{align}
 3 \sigma_{PLL} &= 3 \sigma_j +\theta_e \leq 45 \degree\\
 \sigma_{PLL} &=\sigma_j + \frac{\theta_e}{3} \leq 15 \degree
+\label{eq:WardJitter}
 \end{align}
 
 Where:
@@ -424,6 +424,7 @@ Jwo breaks the equation down into more detail\cite{Jwo}, identifying the contrib
 
 \begin{equation}
 \sigma_{PLL} = \sqrt{\sigma^2_{tPLL} + \sigma^2_v+ \theta^2_A} + \frac{\theta_e}{3} \leq 15 \degree 
+\label{eq:JwoJitter}
 \end{equation}
 
 Where:
@@ -437,6 +438,7 @@ Where:
 
 \begin{equation}
 \sigma_{PLLt} = \frac{360}{2 \pi} \sqrt{\frac{B_n}{C/N_0}(1+\frac{1}{2 \cdot T \cdot C/N_0})} \text{ (degrees)}
+\label{eq:ThermalJitter}
 \end{equation}
 %\cite{Kaplan}
 
@@ -456,8 +458,8 @@ The dynamic stress error is due to the motion of the receiver, for a 3rd order P
 
 \begin{equation}
 \theta_e = \frac{360 \cdot Jerk  \cdot f_L}{c  \cdot \omega^3_0} \text{ (degrees)}
+\label{eq:DynamicStressError}
 \end{equation}
-
 
 Where:
 \begin{align*}
@@ -482,6 +484,7 @@ From the data sheet for the current crystal used in the \ac{NAMURU} receiver\cit
 Hence we can simplify equation \label{eq:AllanVariance} as:
 \begin{equation}
 \theta_{A} =\frac{25.2}{B_n} \text{ (degrees)}
+\label{eq:AllanVariance}
 \end{equation}
 
 For $B_n$ =18, we have $\theta_{A3}=1.4\degree$.
@@ -491,6 +494,7 @@ For $B_n$ =18, we have $\theta_{A3}=1.4\degree$.
     \centering
     \includegraphics[width=1\textwidth]{mywork/18ContourPLL.eps} 
     \caption{A contour plot for a 3rd order loop with a $B_n$ of 18Hz. A value of $1.4\degree$ for the Allan variance oscillator jitter and $1.8\degree$ for vibration oscillator jitter is used. The conservative threshold of 15\degree can be seen in red. From this, we can conclude that the loop is likely to loose phase lock at a jerk of $150ms^{-3}$ given a $C/N_0$ of 30.}
+    \label{fig:18HzPLLContourPlot}
 \end{figure}
 
 \begin{figure}[!htb] 
@@ -506,16 +510,17 @@ For $B_n$ =18, we have $\theta_{A3}=1.4\degree$.
     \caption{This plot breaks down the sources of error. Note that the phase jitter is at a minimum for a value of $B_n$ equal to approximately 27.}
 \end{figure}
 
-In order to analytically determine the correct value of $B_n$, we can use the rules of thumb introduced by ward as a starting point. 
+In order to analytically determine the correct value of $B_n$, we can use the rules of thumb introduced by Ward as a starting point\cite{Ward}.
 
-Optimising to find the minimum:
+Starting with equation \ref{eq:WardJitter}, and substituiting in equations \ref{ThermaJitter},\ref{AllanVariance} and \ref{DynamicStressError}.
+Additionally, nominally using a value of 2 $\degree$ for $\sigma_v$:
 
 \begin{align*}
 \sigma_{PLL} &= \sqrt{\frac{Bn}{C/N_0} \left(3280 + \frac{1640}{C/N_0 \cdot T}\right) + 4 + \frac{635}{Bn^{2}}} + \frac{304 Jerk}{Bn^{3}}\\
 \sigma_{PLL}^2 &= \frac{Bn}{C/N_0} \left(3280 + \frac{1640}{C/N_0 \cdot T}\right) + 4 + \frac{635}{Bn^{2}} + \frac{Jerk^{2}}{Bn^{6}} 9.26 \cdot 10^{4}
 \end{align*}
 
-TALK ABOUT STEP USED
+At this point, we have an equation for the phase variance, the next step is to differentiate to find the minimum:
 
 \begin{align*}
 0&=\frac{1}{C/N_0} \left(3280 + \frac{1640}{C/N_0 \dot T}\right) - \frac{1}{Bn^{3}} 1.27 \cdot 10^{3} - \frac{Jerk^{2}}{Bn^{7}} 5.56 \cdot 10^{5}\\
@@ -523,6 +528,8 @@ TALK ABOUT STEP USED
 0&=\frac{3280 Bn^{7}}{C/N_0} + \frac{1640 Bn^{7}}{C/N_0^{2} \cdot T} - 1.27 \cdot 10^{3} Bn^{4} - 5.56 \cdot 10^{5} Jerk^{2}\\
 0&=(\frac{3280}{C/N_0} + \frac{1640}{C/N_0^{2} \cdot T})Bn^{7}  - 1.27 \cdot 10^{3} Bn^{4} - 5.56 \cdot 10^{5} Jerk^{2}
 \end{align*}
+
+This equation is a 7th order polynomial, with 7 roots, 6 of which are complex. By solving for the real root we can determine the optimum value of the PLL bandwidth to be used for a given $C/N_0$, coherent integration time, and Jerk enviroment. Because of the comutational complexity of the  
 
 \subsection{FLL}
 
@@ -603,38 +610,38 @@ Root locus provides an efficient graphical method for analysing the stability of
 
 \section{Bode Plots}
 
-
-
-
-
-\begin{figure}[!htb] 
-    \centering
-    \includegraphics[width=1\textwidth]{mywork/ClosedLoopPlots/BodePlotCombinedPLLFLL.eps} 
-    \caption{}
-\end{figure}
-
-
-
-\begin{figure}[!htb] 
-    \centering
-    \includegraphics[width=1\textwidth]{mywork/ClosedLoopPlots/BodePlotPurePLL.eps} 
-    \caption{}
-\end{figure}
-
-
+As discussed in the lituratre review, Bode plots posess a number of useful properties for loop analysis. Useful parameters we can discover from from Bode plots include the effects of delay, as well as gain and phase margins. 
 
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{mywork/OpenLoopPlots/BodePlotCombinedPLLFLL.eps} 
-    \caption{}
+    \label{fig:BodePlotCombinedOpenLoop}
+    \caption{The gain margin is 0.0047.}
 \end{figure}
-
-
 
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{mywork/OpenLoopPlots/BodePlotPurePLL.eps} 
-    \caption{}
+    \label{fig:BodePlotPurePLLOpenLoop}
+    \caption{The gain margin is 0.38.}
+\end{figure}
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{mywork/ClosedLoopPlots/BodePlotCombinedPLLFLL.eps} 
+    \label{fig:BodePlotCombinedClosedLoop}
+    \caption{The closed loop 3dB bandwidth is 147.53Hz.}
+    
+\end{figure}
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{mywork/ClosedLoopPlots/BodePlotPurePLL.eps} 
+    \label{fig:BodePlotPurePLLClosedLoop}
+    \caption{The closed loop 3dB bandwidth is 111.62Hz.}
+\end{figure}
+
+    
 \end{figure}
 
 

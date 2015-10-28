@@ -1,9 +1,15 @@
 
 \section{Future Work}
-This work has raised a number of salient issues, which are likely to be investigated in the future.
-In particular, the modifications identified to the receiver need to be implemented, allowing the performance benefits to be realised. In particular, the performance needs to be assessed, to "close the loop" and assess the accuracy and validity of the modelling techniques used.
+This work has raised a number of salient issues, which are likely to be investigated in the future. In particular, the modifications identified to the receiver need to be implemented, allowing the performance benefits to be realised. In particular, the performance needs to be assessed, to "close the loop" and assess the accuracy and validity of the modelling techniques used.
 
 A number of other promising approaches exist. The analysis conducted on this thesis treated each of the channels tracking GPS satellites in isolation. By considering that the dynamics are correlated across each channels, and exploiting this information, a vector tracking scheme can be developed. In a vector tracking scheme, feedback from individual loop filters is replaced by feedback from a navigation processor, which combines information from each of the channels, and possibly from an IMU in order to generate estimate for the carrier phase for each channel. 
+
+There is significant scope for making changes to the \ac{NAMURU} receiver, in particular, performance improvements would likely be realised if the bilinear integrator model was utilised. Other changes suggested based on this research include adaptively adjusting the update rate and and the coherent integration time to adjust to the dynamics. While this is a very promising way to improve the performance of the receiver, there is currently a somewhat limited amount of spare processor time available. 
+
+Other future work includes using a different crystal on the next generation of the NAMURU board. While this research has identified that the phase jitter due to the crystal is limited to $\approx$ 2 $\degree$, using a proper crystal has the potential to reduce vibration induced phase jitter by an order of magnitude. At typical settings, this has is likely to have a significant impact on the breaking point of the receiver. If we examine figure \ref{fig:18HzPLLContourPlot}, it is apparent that the impact is on the order of a \%20 increase.
+
+
+
 
 
 

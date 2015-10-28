@@ -64,7 +64,6 @@ Every PLL contains 3 key components,
 
 In figure \ref{fig:PLLAnalog} we can observe relationship between these components. The \emph{Phase Detector} measures the phase between difference an incoming signal $\omega_{input}$ and an internally generated signal $\omega_{local}$, generating an error signal $\phi$, which is ideally equal to $\theta_i -\theta_o$. This error signal is then filtered by the \emph{Loop Filter}, which generates a control signal and  removes noise and high frequency components. This control signal is then used by the \emph{\ac{VCO}} to generate $\omega_{local}$. The \ac{VCO} acts as an integrator, because phase is the integral of frequency with respect to time. The focus of this thesis is the loop filter, which as Gardner points out, can be more aptly be thought of as a loop controller\cite{Gardner}. This is because of the role of the loop filter in establishing the dynamics of the feedback loop and generating a control signal for the VCO\cite{Kaplan}.
 
-TALK MORE ABOUT THIS
 \begin{equation}
 	\omega_{VCO} = \omega_0 + K_{VCO}V_{LF}
 \end{equation}
@@ -123,19 +122,27 @@ Analog PLLs provide a useful abstraction for the development and analysis of Dig
     \end{enumerate}
     
     From table \ref{tab:LoopOrders} we can observe which order of dynamics different loop types are sensitive to. Ultimately, a trade-off exists between filter order and stability. Type 1 \& 2 filters are unconditionally stable, however they are not as effective as type 3 loops at coping with dynamics. For example, the residual error of a type 2 loop is acceleration. This makes it unsuitable for any application where sustained acceleration is likely to be encountered, as the error will increase over time, until phase lock is lost. However, type 2 filters are insensitive to velocity, this is because the integrator in the loop filter generates an estimate of the Doppler shift due the current velocity. In most real world scenarios, sustained acceleration is limited, due to limits on maximum achievable velocities. For space based applications however, velocities of thousands of meters per second are routinely achieved. Hence while a type 2 loop may be suitable for terrestrial applications, a type 3 loop is typically required for space based applications. A type 3 loop is insensitive to acceleration and velocity, because the loop filter contains a pair of integrators. One of the integrators contains an estimate of the current velocity, the other an estimated of the current acceleration\cite{Kaplan}. 
-    
+
+    Gardner concurrs with Kaplan, stating that because of the ability to track a frequency ramp without incurring a steady state tracking error, type 3 PLLs are idea for tracking signals from either satellites or missiles\cite{Gardner}. In particular, Gardner then observes that it is possible to use a smaller loop bandwidth for a type 3 loop than what a type 2 loop would require to achive the same task. This is an accute observation, as the PLL loop bandwidth dictates the amount of phase jitter at the output of the loop, which in turn dictates the ability of the loop to remain in phase lock.
+
+    Gardner later states that published results concerning type 3 PLLs are "few and widely scattered", due the the rareity and complexity of type 3 tracking loops. However, he later introduces some useful heuristics, stating that type 2 and type 3 PLLs of comparable bandwidths will exhibit aproximately the same peak phase eror in response to the sudden onst of a a frequency ramp\cite{Gardner}.  Garnder finishes by stating that "This is a cruicial fact to remember when dealing with dynamically varying signals".
+
     \input{Tables/LoopOrders}
     
 	\subsection{Stresses}
-	    
-	    Discussed in chapter \ref{ch:Analysis}
+	    The stresses experienced by a PLL will be examined in more detail in chapter \ref{ch:Analysis}, however 
 	    
 		\subsubsection{Thermal}
+
+
 		\subsubsection{Dynamics}
 		\ref{ch:FlightDynamics}
 		\ref{ch:Falcon9}
+
+
 		\subsubsection{Vibration}
-		\ref{ch:Falcon9}
+		The topic of vibrations and it's impact on PLL was given significant attention by Ward and Kaplan. 
+		appendix \ref{ch:Falcon9} and \ref{Vibrations}
 		
     \subsection{Noise bandwidth}
     
@@ -160,8 +167,8 @@ Analog PLLs provide a useful abstraction for the development and analysis of Dig
 
 	The design method which was used to originally design \ac{NAMURU} is described by Ward and Kaplan, \cite{Ward,Kaplan}, and relies on designing the PLL in the Laplace (analog) domain, and then transforming into the digital domain for implementation. The method developed by Ward enjoys significant popularity, in part because it develops relatively robust designs, based on proven rules of thumb. The design process used will be described in more comprehensive detail in chapter \ref{ch:MyWork}, however it is important to recognise other design methods that exist. 
 	
-	
 	\subsection{Stability}
+	The stability of a loop controller can be approached from a number of different angles. Two traditional methods used are root locus, and bode plots. Both of these techniques are extensively discussed in Nise as well as by Gardner\cite{Nise,Gardner}. Bode plots have a nubmer of practical advantages as compared to root locus, in particular the ability to simulate delay in the system. Additionally, Bode plots allow stability and phase margins to be easily visualized, and were used to great effect in this regard by Kazemi \cite{KazemiPHD}.  Conversely, Ward explain that root locas cannot model delays in the feedback path of a PLL, due to the transcendental nature of the exponential function.
 
 \clearpage
 
@@ -170,7 +177,11 @@ Analog PLLs provide a useful abstraction for the development and analysis of Dig
 	One of the most important aspects of the digital design is the method used to transform integrators the the Laplace domain to the Z domain. The Aquarius firmware\cite{FirmwareCode} written by Glennnon extensively uses the boxcar transform. The boxcar integrator is also used by Van Dierendonck  \cite{Spilker} in his GPS architecture. Conversely, Kaplan \cite{Kaplan} demonstrates an implementation of a tracking loop using Ward's parameters using bilinear integrators. The important and effect of using different integrators will be discussed more thoroughly in \ref{ch:MyWork}.
 	
 	\subsection{Stability}
-	    While analysis in the S domain is instructive, further analysis of stability in the Z domain is authoritative in the design process. Gardner 
-	    
-	    Kaplan's contribution to an understanding of stability is somewhat limited. While he provides a formulaic approach to designing tracking loops, the reader is warned that the loop noise bandwidth of a type 3 PLL must not exceed 18Hz\cite{Kaplan}. The reasoning behind this statement is explored in more detail by Kazemi, who spends significant effort analysing the effect of sampling time on the stability of the PLL. In summary, with a sufficiently high loop bandwidth time product, the closed poles of the transfer function will migrate outside the unit circle. As discussed at length in Gardner \cite{Gardner}, this leads to instability. 
+	    While analysis in the S domain is instructive, further analysis of stability in the Z domain is authoritative in the design process. Kaplan's contribution to an understanding of stability is somewhat limited. While he provides a formulaic approach to designing tracking loops, the reader is warned that the loop noise bandwidth of a type 3 PLL must not exceed 18Hz\cite{Kaplan}. The reasoning behind this statement is explored in more detail by Kazemi, who spends significant effort analysing the effect of sampling time on the stability of the PLL. In summary, with a sufficiently high loop bandwidth time product, the closed poles of the transfer function will migrate outside the unit circle. As discussed at length in Gardner \cite{Gardner}, this leads to instability. 
+
+
+
+
+
+
 	    
