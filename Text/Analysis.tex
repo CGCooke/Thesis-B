@@ -246,7 +246,18 @@ K_5 &=\frac{B_{nPLL}^3}{0.7845^3}\\
     &=0.4828B_{nPLL}^3
 \end{align*}
 
-It is clear at this point that the behaviour of the combined loop is entirely parametrised by $B_{nFLL}$,  $B_{nPLL}$ and $T$. $T$ is equal to the time between phase samples, which is currently 4ms for the \ac{NAMURU} receiver.
+It is clear at this point that the behaviour of the combined loop is entirely parametrised by $B_{nFLL}$,  $B_{nPLL}$.
+
+\begin{equation}
+G(s) = \frac{1}{S}(K_1 + K_3 + \frac{K_2 + K_4}{S} + \frac{K_5}{S^2})
+\end{equation}
+
+\begin{equation}
+G(s) = \frac{1}{S^3}((K_1 + K_3)S^2 + (K_2 + K_4)S + K_5)
+\end{equation}
+
+
+
 
 \subsection{Backward difference}
 
