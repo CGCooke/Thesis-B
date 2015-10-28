@@ -2,12 +2,12 @@
 
 Simulation was extensively used throughout this thesis due to the complex nature of the systems involved. 
 
-Both hardware, and software simulation was used to understand the performance of the reciever. Hardware simulation involves the C firmware being run on the \ac{NAMURU} processor, while a Spirent GNSS simulator is used to generate a RF signal. Software simulation involves a Python model of the tracking loops being tested using synthetic data generated in software. Both forms of simulation are complemntry. Hardware simulations being the most representitive of the true performance of the reciever, however they run in real time, require a \$250,000 GNSS simulator and it can be difficult to observe the state of the tracking loops without disturbing them. Conversely, software simulations are significantly cheaper, as they run entirely on a computer. Additionally, the simulation can run as fast as the computational hardware will allow, typically 100 faster $\times$ faster. Finally, the state of the reciever can be measured without affecting the performance of the receiver.
+Both hardware, and software simulation was used to understand the performance of the receiver. Hardware simulation involves the C firmware being run on the \ac{NAMURU} processor, while a Spirent GNSS simulator is used to generate a RF signal. Software simulation involves a Python model of the tracking loops being tested using synthetic data generated in software. Both forms of simulation are complementary. Hardware simulations being the most representative of the true performance of the receiver, however they run in real time, require a \$250,000 GNSS simulator and it can be difficult to observe the state of the tracking loops without disturbing them. Conversely, software simulations are significantly cheaper, as they run entirely on a computer. Additionally, the simulation can run as fast as the computational hardware will allow, typically 100 faster $\times$ faster. Finally, the state of the receiver can be measured without affecting the performance of the receiver.
 
 \subsection{Hardware simulation}
-The state of the reciver can be determined, both on a gross basis via NMEA output from the reciever, or on a finer basis by useing the KeaDebug feature. KeaDebug collects information about the internal state of the reciever, including the doppler frequency, phase angle, tracking mode and I and Q values. Thes values are then transmitted to a tethered laptop, where they can be stored for further analysis. One of the downsides of using the KeaDebug feature, is the potential to increase the computational load faced by the reciever. This in turn can lead to an increase in the timing jitter for collecting samples and updating the loops, which in turn increases the phase jitter. 
+The state of the receiver can be determined, both on a gross basis via NMEA output from the receiver, or on a finer basis by using the KeaDebug feature. KeaDebug collects information about the internal state of the receiver, including the doppler frequency, phase angle, tracking mode and I and Q values. These values are then transmitted to a tethered laptop, where they can be stored for further analysis. One of the downsides of using the KeaDebug feature, is the potential to increase the computational load faced by the receiver. This in turn can lead to an increase in the timing jitter for collecting samples and updating the loops, which in turn increases the phase jitter. 
 
-In particular, collecting I\&Q samples increases the computational load by 47\%, leading to the perverse phenonamyn that attempting to collect more information regarding regarding the recievers performance, leads to a degrade in performance.
+In particular, collecting I\&Q samples increases the computational load by 47\%, leading to the perverse phenomenon that attempting to collect more information regarding regarding the receivers performance, leads to a degrade in performance.
 
 \begin{table}[!htb]
 \centering
@@ -44,18 +44,12 @@ Address & Variable                                                             \
 
 \begin{figure}[!htb] 
     \centering
-    \includegraphics[width=1\textwidth]{Simulations/SpirentSatelliteMap.bmp} 
-    \caption{}
+    \includegraphics[width=1\textwidth]{Simulation/SpirentSatelliteMap.png} 
+    \caption{A map of the receiver's simulated location and positions of the satellites in the GPS constellation. Satellites that are currently in view of the receiver are displayed in green, with satellites below the horizon in cyan.}
     \label{fig:SpirentSatelliteMap}
 \end{figure}
 
 
-\begin{figure}[!htb] 
-    \centering
-    \includegraphics[width=1\textwidth]{mywork/Spirent-GSS8000.jpg} 
-    \caption{An example of a Spirent \ac{GPS} simulator. The actual model used for this research differs from the one pictured. The simulator is controlled by a tethered computer, which runs the \emph{SimGen} software, pictured in figure \ref{:HighGScreenshot}.}
-    \label{fig:Spirent}
-\end{figure}
 
 
 \begin{figure}[!htb] 
@@ -73,7 +67,11 @@ Address & Variable                                                             \
 \end{figure}
 
 
-The correct performance of a \ac{PLL} can be examined by attempting to decode the navigation message transmitted by the satellite. Other, more sophisticated methods for determining if the  receiver is in phase lock, will be examined in Thesis B. In figures \ref{fig:RawSignal} and \ref{fig:DigitalSignal}, the decoded message can be clearly seen, indicating that the receiver is maintaining phase lock with the signal.
+The correct performance of a \ac{PLL} can be determined in a number of ways. The receiver internally uses a lock detection algorithm to decided which state it is currently in, and which set of tracking loops should be used. The current state is can be determined by examining the output from the KeaDebug. Another method that was employed to verify the correct operation of the software receiver is to observe the raw I & Q values. In the case that the receiver is truly in phase lock with the incoming signal, the binary bit-stream transmitted by the satellite can be observed in the prompt I values. 
+
+In figures \ref{fig:RawSignal} and \ref{fig:DigitalSignal}, the decoded message can be clearly seen, indicating that the receiver is maintaining phase lock with the signal.
+
+
 
 \subsection{Software simulation}
 \ref{ch:Code}
