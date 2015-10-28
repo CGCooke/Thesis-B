@@ -7,7 +7,7 @@
 
 From analysis of the closed loop bode plots, which can be seen in figures \ref{fig:BodePlotPurePLLClosedLoop} and \ref{fig:BodePlotCombinedClosedLoop}, we can measure the 3dB bandwidth. This is an important metric, as it dictates the noise that is allowed into the PLL, and dictates signal to noise ratio, and the phase jitter. 
 
-For the pure PLL, with a $B_{nPLL}$ of 32HZ, there is a 3dB Bandwidth of 111.6Hz. For the combined PLL/FLL loop controller with  $B_{nPLL}$ of 32Hz and  $B_{nFLL}$ of 10Hz the 3dB Bandwidth is 147.34Hz. The closed loop bandwidth of the combined PLL/FLL loop controller is 32\% higher than the closed loop bandwidth for the pure PLL.
+For the pure PLL, with a $B_{nPLL}$ of 32Hz, there is a 3dB Bandwidth of 111.6Hz. For the combined PLL/FLL loop controller with  $B_{nPLL}$ of 32Hz and  $B_{nFLL}$ of 10Hz the 3dB Bandwidth is 147.34Hz. The closed loop bandwidth of the combined PLL/FLL loop controller is 32\% higher than the closed loop bandwidth for the pure PLL.
 
 
 \subsection{Software simulation}
@@ -41,7 +41,7 @@ Based on the result of the Monte Carlo simulation, it is possible to conclude th
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{mywork/BoxplotJerk.eps} 
-    \caption{Boxplot 1 is the combined PLL/FLL, Boxplot 2 is the pure PLL. The combined PLL/FLL has an average breaking point of 76.135$\pm$ 2.36 $m/s^3$. The pure PLL has a breaking point of 131.6 $\pm$ 1.64$m/s^3$.}
+    \caption{Boxplot 1 is the combined PLL/FLL, Boxplot 2 is the pure PLL. The combined PLL/FLL has an average breaking point of 76.135$\pm$2.36$m/s^3$. The pure PLL has a breaking point of 131.6 $\pm$ 1.64$m/s^3$.}
     \label{fig:BoxplotJerk}
 \end{figure}
 
@@ -50,7 +50,7 @@ Comparing the phase jitter results from the Monte Carlo simulation, it can be as
 \begin{figure}[!htb] 
     \centering
     \includegraphics[width=1\textwidth]{mywork/BoxplotPhaseJitter.eps} 
-    \caption{Boxplot 1 is the combined PLL/FLL, Boxplot 2 is the pure PLL. The combined PLL/FLL has an average phase jitter of 5.78$\pm$0.28$\degree$. The pure PLL has an average phase jitter of 4.31 $\pm$ 0.044 $\degree$.}
+    \caption{Boxplot 1 is the combined PLL/FLL, Boxplot 2 is the pure PLL. The combined PLL/FLL has an average phase jitter of 5.78$\pm$0.28$\degree$. The pure PLL has an average phase jitter of 4.31$\pm$0.044$\degree$.}
     \label{fig:BoxplotPhaseJitter}
 \end{figure}
 
@@ -58,6 +58,7 @@ Comparing the phase jitter results from the Monte Carlo simulation, it can be as
 
 \subsubsection{HighG3}
 
+\begin{comment}
 \begin{table}[!htb]
 \centering
 \begin{tabular}{|l|l|l|}
@@ -123,9 +124,41 @@ SVNUM & Lock time (\%) & Phase jitter (degrees) \\ \hline
 \caption{CNO = 48,PLLBW =32,FLL=10}
 \label{my-label}
 \end{table}
+\end{comment}
 
 
+\begin{table}[!htb]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+Satellite Number & Pure PLL phase jitter (degrees) & Combined PLL/FLL phase jitter (degrees) \\ \hline
+1                & 2.94                            & 4.11                                    \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+3                & 2.95                            & 4.10                                    \\ \hline
+6                & 2.95                            & 4.11                                    \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+11               & 2.94                            & 4.10                                    \\ \hline
+14               & 2.95                            & 4.12                                    \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+16               & 2.96                            & 4.13                                    \\ \hline
+18               & 2.95                            & 4.11                                    \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+19               & 2.94                            & 4.14                                    \\ \hline
+21               & 2.94                            & 4.13                                    \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+22               & 3.11                            & 4.18                                    \\ \hline
+23               & 2.94                            & 4.13                                    \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+25               & 8.77                            & 9.22                                    \\ \hline
+31               & 2.94                            & 4.11                                    \\ \hline
+\end{tabular}
+\caption{Polaris results, $C_N/0$ = 48 dB-Hz.}
+\label{tab:PolarisResultsCNO48}
+\end{table}
 
+
+\begin{comment}
 \begin{table}[!htb]
 \centering
 \begin{tabular}{|l|l|l|}
@@ -140,7 +173,7 @@ SVNUM & Lock time (\%) & Phase jitter (degrees) \\ \hline
 6     & 99.99  & 5.87          \\ \hline
 11    & 99.99  & 5.87          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
-14    & 99.99  & 5.86          \\ \hline
+14    & 99.99  & Lost phase-lock          \\ \hline
 16    & 99.99  & 5.87          \\ \hline
 \rowcolor[HTML]{EFEFEF} 
 18    & 99.99  & 5.86          \\ \hline
@@ -189,12 +222,49 @@ SVNUM & Lock time (\%) & Phase jitter (degrees) \\ \hline
 \caption{CNO = 42,PLLBW =32,FLL=10}
 \label{my-label}
 \end{table}
+\end{comment}
+
+
+\begin{table}[!htb]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+Satellite Number & Pure PLL phase jitter (degrees) & Combined PLL/FLL phase jitter (degrees) \\ \hline
+1                & 5.87                            & 8.23                                    \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+3                & 5.85                            & 8.22                                    \\ \hline
+6                & 5.86                            & 8.21                                    \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+11               & 5.87                            & 8.22                                    \\ \hline
+14               & 5.86                            & 8.22                                    \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+16               & 5.87                            & 8.22                                    \\ \hline
+18               & 5.86                            & 8.21                                    \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+19               & 5.89                            & 8.24                                    \\ \hline
+21               & 5.90                            & 8.26                                    \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+22               & 5.87                            & 8.20                                    \\ \hline
+23               & 5.86                            & 8.23                                    \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+25               & 33.4                            & 39.65                                   \\ \hline
+31               & 5.86                            & 4.11                                    \\ \hline
+\end{tabular}
+\caption{Polaris results, $C_N/0$ = 42 dB-Hz.}
+\label{tab:PolarisResultsCNO42}
+\end{table}
+
+
+
 
 \clearpage
 \subsection{Hardware simulation}
 
 \subsubsection{HighG3}
 
+
+\begin{comment}
 \begin{table}[!htb]
 \centering
 \begin{tabular}{|l|l|l|}
@@ -219,28 +289,7 @@ Channel number & Satellite number & Phase jitter       \\ \hline
 \end{table}
 
 
-\begin{table}[!htb]
-\centering
-\begin{tabular}{|l|l|l|}
-\hline
-\rowcolor[HTML]{C0C0C0} 
-Channel number & Satellite number & Phase jitter       \\ \hline
-0              & 3                & 7.72 \\ \hline
-\rowcolor[HTML]{EFEFEF} 
-1              & 22               & 7.70 \\ \hline
-2              & 18               & 6.98\\ \hline
-\rowcolor[HTML]{EFEFEF} 
-3              & 6                & 7.73 \\ \hline
-4              & 16               & 7.73 \\ \hline
-\rowcolor[HTML]{EFEFEF} 
-5              & 14               & 5.04 \\ \hline
-6              & 19               & 7.70 \\ \hline
-\rowcolor[HTML]{EFEFEF} 
-7              & 11               & 7.68 \\ \hline
-\end{tabular}
-\caption{CNO = 42,PLLBW =32,FLL=0}
-\label{my-label}
-\end{table}
+
 
 \begin{table}[!htb]
 \centering
@@ -264,6 +313,58 @@ Channel number & Satellite number & Phase jitter       \\ \hline
 \caption{CNO = 42,PLLBW =32,FLL=0}
 \label{my-label}
 \end{table}
+\end{comment}
+
+
+\begin{table}[!htb]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+Satellite Number & Pure PLL phase jitter (degrees) & Combined PLL/FLL phase jitter (degrees) \\ \hline
+3                & 7.09                            & Lost phase-lock                               \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+6                & 7.18                            & 9.16                                    \\ \hline
+11               & 7.11                            & 9.21                                    \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+14               & 7.12                            & 9.35                                    \\ \hline
+16               & 6.87                            & 9.11                                    \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+18               & Lost phase-lock                          & 9.06                                    \\ \hline
+19               & 7.14                            & 9.07                                    \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+22               & 7.15                            & Lost phase-lock                               \\ \hline
+\end{tabular}
+\caption{Spirent results, $C_N/0$ = 48 dB-Hz.}
+\label{tab:SpirentCNO48}
+\end{table}
+
+
+\begin{table}[!htb]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+Channel number & Satellite number & Pure PLL phase jitter (degrees)      \\ \hline
+0              & 3                & 7.72 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+1              & 22               & 7.70 \\ \hline
+2              & 18               & 6.98\\ \hline
+\rowcolor[HTML]{EFEFEF} 
+3              & 6                & 7.73 \\ \hline
+4              & 16               & 7.73 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+5              & 14               & Lost phase-lock \\ \hline
+6              & 19               & 7.70 \\ \hline
+\rowcolor[HTML]{EFEFEF} 
+7              & 11               & 7.68 \\ \hline
+\end{tabular}
+\label{tab:SpirentCNO42}
+\caption{Spirent results, $C_N/0$ = 48 dB-Hz.}
+\end{table}
+
+
+
 
 \clearpage
 \subsection{Discussion}
