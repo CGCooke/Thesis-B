@@ -142,7 +142,7 @@ Analog PLLs provide a useful abstraction for the development and analysis of Dig
 
 		\subsubsection{Vibration}
 		The topic of vibrations and it's impact on PLL was given significant attention by Ward and Kaplan. 
-		appendix \ref{ch:Falcon9} and \ref{Vibrations}
+		appendix \ref{ch:Falcon9} and \ref{ch:Vibrations}
 		
     \subsection{Noise bandwidth}
     
@@ -156,7 +156,7 @@ Analog PLLs provide a useful abstraction for the development and analysis of Dig
 	The \ac{NAMURU} receiver uses a number of different PLLs while in different operational states. The relationship between the different types of PLLs used as further analysis is carried out in appendix \ref{ch:StateTransitions} and \ref{ch:LaplaceAnalysis}. The state that will receive the most thorough analysis in this thesis is the type 3 PLL/ type 2 FLL combination, which will be described in chapter \ref{Analysis}. 
 	
 	
-	From Gardner, we find that we can require 3 independent parameters in order to characterise the PLL\cite{Gardner}. In equation \ref{eq:3rdOrderLoop}, we can observe the presence of $s^3$ in the denominator, confirming that this is a type 3 loop. The factor of $\frac{1}{s}$ models the behaviour of \ac{VCO} as an integrator which produces a frequency output from a phase input. 
+	From Gardner, we find that we can require 3 independent parameters in order to characterise the PLL\cite{Gardner}. In equation \ref{eq:3rdOrderLoopGardner}, we can observe the presence of $s^3$ in the denominator, confirming that this is a type 3 loop. The factor of $\frac{1}{s}$ models the behaviour of \ac{VCO} as an integrator which produces a frequency output from a phase input. 
 	
 	
 	\begin{align}
@@ -165,7 +165,7 @@ Analog PLLs provide a useful abstraction for the development and analysis of Dig
 	\label{eq:3rdOrderLoopGardner}
 	\end{align}
 
-	The design method which was used to originally design \ac{NAMURU} is described by Ward and Kaplan, \cite{Ward,Kaplan}, and relies on designing the PLL in the Laplace (analog) domain, and then transforming into the digital domain for implementation. The method developed by Ward enjoys significant popularity, in part because it develops relatively robust designs, based on proven rules of thumb. The design process used will be described in more comprehensive detail in chapter \ref{ch:MyWork}, however it is important to recognise other design methods that exist. 
+	The design method which was used to originally design \ac{NAMURU} is described by Ward and Kaplan, \cite{Ward,Kaplan}, and relies on designing the PLL in the Laplace (analog) domain, and then transforming into the digital domain for implementation. The method developed by Ward enjoys significant popularity, in part because it develops relatively robust designs, based on proven rules of thumb. The design process used will be described in more comprehensive detail in chapter \ref{ch:Analysis}, however it is important to recognise other design methods that exist. 
 	
 	\subsection{Stability}
 	The stability of a loop controller can be approached from a number of different angles. Two traditional methods used are root locus, and bode plots. Both of these techniques are extensively discussed in Nise as well as by Gardner\cite{Nise,Gardner}. Bode plots have a nubmer of practical advantages as compared to root locus, in particular the ability to simulate delay in the system. Additionally, Bode plots allow stability and phase margins to be easily visualized, and were used to great effect in this regard by Kazemi \cite{KazemiPHD}.  Conversely, Ward explain that root locas cannot model delays in the feedback path of a PLL, due to the transcendental nature of the exponential function.
@@ -174,7 +174,7 @@ Analog PLLs provide a useful abstraction for the development and analysis of Dig
 
 \section{Digital PLL's}
 	\subsection{Integrators}
-	One of the most important aspects of the digital design is the method used to transform integrators the the Laplace domain to the Z domain. The Aquarius firmware\cite{FirmwareCode} written by Glennnon extensively uses the boxcar transform. The boxcar integrator is also used by Van Dierendonck  \cite{Spilker} in his GPS architecture. Conversely, Kaplan \cite{Kaplan} demonstrates an implementation of a tracking loop using Ward's parameters using bilinear integrators. The important and effect of using different integrators will be discussed more thoroughly in \ref{ch:MyWork}.
+	One of the most important aspects of the digital design is the method used to transform integrators the the Laplace domain to the Z domain. The Aquarius firmware\cite{FirmwareCode} written by Glennnon extensively uses the boxcar transform. The boxcar integrator is also used by Van Dierendonck  \cite{Spilker} in his GPS architecture. Conversely, Kaplan \cite{Kaplan} demonstrates an implementation of a tracking loop using Ward's parameters using bilinear integrators. The important and effect of using different integrators will be discussed more thoroughly in \ref{ch:Analysis}.
 	
 	\subsection{Stability}
 	    While analysis in the S domain is instructive, further analysis of stability in the Z domain is authoritative in the design process. Kaplan's contribution to an understanding of stability is somewhat limited. While he provides a formulaic approach to designing tracking loops, the reader is warned that the loop noise bandwidth of a type 3 PLL must not exceed 18Hz\cite{Kaplan}. The reasoning behind this statement is explored in more detail by Kazemi, who spends significant effort analysing the effect of sampling time on the stability of the PLL. In summary, with a sufficiently high loop bandwidth time product, the closed poles of the transfer function will migrate outside the unit circle. As discussed at length in Gardner \cite{Gardner}, this leads to instability. 

@@ -183,7 +183,12 @@ G(s) = \frac{1}{S^3}((K_1 + K_3)S^2 + (K_2 + K_4)S + K_5)
 \end{equation}
 
 
+\section{Laplace to Z domain transforms}
+The choice of transform utilised during the transition from the Laplace domain to the Z domain can have a significant impact on the performance of the loops. Loops which were previously stable, with poles on the left hand side of the complex plane can be transformed into transfer functions with poles outside the unit circle in the Z domain. This issue is generally neglected in the GNSS literature, with the exception of Kazemi \cite{KazemiPHD}. 
 
+The NAMURU receiver currently employs the backwards different transform, in order to implement it's integrators. By modifying the receiver to utilise Bilinear integrators, a significantly high (0.55 vs 0.36) loop bandwidth time product may be employed while still producing a stable filter \cite{Kaplan,Ward,KazemiPHD}.
+
+The transforms are listed below for completeness. 
 
 \subsection{Backward difference}
 
@@ -220,8 +225,6 @@ For 10,32 8ms CohInt and 8ms update rate
 \frac{1.0 z \left(30.5 z^{2} - 57.9 z + 27.5\right)}{31.5 z^{3} - 60.9 z^{2} + 30.5 z - 1.0}
 \end{equation}
 
-
-\cite{arashBook}
 \clearpage
 
 
@@ -231,8 +234,6 @@ For 10,32 8ms CohInt and 8ms update rate
 \begin{equation}
 \frac{2 z - 2}{T \left(z + 1\right)}
 \end{equation}
-
-OL TF BN = 32,10
 
 \subsubsection{S Domain open loop}
 \begin{equation}
@@ -400,7 +401,6 @@ c & = 2.99792458 \times 10^8 ms^{-1}
 Finally, the Allan variance is an error which is intrinsic to the crystal itself. 
 
 \begin{equation}
-\label{eq:AllanVariance}
 \theta_{A} = 160 \frac{\sigma_A(\tau)f_L}{B_n} \text{ (degrees)}
 \end{equation}
 
@@ -409,7 +409,7 @@ From the data sheet for the current crystal used in the \ac{NAMURU} receiver\cit
 \sigma_A(\tau) &= 1 \times 10^{-10} \text{ (dimensionless units of }\Delta f/f\text{)}
 \end{align*}
 
-Hence we can simplify equation \label{eq:AllanVariance} as:
+Hence we can simplify the equation as:
 \begin{equation}
 \theta_{A} =\frac{25.2}{B_n} \text{ (degrees)}
 \label{eq:AllanVariance}
@@ -440,7 +440,7 @@ For $B_n$ =18, we have $\theta_{A3}=1.4\degree$.
 
 In order to analytically determine the correct value of $B_n$, we can use the rules of thumb introduced by Ward as a starting point\cite{Ward}.
 
-Starting with equation \ref{eq:WardJitter}, and substituiting in equations \ref{ThermaJitter},\ref{AllanVariance} and \ref{DynamicStressError}.
+Starting with equation \ref{eq:WardJitter}, and substituting in equations \ref{eq:ThermalJitter},\ref{eq:AllanVariance} and \ref{eq:DynamicStressError}.
 Additionally, nominally using a value of 2 $\degree$ for $\sigma_v$:
 
 \begin{align*}
@@ -559,7 +559,6 @@ As discussed in the lituratre review, Bode plots posess a number of useful prope
     \includegraphics[width=1\textwidth]{mywork/ClosedLoopPlots/BodePlotCombinedPLLFLL.eps} 
     \label{fig:BodePlotCombinedClosedLoop}
     \caption{The closed loop 3dB bandwidth is 147.53Hz.}
-    
 \end{figure}
 
 \begin{figure}[!htb] 
@@ -569,8 +568,6 @@ As discussed in the lituratre review, Bode plots posess a number of useful prope
     \caption{The closed loop 3dB bandwidth is 111.62Hz.}
 \end{figure}
 
-    
-\end{figure}
 
 
 

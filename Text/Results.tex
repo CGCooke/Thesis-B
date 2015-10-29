@@ -2,7 +2,6 @@
 
 \subsection{Analysis}
 
-
 \subsubsection{Bode Plots}
 
 From analysis of the closed loop bode plots, which can be seen in figures \ref{fig:BodePlotPurePLLClosedLoop} and \ref{fig:BodePlotCombinedClosedLoop}, we can measure the 3dB bandwidth. This is an important metric, as it dictates the noise that is allowed into the PLL, and dictates signal to noise ratio, and the phase jitter. 
@@ -255,13 +254,10 @@ Satellite Number & Pure PLL phase jitter (degrees) & Combined PLL/FLL phase jitt
 \label{tab:PolarisResultsCNO42}
 \end{table}
 
-
-
-
 \clearpage
-\subsection{Hardware simulation}
+\subsection{Hardware simulation (HighG3)}
 
-\subsubsection{HighG3}
+A number of simulation were carried out using the HighG3 scenario. Due to the time consuming nature of the experiments, as well as the need to be methodical, a limited amount of data was collected. The collected data is consistent with the Polaris simulations, and strengthens confidence in the Polaris model. However, there is a significant offset between the Polaris model and the Spirent simulation, in the form of an approximately $4\degree$ greater phase jitter in the Spirent data. 
 
 
 \begin{comment}
@@ -363,14 +359,30 @@ Channel number & Satellite number & Pure PLL phase jitter (degrees)      \\ \hli
 \caption{Spirent results, $C_N/0$ = 48 dB-Hz.}
 \end{table}
 
-
 \clearpage
 \subsection{Discussion}
 
-The results are very illustrating, and it is a valuable exercise to compare and contrast the results from the analysis, software simulations and hardware simulations.
+The results are very illustrating, and it is a valuable exercise to compare and contrast the results from the analysis, software simulations and hardware simulations. Turning to equation \ref{eq:JwoJitter} and noticing that $\frac{1}{2 \cdot T \cdot C/N_0}$ is typically $\ll$ 1, the phase jitter can be approximated as follows:
+
+\begin{equation}
+\sigma_{PLLt} = \frac{360}{2\pi} \sqrt{\frac{B_n}{C/N_0}}
+\end{equation}
+
+From this, it would be expected that a 32\% increase would lead to $\approx$ 15\% increase in phase noise, assuming that the predominant source of noise is thermal.
+
+However, for the Polaris simulations,the  ratio of the phase noise between the pure PLL and PLL/FLL combination is $\approx$ 1.40 for a $C/N_0$ of 48 dB-Hz, as well as for a $C/N_0$ of 42 dB-Hz. For the Spirent hardware simulations, the ratio is 1.30, for a $C/N_0$ of 48 dB-Hz.
+
+These results suggest that the thermal jitter is only a small component of the total jitter. Additionally, this conclusion may be reached by comparing the jitter of the pure PLL with figure \ref{fig:ContourPLL32Results}. The most likely cause of these discrepancies is the transformation from the S domain to the Z domain, which cannot be modelled in the linear domain. 
+
+\begin{figure}[!htb] 
+    \centering
+    \includegraphics[width=1\textwidth]{Results/32.eps} 
+    \caption{A contour plot of the expected jitter for a 3rd order PLL with $B_n$ of 32Hz.}
+    \label{fig:ContourPLL32Results}
+\end{figure}
 
 
-\label{eq:JwoJitter}
+Additionally, from these results is is possible to appreciate the significant difference that correct selection of loop parameters can have on the performance of the tracking loops. 
 
 
 
